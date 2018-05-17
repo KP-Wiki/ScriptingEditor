@@ -1,0 +1,12 @@
+var
+  test3: Integer;
+
+function Test: Boolean;
+begin
+  //Result := True;
+end;
+
+procedure Test2;
+begin
+  test3 := Test;
+end;

@@ -1,0 +1,18 @@
+# Wildcards
+*.local
+*.res
+*.stat
+*.identcache
+*.dcu
+*.rar
+*.LOG.txt
+
+# Directories
+__history
+__recovery
+dcu
+gui
+
+# Specific files
+bin/ScriptingEditor.exe
+bin/ScriptingEditor.ini
