@@ -1,0 +1,29 @@
+var
+  fEpicWariorDudeOrGroup: Integer;
+
+procedure KillGroup;
+var
+  I,
+  Member: Integer;
+begin
+  //                               aGroupID
+  for I := States.GroupMemberCount(fEpicWariorDudeOrGroup) - 1 downto 0 do
+  begin
+    //                           aGroupID,               aMemberIndex
+    Member := States.GroupMember(fEpicWariorDudeOrGroup, I);
+    //               aUnitID, aSilent
+    Actions.UnitKill(Member, True);
+  end;
+end;
+
+procedure OnMissionStart;
+begin
+  //                                       x,  y
+  fEpicWariorDudeOrGroup := States.GroupAt(10, 25)
+end;
+
+procedure OnTick(aTick: Integer);
+begin
+  if aTick = 1200 then
+    KillGroup;
+end;

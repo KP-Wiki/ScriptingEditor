@@ -1,0 +1,20 @@
+var
+  fEpicWariorDudeOrGroup: Integer;
+
+procedure SendUnitToGoal;
+begin
+  //                     aGroupID,               X,  Y,  aDirection
+  Actions.GroupOrderWalk(fEpicWariorDudeOrGroup, 25, 10, 4);
+end;
+
+procedure OnMissionStart;
+begin
+  //                                       x,  y
+  fEpicWariorDudeOrGroup := States.GroupAt(10, 25)
+end;
+
+procedure OnTick(aTick: Integer);
+begin
+  if aTick = 600 then
+    SendUnitToGoal;
+end;

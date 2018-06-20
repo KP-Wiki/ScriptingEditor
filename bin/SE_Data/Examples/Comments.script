@@ -1,0 +1,52 @@
+{
+  Commenting styles in Pascal
+
+  There are several ways you can write a comment in Pascal/Delphi/Pascal Script.
+  This example will show and explain them to you.
+
+  In this example "//>" means this line is part of a "(* title *)".
+}
+
+(* General info: *)
+//>  "(*...*)" - Can be used for both single- and multi-line comments
+//>  "{...}"   - Can be used for both single- and multi-line comments
+//>  "//"      - Can be used for single-line comments
+//>
+//>  A comment that contains a dollar sign ($) immediately after the opening { or (* is a compiler directive.
+//>  For example: {$WARNINGS OFF}
+//>  This tells the compiler not to generate warning messages.
+
+
+(* Comment hierarchy: *)
+//>  (* Highest precedence *)
+//>  { Second precedence }
+//>  // Lowest precedence
+
+
+(* Comment-style combinations: *)
+//>  (*
+//>    Can be used to coment out code containing:
+//>    { This comment style }
+//>    // And this comment style
+//>  *)
+//>
+//>  {
+//>    Can be used to comment out code containing:
+//>    (* This comment style *)
+//>    // And this comment style
+//>  }
+//>
+//>  // Can be used to comment out the single-line version of: (* comment *) and { comment }
+
+
+(* Embarcadero reccomendations: *)
+//>  Use the double-slash "//" for commenting out temporary changes made during development.
+//>
+//>  Use the parenthesis-star "(*...*)" both for development comments and for commenting out a block of code that contains other comments.
+//>  This comment character permits multiple lines of source, including other types of comments, to be removed from consideration by the compiler.
+//>
+//>  Use the braces "{...}" for in-source documentation that you intend to remain with the code.
+
+
+(* Trivia *)
+//>  The "(*...*)" comment style exists to support (really) old keyboards that have no '{' and '}' keys.
