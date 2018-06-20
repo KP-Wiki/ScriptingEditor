@@ -1,0 +1,9 @@
+const
+  PLAYER_ONE = 1;
+
+procedure OnTick(aTick: Integer);
+begin
+  if aTick mod 10 = 0 then // Check army once every second
+    if Length(States.PlayerGetAllGroups(PLAYER_ONE)) = 0 then
+      Actions.PlayerDefeat(PLAYER_ONE);
+end;

@@ -1,0 +1,38 @@
+{
+  Dev example - By Thimo (thibmo) Braker
+
+  This example has been made to test Scripting Editor.
+  Please do not use this as a working example, as this script may contain items
+  which sole intent is to try and break something.
+}
+const
+  PLAYER_1   = 0;
+  PLAYER_MAX = 4;
+
+type
+  TPlayerInfo = record
+    Id:   Integer;
+    Name: string; // Fails because of string
+  end;
+
+var
+  fPlayerInfoArr: array [0..(PLAYER_MAX-1)] of TPlayerInfo;
+
+procedure PrepVariables;
+var
+  I:          Integer;
+  PlayerInfo: TPlayerInfo;
+begin
+  for I := 0 to PLAYER_MAX - 1 do
+  begin
+    PlayerInfo.Id     := I;
+    PlayerInfo.Name   := States.PlayerName(I);
+    fPlayerInfoArr[I] := PlayerInfo;
+  end;
+end;
+
+procedure OnMissionStart;
+begin
+  PrepVariables;
+end;
+

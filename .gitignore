@@ -12,7 +12,11 @@ __history
 __recovery
 dcu
 gui
+Demos
+Logs
 
 # Specific files
 bin/ScriptingEditor.exe
 bin/ScriptingEditor.ini
+bin/ScriptingEditor.map
+bin/ScriptingEditor.drc

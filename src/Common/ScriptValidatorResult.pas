@@ -148,6 +148,9 @@ end;
 
 procedure TScriptValidatorResult.FromXML(aXml: string);
 begin
+  if (aXml = '') or not aXml.StartsWith('<?xml', True) then
+    raise Exception.Create('Invalid script validator response');
+
   with TXmlVerySimple.Create do
     try
       Text := aXml;

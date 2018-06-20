@@ -1,0 +1,24 @@
+Byte
+Word
+Integer
+Single
+Boolean
+string
+Array[0..1] of 
+Array of 
+set of 
+record
+TIntegerArray
+TByteSet
+THouseType
+TWareType
+TUnitType
+Length
+SetLength
+Low
+High
+Inc
+Dec
+Ord
+Pred
+Succ

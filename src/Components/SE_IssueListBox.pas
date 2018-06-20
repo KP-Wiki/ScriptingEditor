@@ -66,7 +66,7 @@ function TSEIssueListBox.GetIssue(aIndex: Integer): TScriptValidatorIssue;
 begin
   Result.Line := -2;
 
-  if Length(fIssues) = 0 then
+  if (Length(fIssues) = 0) or (aIndex < 0) then
     Exit;
 
   if Items[aIndex] = fIssues[aIndex].Msg then
