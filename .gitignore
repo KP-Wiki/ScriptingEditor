@@ -11,9 +11,12 @@
 __history
 __recovery
 dcu
-gui
 Demos
 Logs
+gui/common
+gui/controls
+gui/game
+gui/maped
 
 # Specific files
 bin/ScriptingEditor.exe
