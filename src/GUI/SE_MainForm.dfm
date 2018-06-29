@@ -2,29 +2,29 @@ object SEMainForm: TSEMainForm
   Left = 0
   Top = 0
   Caption = 'Scripting Editor'
-  ClientHeight = 644
+  ClientHeight = 642
   ClientWidth = 1484
   Color = clBtnFace
   Constraints.MinHeight = 700
   Constraints.MinWidth = 1450
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Raavi'
+  Font.Height = -13
+  Font.Name = 'Courier New'
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
-  Position = poDesktopCenter
+  Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 19
+  TextHeight = 16
   object Splitter1: TSplitter
     Left = 1231
     Top = 24
-    Height = 601
+    Height = 599
     Align = alRight
     ExplicitLeft = 895
     ExplicitTop = 35
@@ -33,14 +33,13 @@ object SEMainForm: TSEMainForm
   object Splitter2: TSplitter
     Left = 250
     Top = 24
-    Height = 601
-    ExplicitLeft = 896
-    ExplicitTop = 520
-    ExplicitHeight = 100
+    Height = 599
+    ExplicitLeft = 244
+    ExplicitTop = 35
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 625
+    Top = 623
     Width = 1484
     Height = 19
     Panels = <
@@ -63,8 +62,6 @@ object SEMainForm: TSEMainForm
         Bevel = pbNone
         Width = 50
       end>
-    ExplicitTop = 580
-    ExplicitWidth = 1534
   end
   object ToolBar1: TToolBar
     Left = 0
@@ -191,66 +188,64 @@ object SEMainForm: TSEMainForm
     Left = 0
     Top = 24
     Width = 250
-    Height = 601
+    Height = 599
     ActivePage = tsEvents
     Align = alLeft
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Raavi'
-    Font.Style = []
-    ParentFont = False
     TabOrder = 2
     TabPosition = tpBottom
     object tsEvents: TTabSheet
       Caption = 'Events'
-      ExplicitHeight = 530
     end
     object tsStates: TTabSheet
       Caption = 'States'
       ImageIndex = 1
-      ExplicitHeight = 522
     end
     object tsActions: TTabSheet
       Caption = 'Actions'
       ImageIndex = 2
-      ExplicitHeight = 522
     end
     object tsUtils: TTabSheet
       Caption = 'Utils'
       ImageIndex = 3
-      ExplicitHeight = 522
     end
   end
   object pcRight: TPageControl
     Left = 1234
     Top = 24
     Width = 250
-    Height = 601
+    Height = 599
     ActivePage = tsIssues
     Align = alRight
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Raavi'
-    Font.Style = []
     MultiLine = True
-    ParentFont = False
     TabOrder = 3
     TabPosition = tpBottom
     object tsIssues: TTabSheet
       Caption = 'Issues'
-      ExplicitHeight = 530
+    end
+    object tsRawSVOutput: TTabSheet
+      Caption = 'Raw Validator Output'
+      ImageIndex = 1
+      object edtRawSVOutput: TMemo
+        Left = 0
+        Top = 0
+        Width = 242
+        Height = 570
+        Align = alClient
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 0
+      end
     end
   end
   object pcEditors: TPageControl
     Left = 253
     Top = 24
     Width = 978
-    Height = 601
+    Height = 599
     Align = alClient
     HotTrack = True
     TabOrder = 4
+    OnChange = pcEditorsChange
     OnMouseUp = pcEditorsMouseUp
   end
   object MainMenu1: TMainMenu
@@ -422,6 +417,18 @@ object SEMainForm: TSEMainForm
         Action = SECommandsDataModule.ActModeKP
         RadioItem = True
       end
+    end
+  end
+  object pmIssues: TPopupMenu
+    AutoPopup = False
+    MenuAnimation = [maTopToBottom]
+    Left = 104
+    Top = 40
+    object miIssueGoTo: TMenuItem
+      Action = SECommandsDataModule.actIssueGoTo
+    end
+    object miIssueCopy: TMenuItem
+      Action = SECommandsDataModule.actIssueCopy
     end
   end
 end

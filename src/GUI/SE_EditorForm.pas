@@ -36,6 +36,7 @@ type
     fSynCompletion:        TSynCompletionProposal;
     fConfirmReplaceDialog: TSEConfirmReplaceForm;
     fIssues:               TScriptValidatorResult;
+    fRawIssues:            string;
     procedure SynCompletionExecute(aKind: SynCompletionType; aSender: TObject;
                                    var aCurrentInput: String; var aX, aY: Integer;
                                    var aCanExecute: Boolean);
@@ -93,6 +94,7 @@ type
     function GetFileTitle: string;
     function GetModified: Boolean;
     procedure SetCaret(aX, aY: Integer);
+    procedure ReloadSettings;
     // ISEEditCommands implementation
     function CanCut: Boolean;
     function CanCopy: Boolean;
@@ -111,10 +113,8 @@ type
     procedure ExecSelectAll;
     procedure ExecValidate;
     // ISEFileCommands implementation
-    function CanClose: Boolean;
     function CanSave: Boolean;
     function CanSaveAs: Boolean;
-    procedure ISEFileCommands.ExecClose = Close;
     procedure ExecSave;
     procedure ExecSaveAs;
     // ISESearchCommands implementation
@@ -203,9 +203,9 @@ begin
     OnGutterClick                 := SynEditorGutterClick;
     PopupMenu                     := pmEditor;
     Options                       := [
-      eoAutoIndent, eoDragDropEditing, eoScrollPastEol, eoShowScrollHint,
-      eoSmartTabs, eoSmartTabDelete, eoTabsToSpaces, eoTabIndent,
-      eoTrimTrailingSpaces, eoKeepCaretX, eoEnhanceEndKey, eoGroupUndo
+      eoAutoIndent,     eoDragDropEditing, eoScrollPastEol, eoSmartTabs,
+      eoSmartTabDelete, eoTabsToSpaces,    eoTabIndent,     eoTrimTrailingSpaces,
+      eoKeepCaretX,     eoEnhanceEndKey,   eoGroupUndo
     ];
   end;
 
@@ -253,6 +253,7 @@ end;
 procedure TSEEditorForm.ParentTabShow(Sender: TObject);
 begin
   gMainForm.LbIssues.Clear;
+  gMainForm.edtRawSVOutput.Lines.Clear;
   DoAssignInterfacePointer(True);
 
   if fIssues <> nil then
@@ -260,8 +261,10 @@ begin
     gMainForm.LbIssues.AppendIssues(fIssues.Hints);
     gMainForm.LbIssues.AppendIssues(fIssues.Warnings);
     gMainForm.LbIssues.AppendIssues(fIssues.Errors);
+    gMainForm.edtRawSVOutput.Lines.Text := fRawIssues;
   end;
 
+  fEditor.ReloadSettings;
   fSynEdit.Invalidate;
 end;
 
@@ -282,13 +285,51 @@ const
   LEN_ACTIONS = 7;
 var
   caretPos: TBufferCoord;
+  str:      string;
+  I:        Integer;
 begin
   caretPos := fSynEdit.CaretXY;
   fSynCompletion.ItemList.Clear;
   fSynCompletion.InsertList.Clear;
+  aCanExecute := True;
 
   if fSynEdit.Lines.Text <> '' then
   begin
+    str := fSynEdit.Lines[caretPos.Line - 1];
+
+    for I := caretPos.Char downto 0 do
+      if str[I] = '.' then
+      begin
+        if LowerCase(Copy(str, I - LEN_UTILS, LEN_UTILS)) = 'utils' then
+        begin
+          fSynCompletion.ItemList.AddStrings(gMainForm.UtilsDict);
+          fSynCompletion.InsertList.AddStrings(gMainForm.UtilsInsDict);
+          Exit;
+        end else if LowerCase(Copy(str, I - LEN_STATES, LEN_STATES)) = 'states' then
+        begin
+          fSynCompletion.ItemList.AddStrings(gMainForm.StatesDict);
+          fSynCompletion.InsertList.AddStrings(gMainForm.StatesInsDict);
+          Exit;
+        end else if LowerCase(Copy(str, I - LEN_ACTIONS, LEN_ACTIONS)) = 'actions' then
+        begin
+          fSynCompletion.ItemList.AddStrings(gMainForm.ActionsDict);
+          fSynCompletion.InsertList.AddStrings(gMainForm.ActionsInsDict);
+          Exit;
+        end;
+      end;
+
+    fSynCompletion.ItemList.AddStrings(gMainForm.PasScriptDict);
+    fSynCompletion.InsertList.AddStrings(gMainForm.PasScriptInsDict);
+    fSynCompletion.ItemList.AddStrings(gMainForm.UtilsDict);
+    fSynCompletion.InsertList.AddStrings(gMainForm.UtilsInsDict);
+    fSynCompletion.ItemList.AddStrings(gMainForm.EventsDict);
+    fSynCompletion.InsertList.AddStrings(gMainForm.EventsInsDict);
+    fSynCompletion.ItemList.AddStrings(gMainForm.StatesDict);
+    fSynCompletion.InsertList.AddStrings(gMainForm.StatesInsDict);
+    fSynCompletion.ItemList.AddStrings(gMainForm.ActionsDict);
+    fSynCompletion.InsertList.AddStrings(gMainForm.ActionsInsDict);
+
+    {
     if fSynEdit.Lines[caretPos.Line - 1][caretPos.Char - 1] = '.' then
     begin
       if LowerCase(Copy(fSynEdit.Lines[caretPos.Line - 1],
@@ -320,6 +361,7 @@ begin
       fSynCompletion.ItemList.AddStrings(gMainForm.ActionsDict);
       fSynCompletion.InsertList.AddStrings(gMainForm.ActionsInsDict);
     end;
+    }
   end else
   begin
     fSynCompletion.ItemList.AddStrings(gMainForm.PasScriptDict);
@@ -439,6 +481,8 @@ begin
 
   if PCtrl <> nil then
     PCtrl.ActivePage := Sheet;
+
+  gMainForm.SetListboxesVisible(True);
 end;
 
 procedure TSEEditorForm.DoAssignInterfacePointer(aActive: boolean);
@@ -713,16 +757,17 @@ end;
 
 procedure TSEEditorForm.RunValidate(const aFileName: string);
 var
-  resultStr: string;
-  noIssues:  TScriptValidatorIssue;
+  noIssues: TScriptValidatorIssue;
 begin
   if fIssues <> nil then
     FreeAndNil(fIssues);
 
   gMainForm.LbIssues.Clear;
-  resultStr := gMainForm.ExecuteScriptValidator(aFileName);
-  fIssues   := TScriptValidatorResult.Create;
-  fIssues.FromXML(resultStr);
+  gMainForm.edtRawSVOutput.Lines.Clear;
+  fRawIssues                          := gMainForm.ExecuteScriptValidator(aFileName).Trim;
+  gMainForm.edtRawSVOutput.Lines.Text := fRawIssues;
+  fIssues                             := TScriptValidatorResult.Create;
+  fIssues.FromXML(fRawIssues);
 
   if Length(fIssues.Hints) > 0 then
     gMainForm.LbIssues.AppendIssues(fIssues.Hints);
@@ -883,14 +928,20 @@ begin
 
   if fForm <> nil then
   begin
+    fForm.SynEditor.BeginUpdate;
+    fForm.SynEditor.Lines.Clear;
+
     if (aFileName <> '') and FileExists(aFileName) then
       fForm.SynEditor.Lines.LoadFromFile(aFileName)
     else
       fForm.SynEditor.Lines.Clear;
 
+    Application.ProcessMessages;
     fForm.DoUpdateCaption;
     fForm.SynEditorChange(self);
     fForm.SynEditorStatusChange(Self, [scAll]);
+    fForm.SynEditor.EndUpdate;
+    gMainForm.SetListboxesVisible(True);
   end;
 end;
 
@@ -962,6 +1013,16 @@ begin
   caretPos.Line           := aY;
   fForm.SynEditor.CaretXY := caretPos;
   fForm.SynEditor.SetFocus;
+end;
+
+procedure TSEEditor.ReloadSettings;
+var
+  EditFont: TFont;
+begin
+  EditFont             := fForm.SynEditor.Font;
+  EditFont.Name        := gOptions.Font.Name;
+  EditFont.Size        := gOptions.Font.Size;
+  fForm.SynEditor.Font := EditFont;
 end;
 
 // ISEEditCommands implementation
@@ -1052,11 +1113,6 @@ begin
 end;
 
 // ISEFileCommands implementation
-function TSEEditor.CanClose: Boolean;
-begin
-  Result := fForm <> nil;
-end;
-
 function TSEEditor.CanSave: Boolean;
 begin
   Result := (fForm <> nil) and (fModified or (fFileName = ''));
@@ -1131,16 +1187,20 @@ end;
 
 procedure TSEEditor.ExecGoTo;
 var
-  dlg:      TSEGoToLineForm;
-  caretPos: TBufferCoord;
+  dlg:       TSEGoToLineForm;
+  caretPos:  TBufferCoord;
+  cursorPos: TPoint;
 begin
-  dlg := TSEGoToLineForm.Create(fForm);
+  dlg       := TSEGoToLineForm.Create(fForm.SynEditor);
+  cursorPos := Mouse.CursorPos;
 
   with dlg do
     try
       caretPos := fForm.SynEditor.CaretXY;
       Line     := caretPos.Line;
       LineMax  := fForm.SynEditor.Lines.Count;
+      Left     := cursorPos.X;
+      Top      := cursorPos.Y;
 
       if ShowModal = mrOK then
       begin

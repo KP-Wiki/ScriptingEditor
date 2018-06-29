@@ -13,6 +13,7 @@ uses
   SE_ReplaceForm in 'src\GUI\SE_ReplaceForm.pas' {SEReplaceForm},
   SE_ConfirmReplaceForm in 'src\GUI\SE_ConfirmReplaceForm.pas' {SEConfirmReplaceForm},
   SE_SaveModifiedForm in 'src\GUI\SE_SaveModifiedForm.pas' {SESaveModifiedForm},
+  SE_OptionsForm in 'src\GUI\SE_OptionsForm.pas' {SEOptionsForm},
   SE_AboutForm in 'src\GUI\SE_AboutForm.pas' {SEAboutForm},
   SE_WelcomeTab in 'src\GUI\SE_WelcomeTab.pas' {SEWelcomeTab},
   // Data modules

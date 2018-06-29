@@ -14,14 +14,16 @@ type
     destructor Destroy; override;
     procedure Clear; override;
     procedure AddIssue(aIssue: TScriptValidatorIssue);
+    procedure AppendIssues(aIssueArray: TScriptValidatorIssueArray);
     function GetIssue(aText: string): TScriptValidatorIssue; overload;
     function GetIssue(aIndex: Integer): TScriptValidatorIssue; overload;
-    procedure AppendIssues(aIssueArray: TScriptValidatorIssueArray);
   published
     property Issues: TScriptValidatorIssueArray read GetIssues write SetIssues;
   end;
 
 implementation
+uses
+  SysUtils;
 
 destructor TSEIssueListBox.Destroy;
 begin
@@ -42,7 +44,15 @@ begin
   len := Length(fIssues);
   SetLength(fIssues, len + 1);
   fIssues[len] := aIssue;
-  Items.Add(aIssue.Msg);
+  Items.Add(Format('[%d:%d] %s', [aIssue.Line, aIssue.Column, aIssue.Msg]));
+end;
+
+procedure TSEIssueListBox.AppendIssues(aIssueArray: TScriptValidatorIssueArray);
+var
+  item: TScriptValidatorIssue;
+begin
+  for item in aIssueArray do
+    AddIssue(item);
 end;
 
 function TSEIssueListBox.GetIssue(aText: string): TScriptValidatorIssue;
@@ -66,21 +76,10 @@ function TSEIssueListBox.GetIssue(aIndex: Integer): TScriptValidatorIssue;
 begin
   Result.Line := -2;
 
-  if (Length(fIssues) = 0) or (aIndex < 0) then
+  if (Length(fIssues) = 0) or (aIndex < 0) or (aIndex > (Length(fIssues) - 1)) then
     Exit;
 
-  if Items[aIndex] = fIssues[aIndex].Msg then
-    Result := fIssues[aIndex]
-  else
-    Result := GetIssue(Items[aIndex]);
-end;
-
-procedure TSEIssueListBox.AppendIssues(aIssueArray: TScriptValidatorIssueArray);
-var
-  item: TScriptValidatorIssue;
-begin
-  for item in aIssueArray do
-    AddIssue(item);
+  Result := fIssues[aIndex];
 end;
 
 procedure TSEIssueListBox.SetIssues(aIssueArray: TScriptValidatorIssueArray);

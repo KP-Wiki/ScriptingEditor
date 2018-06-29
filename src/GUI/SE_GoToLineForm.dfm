@@ -8,18 +8,18 @@ object SEGoToLineForm: TSEGoToLineForm
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Height = -13
+  Font.Name = 'Courier New'
   Font.Style = []
   OldCreateOrder = False
-  Position = poOwnerFormCenter
+  Position = poDefault
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 16
   object Label1: TLabel
     Left = 16
     Top = 16
-    Width = 23
-    Height = 22
+    Width = 50
+    Height = 24
     AutoSize = False
     Caption = 'Line:'
     Layout = tlCenter
@@ -31,7 +31,13 @@ object SEGoToLineForm: TSEGoToLineForm
     Height = 27
     Cancel = True
     Caption = 'Cancel'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Raavi'
+    Font.Style = []
     ModalResult = 2
+    ParentFont = False
     TabOrder = 2
   end
   object btnGo: TButton
@@ -45,10 +51,10 @@ object SEGoToLineForm: TSEGoToLineForm
     TabOrder = 1
   end
   object seLine: TSpinEdit
-    Left = 56
+    Left = 72
     Top = 16
-    Width = 145
-    Height = 22
+    Width = 129
+    Height = 26
     EditorEnabled = False
     MaxValue = 1
     MinValue = 1

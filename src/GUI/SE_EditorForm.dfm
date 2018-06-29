@@ -9,8 +9,8 @@ object SEEditorForm: TSEEditorForm
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Height = -13
+  Font.Name = 'Courier New'
   Font.Style = []
   OldCreateOrder = False
   OnClose = FormClose
@@ -19,7 +19,7 @@ object SEEditorForm: TSEEditorForm
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 16
   object pmEditor: TPopupMenu
     Images = SECommandsDataModule.ilActions16x16
     MenuAnimation = [maLeftToRight, maTopToBottom]

@@ -8,13 +8,13 @@ object SESaveModifiedForm: TSESaveModifiedForm
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Height = -13
+  Font.Name = 'Courier New'
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 16
   object lblConfirm: TLabel
     Left = 64
     Top = 16

@@ -3,49 +3,49 @@ object SEAboutForm: TSEAboutForm
   Top = 0
   BorderStyle = bsDialog
   Caption = 'About Scripting Editor'
-  ClientHeight = 193
-  ClientWidth = 441
+  ClientHeight = 209
+  ClientWidth = 513
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Height = -13
+  Font.Name = 'Courier New'
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 16
   object Label1: TLabel
     Left = 16
-    Top = 88
-    Width = 129
-    Height = 17
+    Top = 104
+    Width = 193
+    Height = 20
     AutoSize = False
     Caption = 'Created by:'
     Layout = tlCenter
   end
   object Label7: TLabel
     Left = 16
-    Top = 128
-    Width = 129
-    Height = 17
+    Top = 144
+    Width = 193
+    Height = 20
     AutoSize = False
     Caption = 'Third-party components:'
   end
   object StaticText1: TStaticText
-    Left = 152
-    Top = 88
+    Left = 224
+    Top = 104
     Width = 273
-    Height = 17
+    Height = 20
     Alignment = taCenter
     AutoSize = False
     BevelKind = bkSoft
     Caption = 'Thimo ( Thibmo)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
+    Font.Height = -13
+    Font.Name = 'Courier New'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
@@ -53,8 +53,8 @@ object SEAboutForm: TSEAboutForm
   object StaticText2: TStaticText
     Left = 16
     Top = 16
-    Width = 409
-    Height = 49
+    Width = 481
+    Height = 65
     Alignment = taCenter
     AutoSize = False
     BevelKind = bkSoft
@@ -63,17 +63,17 @@ object SEAboutForm: TSEAboutForm
       'sion x.x.x'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
+    Font.Height = -13
+    Font.Name = 'Courier New'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
   end
   object stSynEdit: TStaticText
-    Left = 152
-    Top = 128
+    Left = 224
+    Top = 144
     Width = 273
-    Height = 17
+    Height = 20
     Cursor = crHandPoint
     Alignment = taCenter
     AutoSize = False
@@ -82,18 +82,18 @@ object SEAboutForm: TSEAboutForm
     Caption = 'SynEdit'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
+    Font.Height = -13
+    Font.Name = 'Courier New'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 2
     OnClick = StaticTextClick
   end
   object stVerySimpleXML: TStaticText
-    Left = 152
-    Top = 160
+    Left = 224
+    Top = 176
     Width = 273
-    Height = 17
+    Height = 20
     Cursor = crHandPoint
     Alignment = taCenter
     AutoSize = False
@@ -102,8 +102,8 @@ object SEAboutForm: TSEAboutForm
     Caption = 'VerySimpleXML'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
+    Font.Height = -13
+    Font.Name = 'Courier New'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 3

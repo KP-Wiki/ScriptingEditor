@@ -10,13 +10,13 @@ object SEWelcomeTab: TSEWelcomeTab
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Raavi'
+  Font.Height = -13
+  Font.Name = 'Courier New'
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 19
+  TextHeight = 16
   object GridPanel1: TGridPanel
     Left = 0
     Top = 0
@@ -83,8 +83,6 @@ object SEWelcomeTab: TSEWelcomeTab
         Value = 50.000000000000000000
       end>
     TabOrder = 0
-    ExplicitWidth = 1126
-    ExplicitHeight = 617
     object Label1: TLabel
       AlignWithMargins = True
       Left = 12
@@ -96,13 +94,11 @@ object SEWelcomeTab: TSEWelcomeTab
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -24
-      Font.Name = 'Raavi'
+      Font.Name = 'Courier New'
       Font.Style = [fsBold]
       ParentFont = False
-      ExplicitLeft = 114
-      ExplicitTop = 39
-      ExplicitWidth = 298
-      ExplicitHeight = 40
+      ExplicitWidth = 392
+      ExplicitHeight = 27
     end
     object Panel1: TPanel
       Left = 9
@@ -112,8 +108,6 @@ object SEWelcomeTab: TSEWelcomeTab
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 111
-      ExplicitTop = 86
       DesignSize = (
         450
         140)
@@ -128,7 +122,7 @@ object SEWelcomeTab: TSEWelcomeTab
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 5577749
         Font.Height = -17
-        Font.Name = 'Raavi'
+        Font.Name = 'Courier New'
         Font.Style = []
         Glyph.Data = {
           760C0000424D760C00000000000036000000280000001C0000001C0000000100
@@ -246,7 +240,7 @@ object SEWelcomeTab: TSEWelcomeTab
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 5577749
         Font.Height = -17
-        Font.Name = 'Raavi'
+        Font.Name = 'Courier New'
         Font.Style = []
         Glyph.Data = {
           760C0000424D760C00000000000036000000280000001C0000001C0000000100
@@ -356,13 +350,13 @@ object SEWelcomeTab: TSEWelcomeTab
       object Label2: TLabel
         Left = 12
         Top = 3
-        Width = 38
-        Height = 23
+        Width = 56
+        Height = 16
         Caption = 'Scripts'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
-        Font.Name = 'Raavi'
+        Font.Name = 'Courier New'
         Font.Style = [fsBold]
         ParentFont = False
       end
@@ -375,21 +369,19 @@ object SEWelcomeTab: TSEWelcomeTab
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = 111
-      ExplicitTop = 226
       DesignSize = (
         450
         350)
       object Label3: TLabel
         Left = 12
         Top = 14
-        Width = 82
-        Height = 23
+        Width = 112
+        Height = 16
         Caption = 'Recent Scripts'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
-        Font.Name = 'Raavi'
+        Font.Name = 'Courier New'
         Font.Style = [fsBold]
         ParentFont = False
       end
@@ -402,10 +394,9 @@ object SEWelcomeTab: TSEWelcomeTab
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Raavi'
-        Font.Style = [fsBold]
-        ItemHeight = 19
+        Font.Height = -13
+        Font.Name = 'Courier New'
+        Font.Style = []
         ParentFont = False
         TabOrder = 0
         OnDblClick = lbRecentfilesDblClick
@@ -419,21 +410,19 @@ object SEWelcomeTab: TSEWelcomeTab
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitLeft = 561
-      ExplicitTop = 86
       DesignSize = (
         450
         490)
       object Label4: TLabel
         Left = 16
         Top = 3
-        Width = 90
-        Height = 23
+        Width = 120
+        Height = 16
         Caption = 'Example Scripts'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
-        Font.Name = 'Raavi'
+        Font.Name = 'Courier New'
         Font.Style = [fsBold]
         ParentFont = False
       end
@@ -446,10 +435,9 @@ object SEWelcomeTab: TSEWelcomeTab
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Raavi'
-        Font.Style = [fsBold]
-        ItemHeight = 19
+        Font.Height = -13
+        Font.Name = 'Courier New'
+        Font.Style = []
         ParentFont = False
         TabOrder = 0
         OnDblClick = lbRecentfilesDblClick

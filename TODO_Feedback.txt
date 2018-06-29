@@ -1,0 +1,26 @@
+Done:
+ - *.drc is not needed iirc
+ - app starts in the middle of my desktop (inbetween 2 displays) instead of in the center of main display
+ - left-right panels text is a bit too bold and small IMO
+ - remove common words like "Action."
+ - on scroll tooltip appears saying which line is on top - it's a bit useless since line numbers are already on the left and clearly seen )
+ - Add Ctrl+W tab close shortcut and fix welcome page close shortcuts
+ - would appreciate Ctrl+W to close current opened file (like in Notepad++)
+ - "when I close last opened file with Ctrl+F4 I get moved to Welcome tab" move to left-neighbor if possible, else right-neighbor
+ - main text area, scrollbar is disabled on new file open until I do something (e.g. click inside or alt-tab out and back)
+ - left panel, add tooltip/hint on mouse hover for long lines of text
+ - add a way of seeing raw SV result some way
+ - GoToLine - "I like how it pops-up right below the button )" replicate properly, not accidentally
+ - allow users to c/p error messages
+ - include filename & line/column for error messages
+ 
+Sorta Done:
+ - left / right panels should not be visible until script is opened otherwise it's confusing as to what happens when I click on them (AV happens)
+
+SUGGESTIONS:
+ - perhaps "Validate icon" should not be a green arrow, cos it implies "Run", not "Validate". When clicking it I would expect SV to autostart the script in game ))
+ - would it make more sense to move issues panel to be below the script text?
+
+TODO:
+ - left panel, replace all "procedure / function" with just green/yellow dots like in Delphi
+ - fix/debug completion suggestion

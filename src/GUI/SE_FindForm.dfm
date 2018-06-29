@@ -4,40 +4,41 @@ object SEFindForm: TSEFindForm
   BorderStyle = bsDialog
   Caption = 'Find'
   ClientHeight = 241
-  ClientWidth = 377
+  ClientWidth = 497
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Height = -13
+  Font.Name = 'Courier New'
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCloseQuery = FormCloseQuery
   DesignSize = (
-    377
+    497
     241)
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 16
   object Label1: TLabel
     Left = 16
     Top = 16
-    Width = 23
-    Height = 21
+    Width = 49
+    Height = 24
     AutoSize = False
     Caption = 'Find:'
     Layout = tlCenter
   end
   object cbFindText: TComboBox
-    Left = 56
+    Left = 71
     Top = 16
-    Width = 305
-    Height = 21
+    Width = 410
+    Height = 24
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
+    ExplicitWidth = 475
   end
   object btnCancel: TButton
-    Left = 198
+    Left = 318
     Top = 200
     Width = 163
     Height = 28
@@ -59,64 +60,55 @@ object SEFindForm: TSEFindForm
   object GroupBox1: TGroupBox
     Left = 16
     Top = 51
-    Width = 345
+    Width = 465
     Height = 134
     Caption = 'Options'
     TabOrder = 1
-    DesignSize = (
-      345
-      134)
     object cbCaseSensitive: TCheckBox
       Left = 16
       Top = 24
-      Width = 147
+      Width = 217
       Height = 17
-      Anchors = [akLeft, akTop, akRight]
       Caption = '&Match case'
       TabOrder = 0
     end
     object cbWholeWords: TCheckBox
       Left = 16
       Top = 47
-      Width = 147
+      Width = 217
       Height = 17
-      Anchors = [akLeft, akTop, akRight]
       Caption = 'Match &whole words only'
       TabOrder = 1
     end
     object cbSelectedOnly: TCheckBox
-      Left = 182
+      Left = 262
       Top = 24
-      Width = 147
+      Width = 179
       Height = 17
-      Anchors = [akLeft, akTop, akRight]
       Caption = '&Selected text only'
       TabOrder = 2
     end
     object cbRegEx: TCheckBox
-      Left = 182
+      Left = 262
       Top = 47
-      Width = 147
+      Width = 179
       Height = 17
-      Anchors = [akLeft, akTop, akRight]
       Caption = '&Regular expression'
       TabOrder = 3
     end
     object cbBackwards: TCheckBox
       Left = 16
       Top = 103
-      Width = 147
+      Width = 217
       Height = 17
-      Anchors = [akLeft, akTop, akRight]
       Caption = '&Backwards direction'
       TabOrder = 4
     end
     object cbFromCursor: TCheckBox
       Left = 16
       Top = 70
-      Width = 147
+      Width = 217
       Height = 17
-      Anchors = [akLeft, akTop, akRight]
       Caption = 'Search from &caret'
       TabOrder = 5
     end

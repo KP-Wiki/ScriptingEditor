@@ -119,6 +119,8 @@ object SECommandsDataModule: TSECommandsDataModule
       Caption = 'Close'
       Hint = 'Close|Closes the active file'
       ImageIndex = 1
+      SecondaryShortCuts.Strings = (
+        'Ctrl+W')
       ShortCut = 16499
       OnExecute = ActCloseFileExecute
       OnUpdate = ActCloseFileUpdate
@@ -135,7 +137,6 @@ object SECommandsDataModule: TSECommandsDataModule
     object ActOptions: TAction
       Category = 'File'
       Caption = 'Options'
-      Enabled = False
       Hint = 'Options|Display the application options dialog'
       ImageIndex = 11
       OnExecute = ActOptionsExecute
@@ -228,6 +229,18 @@ object SECommandsDataModule: TSECommandsDataModule
       OnExecute = ActShowWelcomeTabExecute
       OnUpdate = ActShowWelcomeTabUpdate
     end
+    object actIssueGoTo: TAction
+      Category = 'Issues'
+      Caption = 'Go To Issue'
+      ImageIndex = 15
+      OnExecute = ActIssueGoToExecute
+    end
+    object actIssueCopy: TAction
+      Category = 'Issues'
+      Caption = 'Copy Issue'
+      ImageIndex = 12
+      OnExecute = ActIssueCopyExecute
+    end
   end
   object ilActions16x16: TImageList
     ColorDepth = cd32Bit
@@ -235,7 +248,7 @@ object SECommandsDataModule: TSECommandsDataModule
     Left = 40
     Top = 112
     Bitmap = {
-      494C010116001800D80010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800E80010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000B0006104000183979002A5F9C00295D9B0016347400050C390000
@@ -1042,7 +1055,7 @@ object SECommandsDataModule: TSECommandsDataModule
     Left = 40
     Top = 64
     Bitmap = {
-      494C010116006C013C0216001600FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116006C014C0216001600FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000005800000084000000010020000000000080B5
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000040000000C0003082E000F246100183B7B0017

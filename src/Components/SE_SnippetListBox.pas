@@ -93,7 +93,7 @@ function TSESnippetListBox.GetSnippet(aIndex: Integer): string;
 begin
   Result := '';
 
-  if Length(fSnippets) = 0 then
+  if (aIndex < 0) or (Length(fSnippets) = 0) then
     Exit;
 
   if Items[aIndex] = fSnippets[aIndex].DisplayText then
@@ -152,6 +152,9 @@ begin
   Result := StringReplace(aDisplayText, '\column{}',  '', [rfReplaceAll, rfIgnoreCase]);
   Result := StringReplace(Result,       '\style{+B}', '', [rfReplaceAll, rfIgnoreCase]);
   Result := StringReplace(Result,       '\style{-B}', '', [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Result,       'Utils.',     '', [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Result,       'States.',    '', [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Result,       'Actions.',   '', [rfReplaceAll, rfIgnoreCase]);
 end;
 
 end.

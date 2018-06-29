@@ -31,8 +31,8 @@ type
 
 implementation
 uses
-  Controls, SysUtils,
-  SE_EditorForm, SE_CommandsDataModule;
+  Controls, SysUtils, Forms,
+  SE_EditorForm, SE_CommandsDataModule, SE_WelcomeTab;
 
 { TSEEditorTabSheet }
 
@@ -95,10 +95,32 @@ end;
 
 procedure TSEEditorFactory.CloseAll;
 var
-  I: Integer;
+  I:            Integer;
+  WelcomeOpen,
+  WelcomeFound: Boolean;
+  Tab:          TTabSheet;
 begin
-  for I := fEditors.Count - 1 downto 0 do
-    ISEEditor(fEditors[I]).Close;
+  WelcomeOpen  := gCommandsDataModule.GetWelcomePageIndex <> -1;
+  WelcomeFound := False;
+
+  for I := gMainForm.pcEditors.PageCount - 1 downto 0 do
+  begin
+    Tab                            := gMainForm.pcEditors.Pages[I];
+    gMainForm.pcEditors.ActivePage := Tab;
+    Application.ProcessMessages;
+
+    if Tab is TSEWelcomeTabSheet then
+    begin
+      WelcomeFound := True;
+      Tab.Free;
+    end else
+    begin
+      if (not WelcomeOpen) or WelcomeFound then
+        ISEEditor(fEditors[I]).Close
+      else
+        ISEEditor(fEditors[I - 1]).Close;
+    end;
+  end;
 end;
 
 function TSEEditorFactory.CreateEditor: ISEEditor;

@@ -3,8 +3,7 @@ unit SE_CommandsDataModule;
 interface
 uses
   SysUtils, Classes, ImageList, ImgList, Controls,
-  Actions, ActnList, Dialogs,
-  SE_WelcomeTab;
+  Actions, ActnList, Dialogs;
 
 type
   TSECommandsDataModule = class(TDataModule)
@@ -39,6 +38,8 @@ type
     ActCloseFile: TAction;
     ActCloseAllFiles: TAction;
     ActShowWelcome: TAction;
+    actIssueGoTo: TAction;
+    actIssueCopy: TAction;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
 
@@ -89,6 +90,8 @@ type
     procedure ActDocWikiExecute(Sender: TObject);
     procedure ActAboutSEExecute(Sender: TObject);
     procedure ActShowWelcomeTabExecute(Sender: TObject);
+    procedure ActIssueGoToExecute(Sender: TObject);
+    procedure ActIssueCopyExecute(Sender: TObject);
   private
     fMRIFiles:        TStringList;
     fUntitledNumbers: TBits;
@@ -111,7 +114,7 @@ implementation
 
 uses
   Windows, ShellAPI, Forms, UITypes, ClipBrd, ComCtrls,
-  SE_AboutForm, SE_Globals;
+  SE_Globals, SE_AboutForm, SE_WelcomeTab, SE_OptionsForm;
 
 procedure TSECommandsDataModule.DataModuleCreate(Sender: TObject);
 begin
@@ -186,11 +189,8 @@ begin
 end;
 
 procedure TSECommandsDataModule.ActValidateUpdate(Sender: TObject);
-var
-  AllGood: Boolean;
 begin
-  AllGood := (gEditCmds <> nil) and gEditCmds.CanValidate;
-  ActValidate.Enabled := AllGood;
+  ActValidate.Enabled := (gEditCmds <> nil) and gEditCmds.CanValidate;
 end;
 
 procedure TSECommandsDataModule.ActNewFileUpdate(Sender: TObject);
@@ -215,12 +215,14 @@ end;
 
 procedure TSECommandsDataModule.ActCloseFileUpdate(Sender: TObject);
 begin
-  ActCloseFile.Enabled := (gFileCmds <> nil) and gFileCmds.CanClose;
+  ActCloseFile.Enabled := //(gFileCmds <> nil) and gFileCmds.CanClose;
+                          gMainForm.pcEditors.PageCount >= 1;
 end;
 
 procedure TSECommandsDataModule.ActCloseAllFilesUpdate(Sender: TObject);
 begin
-  ActCloseAllFiles.Enabled := (gEditCmds <> nil) and gEditCmds.CanValidate;
+  ActCloseAllFiles.Enabled := //(gEditCmds <> nil) and gEditCmds.CanValidate;
+                              gMainForm.pcEditors.PageCount >= 2;
 end;
 
 procedure TSECommandsDataModule.ActShowWelcomeTabUpdate(Sender: TObject);
@@ -332,8 +334,7 @@ end;
 
 procedure TSECommandsDataModule.ActCloseFileExecute(Sender: TObject);
 begin
-  if gFileCmds <> nil then
-    gFileCmds.ExecClose;
+  CloseTab(gMainForm.pcEditors.ActivePageIndex);
 end;
 
 procedure TSECommandsDataModule.ActCloseAllFilesExecute(Sender: TObject);
@@ -343,13 +344,28 @@ begin
 end;
 
 procedure TSECommandsDataModule.ActOptionsExecute(Sender: TObject);
+var
+  dlg: TSEOptionsForm;
 begin
-  { TODO 2 -oThimo -cOptions : Add Options dialog }
+  dlg := TSEOptionsForm.Create(gMainForm);
+
+  with dlg do
+    try
+      if ShowModal = mrOK then
+      begin
+        dlg.ApplySettings;
+
+        if gActiveEditor <> nil then
+          gActiveEditor.ReloadSettings;
+      end;
+    finally
+      FreeAndNil(dlg);
+    end;
 end;
 
 procedure TSECommandsDataModule.ActModeKMRExecute(Sender: TObject);
 begin
-  gKPMode            := False;
+  gOptions.KPMode    := False;
   ActModeKP.Checked  := False;
   ActModeKMR.Checked := True;
   gMainForm.ReloadDictionaries;
@@ -357,7 +373,7 @@ end;
 
 procedure TSECommandsDataModule.ActModeKPExecute(Sender: TObject);
 begin
-  gKPMode            := True;
+  gOptions.KPMode    := True;
   ActModeKP.Checked  := True;
   ActModeKMR.Checked := False;
   gMainForm.ReloadDictionaries;
@@ -409,9 +425,31 @@ begin
 
     if ManualShow then
       NewForm.ParentTabShow(Self);
+
+    gMainForm.SetListboxesVisible(False);
   except
     Sheet.Free;
   end;
+end;
+
+procedure TSECommandsDataModule.ActIssueGoToExecute(Sender: TObject);
+var
+  cursorPos: TPoint;
+  index:     Integer;
+begin
+  cursorPos := gMainForm.LbIssues.ScreenToClient(gMainForm.pmIssues.PopupPoint);
+  index     := gMainForm.LbIssues.ItemAtPos(cursorPos, True);
+  gMainForm.GoToIssue(index);
+end;
+
+procedure TSECommandsDataModule.ActIssueCopyExecute(Sender: TObject);
+var
+  cursorPos: TPoint;
+  index:     Integer;
+begin
+  cursorPos := gMainForm.LbIssues.ScreenToClient(gMainForm.pmIssues.PopupPoint);
+  index     := gMainForm.LbIssues.ItemAtPos(cursorPos, True);
+  gMainForm.CopyIssue(index);
 end;
 
 procedure TSECommandsDataModule.AddMRIEntry(aFileName: string);

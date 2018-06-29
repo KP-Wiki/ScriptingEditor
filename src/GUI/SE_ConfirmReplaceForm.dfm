@@ -4,17 +4,17 @@ object SEConfirmReplaceForm: TSEConfirmReplaceForm
   BorderStyle = bsDialog
   Caption = 'Confirm Replace'
   ClientHeight = 113
-  ClientWidth = 457
+  ClientWidth = 553
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Height = -13
+  Font.Name = 'Courier New'
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 16
   object Image1: TImage
     Left = 16
     Top = 16
@@ -62,33 +62,33 @@ object SEConfirmReplaceForm: TSEConfirmReplaceForm
   object lblConfirm: TLabel
     Left = 64
     Top = 16
-    Width = 377
+    Width = 473
     Height = 49
     AutoSize = False
     WordWrap = True
   end
   object btnCancel: TButton
-    Left = 352
+    Left = 424
     Top = 80
-    Width = 89
+    Width = 113
     Height = 25
     Caption = '&Cancel'
     ModalResult = 2
     TabOrder = 3
   end
   object btnSkip: TButton
-    Left = 240
+    Left = 288
     Top = 80
-    Width = 89
+    Width = 113
     Height = 25
     Caption = '&Skip'
     ModalResult = 7
     TabOrder = 2
   end
   object btnReplaceAll: TButton
-    Left = 128
+    Left = 152
     Top = 80
-    Width = 89
+    Width = 113
     Height = 25
     Caption = 'Replace &All'
     ModalResult = 14
@@ -97,7 +97,7 @@ object SEConfirmReplaceForm: TSEConfirmReplaceForm
   object btnReplace: TButton
     Left = 16
     Top = 80
-    Width = 89
+    Width = 113
     Height = 25
     Caption = '&Replace'
     ModalResult = 6

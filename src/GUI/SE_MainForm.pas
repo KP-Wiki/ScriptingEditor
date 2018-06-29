@@ -5,8 +5,7 @@ interface
 uses
   Windows, Messages, Classes, ImageList, Actions, Graphics, ToolWin, ExtCtrls,
   Controls, Forms, ComCtrls, Menus, ImgList, ActnList, StdActns, Dialogs, StdCtrls,
-  ScriptValidatorResult, SE_IssueListBox, SE_SnippetListBox,
-  SE_CommandsDataModule;
+  ScriptValidatorResult, SE_IssueListBox, SE_SnippetListBox, SE_CommandsDataModule;
 
 type
   { TScriptingEditorForm }
@@ -93,6 +92,11 @@ type
     mri10: TMenuItem;
     pcEditors: TPageControl;
     ShowWelcomeTab1: TMenuItem;
+    tsRawSVOutput: TTabSheet;
+    edtRawSVOutput: TMemo;
+    pmIssues: TPopupMenu;
+    miIssueGoTo: TMenuItem;
+    miIssueCopy: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -101,6 +105,7 @@ type
                                Shift: TShiftState; X, Y: Integer);
     procedure MenuReopenClick(Sender: TObject);
     procedure MriClick(Sender: TObject);
+    procedure pcEditorsChange(Sender: TObject);
   strict private
     fLbEvents,
     fLBStates,
@@ -117,16 +122,23 @@ type
     fUtilsInsDict,
     fPasScriptDict,
     fPasScriptInsDict: TStringList;
+    fHintIndex:        Integer;
     fMRIItems:         array[0..9] of TMenuItem;
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
     procedure FLbIssuesDblClick(Sender: TObject);
     procedure FLbSnippetsDblClick(Sender: TObject);
+    procedure FLbIssuesMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure FLbIssuesMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure FLbSnippetsMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     function GetDataDir: string;
     procedure ReadSettings;
     procedure WriteSettings;
   public
+    procedure GoToIssue(aIndex: Integer);
+    procedure CopyIssue(aIndex: Integer);
     function ExecuteScriptValidator(const aFileName: string): string;
     procedure ReloadDictionaries;
+    procedure SetListboxesVisible(aState: Boolean);
     property EventsDict:       TStringList     read fEventsDict;
     property EventsInsDict:    TStringList     read fEventsInsDict;
     property StatesDict:       TStringList     read fStatesDict;
@@ -149,9 +161,8 @@ uses
 { TScriptingEditorForm }
 procedure TSEMainForm.FormCreate(Sender: TObject);
 begin
-  Caption           := 'Scripting Editor - ' + FULL_VERSION;
-  gExeDir           := ExtractFilePath(ParamStr(0));
-
+  Caption     := 'Scripting Editor - ' + FULL_VERSION;
+  gExeDir     := ExtractFilePath(ParamStr(0));
   fExceptions := TSEExceptions.Create;
   CreateDir(gExeDir + DATA_DIR_LOGS);
   gLog := TSELog.Create(gExeDir + DATA_DIR_LOGS + 'SE_' +
@@ -191,8 +202,11 @@ begin
     Align        := alClient;
     AutoComplete := False;
     Sorted       := False;
-    Font.Style   := [ fsBold ];
+    ShowHint     := True;
+    PopupMenu    := pmIssues;
     OnDblClick   := FLbIssuesDblClick;
+    OnMouseUp    := FLbIssuesMouseUp;
+    OnMouseMove  := FLbIssuesMouseMove;
   end;
 
   with fLbEvents do
@@ -201,8 +215,9 @@ begin
     Align        := alClient;
     AutoComplete := False;
     Sorted       := False;
-    Font.Style   := [ fsBold ];
+    ShowHint     := True;
     OnDblClick   := FLbSnippetsDblClick;
+    OnMouseMove  := FLbSnippetsMouseMove;
   end;
 
   with fLBStates do
@@ -211,8 +226,9 @@ begin
     Align        := alClient;
     AutoComplete := False;
     Sorted       := False;
-    Font.Style   := [ fsBold ];
+    ShowHint     := True;
     OnDblClick   := FLbSnippetsDblClick;
+    OnMouseMove  := FLbSnippetsMouseMove;
   end;
 
   with fLBActions do
@@ -221,8 +237,9 @@ begin
     Align        := alClient;
     AutoComplete := False;
     Sorted       := False;
-    Font.Style   := [ fsBold ];
+    ShowHint     := True;
     OnDblClick   := FLbSnippetsDblClick;
+    OnMouseMove  := FLbSnippetsMouseMove;
   end;
 
   with fLBUtils do
@@ -231,10 +248,12 @@ begin
     Align        := alClient;
     AutoComplete := False;
     Sorted       := False;
-    Font.Style   := [ fsBold ];
+    ShowHint     := True;
     OnDblClick   := FLbSnippetsDblClick;
+    OnMouseMove  := FLbSnippetsMouseMove;
   end;
 
+  SetListboxesVisible(False);
   gCommandsDataModule := TSECommandsDataModule.Create(Self);
   ReadSettings;
   gLog.AddTime('Done loading');
@@ -281,30 +300,16 @@ begin
   inherited;
 end;
 
+procedure TSEMainForm.pcEditorsChange(Sender: TObject);
+begin
+  SetListboxesVisible(not (pcEditors.ActivePage is TSEWelcomeTabSheet));
+end;
+
 procedure TSEMainForm.pcEditorsMouseUp(Sender: TObject; Button: TMouseButton;
                                        Shift: TShiftState; X, Y: Integer);
-var
-  Index,
-  WelcomeIndex: Integer;
-  Tab:          TTabSheet;
 begin
   if Button = mbMiddle then
-  begin
-    Index := pcEditors.IndexOfTabAt(X, Y);
-    Tab   := pcEditors.Pages[Index];
-
-    if Tab is TSEWelcomeTabSheet then
-      Tab.Free
-    else
-    begin
-      WelcomeIndex := gCommandsDataModule.GetWelcomePageIndex;
-
-      if (WelcomeIndex <> -1) and (WelcomeIndex < Index) then
-        gEditorFactory.GetEditor(Index - 1).Close
-      else
-        gEditorFactory.GetEditor(Index).Close;
-    end;
-  end;
+    CloseTab(pcEditors.IndexOfTabAt(X, Y));
 end;
 
 procedure TSEMainForm.MenuReopenClick(Sender: TObject);
@@ -316,7 +321,7 @@ begin
   begin
     if fMRIItems[I] <> nil then
     begin
-      S := gCommandsDataModule.GetMRIEntry(I);
+      S                    := gCommandsDataModule.GetMRIEntry(I);
       fMRIItems[i].Visible := S <> '';
       fMRIItems[i].Caption := S;
     end;
@@ -351,10 +356,115 @@ end;
 procedure TSEMainForm.FLbIssuesDblClick(Sender: TObject);
 var
   cursorPos: TPoint;
+begin
+  cursorPos := fLbIssues.ScreenToClient(Mouse.CursorPos);
+  GoToIssue(fLbIssues.ItemAtPos(cursorPos, True));
+end;
+
+
+procedure TSEMainForm.FLbSnippetsDblClick(Sender: TObject);
+var
+  cursorPos: TPoint;
+  listBox:   TSESnippetListBox;
+  temp,
+  snippet:   string;
+begin
+  listBox   := TSESnippetListBox(Sender);
+  cursorPos := listBox.ScreenToClient(Mouse.CursorPos);
+  snippet   := listBox.GetSnippet(listBox.ItemAtPos(cursorPos, True));
+
+  if snippet = '' then
+    Exit; // Non-existing item
+
+  temp             := Clipboard.AsText;
+  Clipboard.AsText := snippet;
+  gEditCmds.ExecPaste;
+  Clipboard.AsText := temp;
+end;
+
+
+procedure TSEMainForm.FLbIssuesMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  popPos,
+  cursorPos: TPoint;
+begin
+  if Button = mbRight then
+  begin
+    cursorPos.X := X;
+    cursorPos.Y := Y;
+    popPos      := fLbIssues.ClientToScreen(cursorPos);
+
+    if fLbIssues.ItemAtPos(cursorPos, True) <> -1 then
+      pmIssues.Popup(popPos.X, popPos.Y);
+  end;
+end;
+
+
+procedure TSEMainForm.FLbIssuesMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+var
+  cursorPos: TPoint;
+  index:     Integer;
   issue:     TScriptValidatorIssue;
 begin
   cursorPos := fLbIssues.ScreenToClient(Mouse.CursorPos);
-  issue     := fLbIssues.GetIssue(fLbIssues.ItemAtPos(cursorPos, True));
+  index     := fLbIssues.ItemAtPos(cursorPos, True);
+  issue     := fLbIssues.GetIssue(index);
+
+  if issue.Line = -2 then
+  begin
+    Application.CancelHint;
+    fLbIssues.Hint := '';
+    fHintIndex     := -1;
+    Exit; // Non-existing item
+  end;
+
+  if fHintIndex <> index then
+  begin
+    Application.CancelHint;
+    fLbIssues.Hint := '';
+    fHintIndex     := index;
+  end;
+
+  fLbIssues.Hint := Format('[%d:%d] %s', [issue.Line, issue.Column, issue.Msg]);
+end;
+
+
+procedure TSEMainForm.FLbSnippetsMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+var
+  listBox:   TSESnippetListBox;
+  cursorPos: TPoint;
+  index:     Integer;
+  snippet:   string;
+begin
+  listBox   := TSESnippetListBox(Sender);
+  cursorPos := listBox.ScreenToClient(Mouse.CursorPos);
+  index     := listBox.ItemAtPos(cursorPos, True);
+  snippet   := listBox.GetSnippet(index);
+
+  if snippet = '' then
+  begin
+    Application.CancelHint;
+    listBox.Hint := '';
+    fHintIndex   := -1;
+    Exit; // Non-existing item
+  end;
+
+  if fHintIndex <> index then
+  begin
+    Application.CancelHint;
+    listBox.Hint := '';
+    fHintIndex   := index;
+  end;
+
+  listBox.Hint := snippet;
+end;
+
+
+procedure TSEMainForm.GoToIssue(aIndex: Integer);
+var
+  issue: TScriptValidatorIssue;
+begin
+  issue := fLbIssues.GetIssue(aIndex);
 
   if issue.Line = -2 then
     Exit; // Non-existing item
@@ -369,25 +479,20 @@ begin
 end;
 
 
-procedure TSEMainForm.FLbSnippetsDblClick(Sender: TObject);
+procedure TSEMainForm.CopyIssue(aIndex: Integer);
 var
-  cursorPos: TPoint;
-  temp,
-  snippet:   string;
-  listBox:   TSESnippetListBox;
+  issue: TScriptValidatorIssue;
 begin
-  listBox   := TSESnippetListBox(Sender);
-  cursorPos := listBox.ScreenToClient(Mouse.CursorPos);
-  snippet   := listBox.GetSnippet(listBox.ItemAtPos(cursorPos, True));
+  issue := fLbIssues.GetIssue(aIndex);
 
-  if snippet = '' then
+  if issue.Line = -2 then
     Exit; // Non-existing item
 
-  temp             := Clipboard.AsText;
-  Clipboard.AsText := snippet;
-  gEditCmds.ExecPaste;
-  Clipboard.AsText := temp;
+  Clipboard.AsText := Format('[%d:%d] <Module: %s | Param: %s> %s',
+                             [issue.Line, issue.Column, issue.Module,
+                              issue.Param, issue.Msg]);
 end;
+
 
 function TSEMainForm.ExecuteScriptValidator(const aFileName: string): string;
 var
@@ -438,7 +543,7 @@ begin
           WasOK := ReadFile(StdOutPipeRead, Buffer, 256, BytesRead, nil);
 
           if BytesRead > 0 then
-            Result := Result + Buffer;
+            Result := Result + string(Buffer);
         until not WasOK or (BytesRead = 0);
       finally
         CloseHandle(PI.hThread);
@@ -452,7 +557,7 @@ end;
 
 function TSEMainForm.GetDataDir: string;
 begin
-  if gKPMode then
+  if gOptions.KPMode then
     Result := gExeDir + DATA_DIR_KP
   else
     Result := gExeDir + DATA_DIR_KMR;
@@ -501,6 +606,20 @@ begin
   end;
 end;
 
+
+procedure TSEMainForm.SetListboxesVisible(aState: Boolean);
+begin
+  if fLbIssues.Visible <> aState then
+  begin
+    fLbIssues.Visible  := aState;
+    fLbEvents.Visible  := aState;
+    fLBStates.Visible  := aState;
+    fLBActions.Visible := aState;
+    fLBUtils.Visible   := aState;
+  end;
+end;
+
+
 procedure TSEMainForm.ReadSettings;
 var
   IniFile:      TIniFile;
@@ -522,7 +641,10 @@ begin
     H            := IniFile.ReadInteger('Application', 'Height',     600);
     PcLeftWidth  := IniFile.ReadInteger('Application', 'LeftWidth',  250);
     PcRightWidth := IniFile.ReadInteger('Application', 'RightWidth', 250);
-    gKPMode      := IniFile.ReadBool('Application',    'KPMode',     False);
+
+    gOptions.KPMode    := IniFile.ReadBool('Options',    'KPMode',   False);
+    gOptions.Font.Name := IniFile.ReadString('Options',  'FontName', 'Courier New');
+    gOptions.Font.Size := IniFile.ReadInteger('Options', 'FontSize', 10);
 
     if (W > 0) and (H > 0) then
       SetBounds(X, Y, W, H);
@@ -530,8 +652,8 @@ begin
     if IniFile.ReadBool('Application', 'Maximized', False) then
       WindowState := wsMaximized;
 
-    gCommandsDataModule.ActModeKP.Checked  := gKPMode;
-    gCommandsDataModule.ActModeKMR.Checked := not gKPMode;
+    gCommandsDataModule.ActModeKP.Checked  := gOptions.KPMode;
+    gCommandsDataModule.ActModeKMR.Checked := not gOptions.KPMode;
     pcLeft.Width                           := PcLeftWidth;
     pcRight.Width                          := PcRightWidth;
 
@@ -577,10 +699,14 @@ begin
       IniFile.WriteInteger('Application', 'Height', Bottom - Top);
     end;
 
-    IniFile.WriteInteger('Application',  'LeftWidth',      pcLeft.Width);
-    IniFile.WriteInteger('Application',  'RightWidth',     pcRight.Width);
-    IniFile.WriteBool('Application',     'KPMode',         gKPMode);
-    IniFile.WriteBool('Application',     'Maximized',      (WindowState = wsMaximized));
+    IniFile.WriteInteger('Application',  'LeftWidth',  pcLeft.Width);
+    IniFile.WriteInteger('Application',  'RightWidth', pcRight.Width);
+    IniFile.WriteBool('Application',     'Maximized',  (WindowState = wsMaximized));
+
+    IniFile.WriteBool('Options',    'KPMode',   gOptions.KPMode);
+    IniFile.WriteString('Options',  'FontName', gOptions.Font.Name);
+    IniFile.WriteInteger('Options', 'FontSize', gOptions.Font.Size);
+
     IniFile.WriteBool('SearchReplace',   'Backwards',      gSearchBackwards);
     IniFile.WriteBool('SearchReplace',   'CaseSensitive',  gSearchCaseSensitive);
     IniFile.WriteBool('SearchReplace',   'SelectionOnly',  gSearchSelection);
