@@ -37,7 +37,7 @@ begin
 
   //It's nice to know when the exception happened in our log if the user decides to play on and sends the report later
   LogMessage := 'Exception occurred: ' + ExceptIntf.ExceptClass +
-                ': ' + ExceptIntf.ExceptMessage;
+                ': '                   + ExceptIntf.ExceptMessage;
   gLog.AddTime(LogMessage);
   gLog.AddNoTime('================================================================================');
   gLog.AddNoTime('                                START BUG REPORT                                ');

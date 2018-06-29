@@ -8,10 +8,10 @@ type
   //Logging system
   TSELog = class
   private
-    fl: textfile;
-    fLogPath: UnicodeString;
-    fFirstTick: cardinal;
-    fPreviousTick: cardinal;
+    fl:            TextFile;
+    fLogPath:      UnicodeString;
+    fFirstTick,
+    fPreviousTick: Cardinal;
     fPreviousDate: TDateTime;
     procedure AddLineTime(const aText: string);
     procedure AddLineNoTime(const aText: string);
@@ -34,7 +34,7 @@ var
 
 implementation
 uses
-  MMSystem, SE_GLOBALS;
+  MMSystem, SE_Globals;
 
 //New thread, in which old logs are deleted (used internally)
 type
@@ -50,19 +50,19 @@ type
 { TKMOldLogsDeleter }
 constructor TSEOldLogDeleter.Create(const aPathToLogs: string);
 begin
-  //Thread isn't started until all constructors have run to completion
-  //so Create(False) may be put in front as well
+  // Thread isn't started until all constructors have run to completion
+  // so Create(False) may be put in front as well
   inherited Create(False);
 
-  //Must set these values BEFORE starting the thread
-  FreeOnTerminate := True; //object can be automatically removed after its termination
+  // Must set these values BEFORE starting the thread
+  FreeOnTerminate := True; // Object can be automatically removed after its termination
   fPathToLogs     := aPathToLogs;
 end;
 
 
 procedure TSEOldLogDeleter.Execute;
 var
-  SearchRec: TSearchRec;
+  SearchRec:    TSearchRec;
   fileDateTime: TDateTime;
 begin
   if not DirectoryExists(fPathToLogs) then Exit;
@@ -119,8 +119,10 @@ procedure TSELog.AddLineTime(const aText: UnicodeString);
 begin
   if not FileExists(fLogPath) then
     InitLog;  // Recreate log file, if it was deleted
+
   AssignFile(fl, fLogPath);
   Append(fl);
+
   //Write a line when the day changed since last time (useful for dedicated server logs that could be over months)
   if Abs(Trunc(fPreviousDate) - Trunc(Now)) >= 1 then
   begin
@@ -128,6 +130,7 @@ begin
     WriteLn(fl, '    Date: ' + FormatDateTime('yyyy/mm/dd', Now));
     WriteLn(fl, '========================');
   end;
+
   WriteLn(fl, Format('%12s %9.3fs %7dms     %s', [
                 FormatDateTime('hh:nn:ss.zzz', Now),
                 GetTimeSince(fFirstTick) / 1000,
@@ -144,6 +147,7 @@ procedure TSELog.AddLineNoTime(const aText: UnicodeString);
 begin
   if not FileExists(fLogPath) then
     InitLog;  // Recreate log file, if it was deleted
+
   AssignFile(fl, fLogPath);
   Append(fl);
   WriteLn(fl, '                                      ' + aText);
@@ -159,7 +163,8 @@ end;
 
 procedure TSELog.AddTime(const aText: UnicodeString);
 begin
-  if Self = nil then Exit;
+  if Self = nil then
+    Exit;
 
   AddLineTime(aText);
 end;
@@ -167,7 +172,8 @@ end;
 
 procedure TSELog.AddNoTime(const aText: UnicodeString);
 begin
-  if Self = nil then Exit;
+  if Self = nil then
+    Exit;
 
   AddLineNoTime(aText);
 end;
@@ -175,7 +181,8 @@ end;
 
 procedure TSELog.AddAssert(const aMessageText: UnicodeString);
 begin
-  if Self = nil then Exit;
+  if Self = nil then
+    Exit;
 
   AddLineNoTime('ASSERTION FAILED! Msg: ' + aMessageText);
   raise Exception.Create('ASSERTION FAILED! Msg: ' + aMessageText);
