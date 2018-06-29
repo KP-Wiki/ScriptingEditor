@@ -10,93 +10,93 @@ uses
 type
   { TScriptingEditorForm }
   TSEMainForm = class(TForm)
-    MainMenu1: TMainMenu;
-    File1: TMenuItem;
-    MenuOpen: TMenuItem;
-    MenuSave: TMenuItem;
-    MenuSaveAs: TMenuItem;
-    N1: TMenuItem;
-    MenuExit: TMenuItem;
-    Edit1: TMenuItem;
-    MenuUndo: TMenuItem;
-    MenuRedo: TMenuItem;
-    N2: TMenuItem;
-    MenuValidate: TMenuItem;
-    N3: TMenuItem;
-    Run1: TMenuItem;
-    Search1: TMenuItem;
-    N4: TMenuItem;
-    MenuOptions: TMenuItem;
-    StatusBar1: TStatusBar;
-    Help1: TMenuItem;
-    MenuDocWiki: TMenuItem;
-    N5: TMenuItem;
-    MenuAboutSE: TMenuItem;
-    MenuFind: TMenuItem;
-    MenuReplace: TMenuItem;
-    MenuFindForward: TMenuItem;
-    MenuFindBackward: TMenuItem;
-    N6: TMenuItem;
-    N7: TMenuItem;
-    MenuGoToLine: TMenuItem;
-    MenuCut: TMenuItem;
-    MenuCopy: TMenuItem;
-    MenuPaste: TMenuItem;
-    MenuDelete: TMenuItem;
-    MenuSelectAll: TMenuItem;
-    MenuNew: TMenuItem;
-    ToolBar1: TToolBar;
-    tbNewFile: TToolButton;
-    tbOpen: TToolButton;
-    tbSaveFile: TToolButton;
-    tbSaveFileAs: TToolButton;
-    tbSep1: TToolButton;
-    tbValidate: TToolButton;
-    tbSep2: TToolButton;
-    tbCopy: TToolButton;
-    tbCut: TToolButton;
-    tbPaste: TToolButton;
-    tbSep3: TToolButton;
-    tbUndo: TToolButton;
-    tbRedo: TToolButton;
-    tbSep4: TToolButton;
-    tbFind: TToolButton;
-    tbReplace: TToolButton;
-    tbGoToLine: TToolButton;
-    tbDelete: TToolButton;
-    Splitter1: TSplitter;
-    Splitter2: TSplitter;
-    pcLeft: TPageControl;
-    tsEvents: TTabSheet;
-    pcRight: TPageControl;
-    tsIssues: TTabSheet;
-    tsStates: TTabSheet;
-    tsActions: TTabSheet;
-    tsUtils: TTabSheet;
-    Mode1: TMenuItem;
-    MenuKMR: TMenuItem;
-    MenuKP: TMenuItem;
-    N8: TMenuItem;
-    Close1: TMenuItem;
-    CloseAll1: TMenuItem;
-    MenuReopen: TMenuItem;
-    mri1: TMenuItem;
-    mri2: TMenuItem;
-    mri3: TMenuItem;
-    mri4: TMenuItem;
-    mri5: TMenuItem;
-    mri6: TMenuItem;
-    mri7: TMenuItem;
-    mri8: TMenuItem;
-    mri9: TMenuItem;
-    mri10: TMenuItem;
-    pcEditors: TPageControl;
-    ShowWelcomeTab1: TMenuItem;
-    tsRawSVOutput: TTabSheet;
-    edtRawSVOutput: TMemo;
-    pmIssues: TPopupMenu;
-    miIssueGoTo: TMenuItem;
-    miIssueCopy: TMenuItem;
+    MainMenu1:          TMainMenu;
+    StatusBar1:         TStatusBar;
+    ToolBar1:           TToolBar;
+    pcLeft,
+    pcRight,
+    pcEditors:          TPageControl; // Page controls
+    tsIssues,
+    tsRawSVOutput,
+    tsEvents,
+    tsStates,
+    tsActions,
+    tsUtils:            TTabSheet; // Tab sheets
+    edtRawSVOutput:     TMemo; // Memos
+    pmIssues:           TPopupMenu; // Popups
+    Edit1,
+    File1,
+    Mode1,
+    Help1,
+    Run1,
+    Search1:            TMenuItem; // Main menu categories
+    N1,
+    N2,
+    N3,
+    N4,
+    N5,
+    N6,
+    N7,
+    N8:                 TMenuItem; // Main menu seperators
+    mri1,
+    mri2,
+    mri3,
+    mri4,
+    mri5,
+    mri6,
+    mri7,
+    mri8,
+    mri9,
+    mri10:              TMenuItem; // Main menu reopen items
+    MenuNew,
+    MenuOpen,
+    MenuSave,
+    MenuSaveAs,
+    MenuClose,
+    MenuCloseAll,
+    MenuReopen,
+    MenuExit,
+    MenuUndo,
+    MenuRedo,
+    MenuCut,
+    MenuCopy,
+    MenuPaste,
+    MenuDelete,
+    MenuSelectAll,
+    MenuFind,
+    MenuReplace,
+    MenuFindForward,
+    MenuFindBackward,
+    MenuGoToLine,
+    MenuValidate,
+    MenuOptions,
+    MenuDocWiki,
+    MenuAboutSE,
+    MenuShowWelcomeTab,
+    MenuKMR,
+    MenuKP:             TMenuItem; // Main menu items
+    miIssueGoTo,
+    miIssueCopy:        TMenuItem; // fLbIssues popup items
+    tbSep1,
+    tbSep2,
+    tbSep3,
+    tbSep4:             TToolButton; // Toolbar button seperators
+    tbNewFile,
+    tbOpen,
+    tbSaveFile,
+    tbSaveFileAs,
+    tbValidate,
+    tbCut,
+    tbCopy,
+    tbPaste,
+    tbDelete,
+    tbUndo,
+    tbRedo,
+    tbFind,
+    tbReplace,
+    tbGoToLine:         TToolButton; // Toolbar buttons
+    Splitter1,
+    Splitter2:          TSplitter; // Splitters
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -322,8 +322,8 @@ begin
     if fMRIItems[I] <> nil then
     begin
       S                    := gCommandsDataModule.GetMRIEntry(I);
-      fMRIItems[i].Visible := S <> '';
-      fMRIItems[i].Caption := S;
+      fMRIItems[I].Visible := S <> '';
+      fMRIItems[I].Caption := S;
     end;
   end;
 end;
@@ -699,9 +699,9 @@ begin
       IniFile.WriteInteger('Application', 'Height', Bottom - Top);
     end;
 
-    IniFile.WriteInteger('Application',  'LeftWidth',  pcLeft.Width);
-    IniFile.WriteInteger('Application',  'RightWidth', pcRight.Width);
-    IniFile.WriteBool('Application',     'Maximized',  (WindowState = wsMaximized));
+    IniFile.WriteInteger('Application', 'LeftWidth',  pcLeft.Width);
+    IniFile.WriteInteger('Application', 'RightWidth', pcRight.Width);
+    IniFile.WriteBool('Application',    'Maximized',  (WindowState = wsMaximized));
 
     IniFile.WriteBool('Options',    'KPMode',   gOptions.KPMode);
     IniFile.WriteString('Options',  'FontName', gOptions.Font.Name);

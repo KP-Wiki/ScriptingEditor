@@ -313,10 +313,10 @@ object SEMainForm: TSEMainForm
       object MenuSaveAs: TMenuItem
         Action = SECommandsDataModule.ActSaveFileAs
       end
-      object Close1: TMenuItem
+      object MenuClose: TMenuItem
         Action = SECommandsDataModule.ActCloseFile
       end
-      object CloseAll1: TMenuItem
+      object MenuCloseAll: TMenuItem
         Action = SECommandsDataModule.ActCloseAllFiles
       end
       object N1: TMenuItem
@@ -403,7 +403,7 @@ object SEMainForm: TSEMainForm
       object MenuAboutSE: TMenuItem
         Action = SECommandsDataModule.ActAboutSE
       end
-      object ShowWelcomeTab1: TMenuItem
+      object MenuShowWelcomeTab: TMenuItem
         Action = SECommandsDataModule.ActShowWelcome
       end
     end
