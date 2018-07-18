@@ -13,12 +13,12 @@ Done:
  - GoToLine - "I like how it pops-up right below the button )" replicate properly, not accidentally
  - allow users to c/p error messages
  - include filename & line/column for error messages
+ - perhaps "Validate icon" should not be a green arrow, cos it implies "Run", not "Validate". When clicking it I would expect SV to autostart the script in game ))
  
 Sorta Done:
  - left / right panels should not be visible until script is opened otherwise it's confusing as to what happens when I click on them (AV happens)
 
 SUGGESTIONS:
- - perhaps "Validate icon" should not be a green arrow, cos it implies "Run", not "Validate". When clicking it I would expect SV to autostart the script in game ))
  - would it make more sense to move issues panel to be below the script text?
 
 TODO:
