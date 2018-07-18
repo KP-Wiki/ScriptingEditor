@@ -33,7 +33,8 @@ type
     fEditor:               TSEEditor;
     fSynEdit:              TSynEdit;
     fSynPasSyn:            TSynPasSyn;
-    fSynCompletion:        TSynCompletionProposal;
+    fSynCompletion,
+    fSynParamCompletion:   TSynCompletionProposal;
     fConfirmReplaceDialog: TSEConfirmReplaceForm;
     fIssues:               TScriptValidatorResult;
     fRawIssues:            string;
@@ -169,10 +170,11 @@ procedure TSEEditorForm.FormCreate(aSender: TObject);
 var
   Settings: TStringList;
 begin
-  Settings       := TStringList.Create;
-  fSynEdit       := TSynEdit.Create(Self);
-  fSynPasSyn     := TSynPasSyn.Create(Self);
-  fSynCompletion := TSynCompletionProposal.Create(fSynEdit);
+  Settings            := TStringList.Create;
+  fSynEdit            := TSynEdit.Create(Self);
+  fSynPasSyn          := TSynPasSyn.Create(Self);
+  fSynCompletion      := TSynCompletionProposal.Create(fSynEdit);
+  fSynParamCompletion := TSynCompletionProposal.Create(fSynEdit);
 
   try
     fSynPasSyn.EnumUserSettings(Settings);
@@ -212,20 +214,45 @@ begin
   with fSynCompletion do
   begin
     Editor            := fSynEdit;
-    OnExecute         := SynCompletionExecute;
+    Options           := [
+      scoLimitToMatchedText, scoUseInsertList,     scoUsePrettyText,
+      scoUseBuiltInTimer,    scoEndCharCompletion, scoCompleteWithTab,
+      scoCompleteWithEnter {, scoLimitToMatchedTextAnywhere}
+    ];
     Width             := 750;
     NbLinesInWindow   := 15;
+    EndOfTokenChr     := '()[];';
+    TriggerChars      := '.';
     Title             := 'Suggested completions';
     ClTitleBackground := clInfoBk;
-    Options           := [
-      scoLimitToMatchedText, scoUseInsertList, scoUsePrettyText,
-      scoUseBuiltInTimer, scoEndCharCompletion, scoCompleteWithTab,
-      scoCompleteWithEnter, scoLimitToMatchedTextAnywhere
-    ];
+    TimerInterval     := 500;
+    OnExecute         := SynCompletionExecute;
+    //OnAfterCodeCompletion := AutoCompleteAfterCodeCompletion;
+    ShortCut          := scCtrl + VK_SPACE; //Ctrl+Space
     Columns.ClearAndResetID;
 
     with Columns.Add do
       ColumnWidth := 96;
+  end;
+
+  with fSynParamCompletion do
+  begin
+    Editor            := fSynEdit;
+    DefaultType       := ctParams;
+    Options           := [
+      scoLimitToMatchedText, scoUsePrettyText, scoUseBuiltInTimer
+    ];
+    Width             := 262;
+    EndOfTokenChr     := '()[]. ;';
+    TriggerChars      := '(';
+    Title             := 'Suggested completions';
+    ClBackground      := clInfoBk;
+    ClTitleBackground := clInfoBk;
+    TitleFont.Style   := [fsBold];
+    TimerInterval     := 500;
+    //OnExecute         := AutoCompleteExecute;
+    ShortCut          := scShift + scCtrl + VK_SPACE; //Shift+Ctrl+Space
+    Columns.ClearAndResetID;
   end;
 
   with TSEValidationPlugin.Create(fSynEdit) do
@@ -241,6 +268,7 @@ var
   Editor: ISEEditor;
 begin
   FreeAndNil(fSynCompletion);
+  FreeAndNil(fSynParamCompletion);
   FreeAndNil(fSynEdit);
   FreeAndNil(fSynPasSyn);
   Assert(fEditor <> nil);
@@ -297,26 +325,29 @@ begin
   begin
     str := fSynEdit.Lines[caretPos.Line - 1];
 
-    for I := caretPos.Char downto 0 do
-      if str[I] = '.' then
-      begin
-        if LowerCase(Copy(str, I - LEN_UTILS, LEN_UTILS)) = 'utils' then
+    if str <> '' then
+    begin
+      for I := caretPos.Char downto 0 do
+        if str[I] = '.' then
         begin
-          fSynCompletion.ItemList.AddStrings(gMainForm.UtilsDict);
-          fSynCompletion.InsertList.AddStrings(gMainForm.UtilsInsDict);
-          Exit;
-        end else if LowerCase(Copy(str, I - LEN_STATES, LEN_STATES)) = 'states' then
-        begin
-          fSynCompletion.ItemList.AddStrings(gMainForm.StatesDict);
-          fSynCompletion.InsertList.AddStrings(gMainForm.StatesInsDict);
-          Exit;
-        end else if LowerCase(Copy(str, I - LEN_ACTIONS, LEN_ACTIONS)) = 'actions' then
-        begin
-          fSynCompletion.ItemList.AddStrings(gMainForm.ActionsDict);
-          fSynCompletion.InsertList.AddStrings(gMainForm.ActionsInsDict);
-          Exit;
+          if LowerCase(Copy(str, I - LEN_UTILS, LEN_UTILS)) = 'utils' then
+          begin
+            fSynCompletion.ItemList.AddStrings(gMainForm.UtilsDict);
+            fSynCompletion.InsertList.AddStrings(gMainForm.UtilsInsDict);
+            Exit;
+          end else if LowerCase(Copy(str, I - LEN_STATES, LEN_STATES)) = 'states' then
+          begin
+            fSynCompletion.ItemList.AddStrings(gMainForm.StatesDict);
+            fSynCompletion.InsertList.AddStrings(gMainForm.StatesInsDict);
+            Exit;
+          end else if LowerCase(Copy(str, I - LEN_ACTIONS, LEN_ACTIONS)) = 'actions' then
+          begin
+            fSynCompletion.ItemList.AddStrings(gMainForm.ActionsDict);
+            fSynCompletion.InsertList.AddStrings(gMainForm.ActionsInsDict);
+            Exit;
+          end;
         end;
-      end;
+    end;
 
     fSynCompletion.ItemList.AddStrings(gMainForm.PasScriptDict);
     fSynCompletion.InsertList.AddStrings(gMainForm.PasScriptInsDict);
