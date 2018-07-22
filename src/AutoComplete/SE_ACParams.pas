@@ -22,15 +22,15 @@ type
     DefaultValue: string;
     Flag:        TSEParamFlag;
     constructor Create;
+  published
+    class function ParamFlagToStr(aFlags: TSEParamFlag): string;
+    class function StrToParamFlag(aValue: string): TSEParamFlag;
   end;
 
   TSEParamList = class(TObjectList<TSEParam>)
   public
     function NewItem: TSEParam;
     function IndexByName(aParamName: string): Integer; virtual;
-  published
-    class function ParamFlagToStr(aFlags: TSEParamFlag): string;
-    class function StrToParamFlag(aValue: string): TSEParamFlag;
   end;
 
 implementation
@@ -38,17 +38,7 @@ uses
   SysUtils;
 
 { TSEParam }
-constructor TSEParam.Create;
-begin
-  inherited;
-  ParamName    := 'NewParam';
-  ParamType    := 'NewParamType';
-  Flag         := pfNone;
-  DefaultValue := '';
-end;
-
-{ TSEParamList }
-class function TSEParamList.ParamFlagToStr(aFlags: TSEParamFlag): string;
+class function TSEParam.ParamFlagToStr(aFlags: TSEParamFlag): string;
 begin
   case aFlags of
     pfVar:      Result := 'var';
@@ -58,7 +48,7 @@ begin
   end;
 end;
 
-class function TSEParamList.StrToParamFlag(aValue: string): TSEParamFlag;
+class function TSEParam.StrToParamFlag(aValue: string): TSEParamFlag;
 var
   I: TSEParamFlag;
 begin
@@ -69,6 +59,16 @@ begin
       Exit(I);
 end;
 
+constructor TSEParam.Create;
+begin
+  inherited;
+  ParamName    := 'NewParam';
+  ParamType    := 'NewParamType';
+  Flag         := pfNone;
+  DefaultValue := '';
+end;
+
+{ TSEParamList }
 function TSEParamList.NewItem: TSEParam;
 begin
   Result := TSEParam.Create;
