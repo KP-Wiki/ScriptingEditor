@@ -14,7 +14,7 @@ type
     MethodType:     TSEMethodType;
     Params:         TSEParamList;
     ExternalMethod: Boolean;
-    FuncName,
+    MethodName,
     ResultType,
     PluginName:     string;
     constructor Create;
@@ -178,5 +178,44 @@ begin
 end;
 
 { TSEMethodList }
+function TSEMethodList.IndexByName(aFuncName: string): Integer;
+begin
+  //
+end;
+
+procedure TSEMethodList.SaveAsXML(aParent: TXmlNode);
+begin
+  //
+end;
+
+procedure TSEMethodList.LoadFromXML(aParent: TXmlNode);
+begin
+  //
+end;
+
+procedure TSEMethodList.LoadFromString(aXMLString: String);
+begin
+  //
+end;
+
+function TSEMethodList.GenerateFunctionInsertNames: TStringList;
+begin
+  //
+end;
+
+function TSEMethodList.GenerateFunctionItemList: TStringList;
+begin
+  //
+end;
+
+function TSEMethodList.GenerateParameterInsertList: TStringList;
+begin
+  //
+end;
+
+function TSEMethodList.GenerateParameterLookupList: TStringList;
+begin
+  //
+end;
 
 end.
