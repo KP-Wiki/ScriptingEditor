@@ -2,7 +2,7 @@ unit SE_ACMethods;
 
 interface
 uses
-  Contnrs, Classes,
+  Generics.Collections, Classes,
   VerySimpleXML,
   SE_ACParams;
 
@@ -27,18 +27,8 @@ type
     class function ParseMethodStr(aValue: string): TSEMethod;
   end;
 
-  TSEMethodList = class(TObjectList)
-  protected
-    function GetItem(aIndex: Integer): TSEMethod; virtual;
-    procedure SetItem(aIndex: Integer; aItem: TSEMethod); virtual;
+  TSEMethodList = class(TObjectList<TSEMethod>)
   public
-    function NewItem: TSEMethod;
-    function Add(aItem: TSEMethod): Integer; virtual;
-    function Remove(aItem: TSEMethod): Integer; virtual;
-    function IndexOf(aItem: TSEMethod): Integer; virtual;
-    procedure Insert(aIndex: Integer; aItem: TSEMethod); virtual;
-    function First: TSEMethod; virtual;
-    function Last: TSEMethod; virtual;
     function IndexByName(aFuncName: string): Integer; virtual;
     procedure SaveAsXML(aParent: TXmlNode);
     procedure LoadFromXML(aParent: TXmlNode);
@@ -47,7 +37,6 @@ type
     function GenerateFunctionItemList: TStringList;
     function GenerateParameterInsertList: TStringList;
     function GenerateParameterLookupList: TStringList;
-    property Items[aIndex: Integer]: TSEMethod Read GetItem Write SetItem; default;
   end;
 
 implementation

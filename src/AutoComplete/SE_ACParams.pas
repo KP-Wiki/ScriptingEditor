@@ -18,21 +18,8 @@ type
   end;
 
   TSEParamList = class(TObjectList<TSEParam>)
-  {
-  protected
-    function GetItem(aIndex: Integer): TSEParam; virtual;
-    procedure SetItem(aIndex: Integer; aItem: TSEParam); virtual;
   public
-    function NewItem: TSEParam;
-    function Add(aItem: TSEParam): Integer; virtual;
-    function Remove(aItem: TSEParam): Integer; virtual;
-    function IndexOf(aItem: TSEParam): Integer; virtual;
-    procedure Insert(aIndex: Integer; aItem: TSEParam); virtual;
-    function First: TSEParam; virtual;
-    function Last:  TSEParam; virtual;
     function IndexByName(aParamName: string): Integer; virtual;
-    property Items[aIndex: Integer]: TSEParam Read GetItem Write SetItem; default;
-  }
   published
     class function ParamFlagToStr(aFlags: TSEParamFlag): string;
     class function StrToParamFlag(aValue: string): TSEParamFlag;
@@ -75,53 +62,6 @@ begin
     Result := pfOptional;
 end;
 
-{
-function TSEParamList.GetItem(aIndex: Integer): TSEParam;
-begin
-  Result := TSEParam(inherited Items[aIndex]);
-end;
-
-procedure TSEParamList.SetItem(aIndex: Integer; aItem: TSEParam);
-begin
-  inherited Items[aIndex] := aItem;
-end;
-
-function TSEParamList.NewItem: TSEParam;
-begin
-  Result := TSEParam.Create;
-  Add(Result);
-end;
-
-function TSEParamList.Add(aItem: TSEParam): Integer;
-begin
-  Result := inherited Add(aItem);
-end;
-
-function TSEParamList.Remove(aItem: TSEParam): Integer;
-begin
-  Result := inherited Remove(aItem);
-end;
-
-function TSEParamList.IndexOf(aItem: TSEParam): Integer;
-begin
-  Result := inherited IndexOf(aItem);
-end;
-
-procedure TSEParamList.Insert(aIndex: Integer; aItem: TSEParam);
-begin
-  inherited Insert(aIndex, aItem);
-end;
-
-function TSEParamList.First: TSEParam;
-begin
-  Result := TSEParam(inherited  First);
-end;
-
-function TSEParamList.Last: TSEParam;
-begin
-  Result := TSEParam(inherited Last);
-end;
-
 function TSEParamList.IndexByName(aParamName: string): Integer;
 var
   I: Integer;
@@ -129,9 +69,8 @@ begin
   Result := -1;
 
   for I := 0 to Count - 1 do
-    if GetItem(I).ParamName = aParamName then
+    if Items[I].ParamName = aParamName then
       Exit(I);
 end;
-}
 
 end.
