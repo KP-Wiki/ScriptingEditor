@@ -20,14 +20,12 @@ type
   public
     MethodType:     TSEMethodType;
     Params:         TSEParamList;
-    ExternalMethod: Boolean;
     MethodName,
-    ResultType,
-    PluginName:     string;
+    ResultType:     string;
     constructor Create;
     destructor Destroy; override;
-    procedure SaveAsXML(aParent: TXmlNode);
-    procedure LoadFromXML(aParent: TXmlNode);
+    procedure AppendToXML(aParent: TXmlNode);
+    procedure FromXML(aParent: TXmlNode);
   published
     class function MethodTypeToStr(aType: TSEMethodType): string;
     class function StrToMethodType(aValue: string): TSEMethodType;
@@ -37,10 +35,9 @@ type
   TSEMethodList = class(TObjectList<TSEMethod>)
   public
     function NewItem: TSEMethod;
-    function IndexByName(aFuncName: string): Integer; virtual;
-    procedure SaveAsXML(aParent: TXmlNode);
-    procedure LoadFromXML(aParent: TXmlNode);
-    procedure LoadFromString(aXMLString: String);
+    function IndexByName(aMethodName: string): Integer; virtual;
+    procedure SaveToFile(aFileName: string);
+    procedure LoadFromFile(aFileName: string);
     function GenerateFunctionInsertNames: TStringList;
     function GenerateFunctionItemList: TStringList;
     function GenerateParameterInsertList: TStringList;
@@ -79,11 +76,11 @@ var
   paramType,
   defaultValue,
   params:       string;
+  paramFlag:    TSEParamFlag;
   paramList,
   parseList:    TStringList;
   I, J,
   splitPos:     Integer;
-  paramFlag:    TSEParamFlag;
 begin
   s         := aValue;
   paramList := TStringList.Create;
@@ -199,22 +196,64 @@ end;
 
 constructor TSEMethod.Create;
 begin
-  //
+  inherited;
+  Params := TSEParamList.Create;
 end;
 
 destructor TSEMethod.Destroy;
 begin
-  //
+  FreeAndNil(Params);
+  inherited;
 end;
 
-procedure TSEMethod.SaveAsXML(aParent: TXmlNode);
+procedure TSEMethod.AppendToXML(aParent: TXmlNode);
+var
+  item,
+  paramParent,
+  param:       TXmlNode;
+  I:           Integer;
 begin
-  //
+  item := aParent.AddChild('Definition');
+  item.SetAttribute('Type', MethodTypeToStr(MethodType));
+  item.SetAttribute('Name', MethodName);
+  item.SetAttribute('ResultType', ResultType);
+  paramParent := item.AddChild('ParameterList');
+
+  for I := 0 to Params.Count do
+  begin
+    param := paramParent.AddChild('Parameter');
+    param.SetAttribute('Name', Params[I].ParamName);
+    param.SetAttribute('Type', Params[I].ParamType);
+
+    if Params[I].DefaultValue <> '' then
+      param.SetAttribute('DefaultValue', Params[I].ParamName);
+
+    if Params[I].Flag <> pfNone then
+      param.SetAttribute('Flag', TSEParam.ParamFlagToStr(Params[I].Flag));
+  end;
 end;
 
-procedure TSEMethod.LoadFromXML(aParent: TXmlNode);
+procedure TSEMethod.FromXML(aParent: TXmlNode);
+var
+  paramParent,
+  param:       TXmlNode;
+  newItem:     TSEParam;
+  I:           Integer;
 begin
-  //
+  MethodType  := StrToMethodType(aParent.Attribute['Type']);
+  MethodName  := aParent.Attribute['Name'];
+  ResultType  := aParent.Attribute['ResultType'];
+  paramParent := aParent.Find('ParameterList');
+
+  for I := 0 to paramParent.ChildNodes.Count - 1 do
+  begin
+    param                := paramParent.ChildNodes[I];
+    newItem              := Params.NewItem;
+    newItem.ParamName    := param.Attribute['Name'];
+    newItem.ParamType    := param.Attribute['Type'];
+    newItem.DefaultValue := param.Attribute['DefaultValue'];
+    newItem.Flag         := TSEParam.StrToParamFlag(param.Attribute['Flag']);
+  end;
 end;
 
 { TSEMethodList }
@@ -224,44 +263,138 @@ begin
   Add(Result);
 end;
 
-function TSEMethodList.IndexByName(aFuncName: string): Integer;
+function TSEMethodList.IndexByName(aMethodName: string): Integer;
+var
+  I: Integer;
 begin
-  //
+  Result := -1;
+
+  for I := 0 to Count - 1 do
+    if Items[I].MethodName = aMethodName then
+      Exit(I);
 end;
 
-procedure TSEMethodList.SaveAsXML(aParent: TXmlNode);
+procedure TSEMethodList.SaveToFile(aFileName: string);
+var
+  xml: TXmlVerySimple;
+  I:   integer;
 begin
-  //
+  xml := TXmlVerySimple.Create;
+  xml.Root.NodeName := 'SEMethodDict';
+
+  for I := 0 to Count - 1 do
+    Items[I].AppendToXML(xml.Root);
+
+  xml.SaveToFile(aFileName);
 end;
 
-procedure TSEMethodList.LoadFromXML(aParent: TXmlNode);
+procedure TSEMethodList.LoadFromFile(aFileName: string);
+var
+  xml:  TXmlVerySimple;
+  item: TSEMethod;
+  I:    Integer;
 begin
-  //
-end;
+  xml := TXmlVerySimple.Create;
+  xml.LoadFromFile(aFileName);
 
-procedure TSEMethodList.LoadFromString(aXMLString: String);
-begin
-  //
+  for I := 0 to xml.Root.ChildNodes.Count - 1 do
+  begin
+    item := NewItem;
+    item.FromXML(xml.Root.ChildNodes[i]);
+  end;
 end;
 
 function TSEMethodList.GenerateFunctionInsertNames: TStringList;
+var
+  I: Integer;
+  s: string;
 begin
-  //
+  Result := TStringList.Create;
+
+  for I := 0 to Count - 1 do
+  begin
+    s := Items[I].MethodName + '(';
+    Result.Add(s);
+  end;
+
+  Result.Add('');
 end;
 
 function TSEMethodList.GenerateFunctionItemList: TStringList;
+var
+  I, J: Integer;
+  s, p: string;
 begin
-  //
+  Result := TStringList.Create;
+
+  for I := 0 to Count - 1 do
+  begin
+    s := TSEMethod.MethodTypeToStr(Items[I].MethodType) + ' \column{}' +
+         Items[I].MethodName + '(';
+    p := '';
+
+    for J := 0 to Items[I].Params.Count - 1 do
+    begin
+      case Items[I].Params.Items[J].Flag of
+        pfVar, pfConst: p := p    + TSEParam.ParamFlagToStr(Items[I].Params.Items[J].Flag) +
+                             ' '  + Items[I].Params.Items[J].ParamName +
+                             ': ' + Items[I].Params.Items[J].ParamType;
+        pfOptional:     p := p     + TSEParam.ParamFlagToStr(Items[I].Params.Items[J].Flag) +
+                             ' '   + Items[I].Params.Items[J].ParamName +
+                             ': '  + Items[I].Params.Items[J].ParamType +
+                             ' = ' + Items[I].Params.Items[J].DefaultValue;
+        pfNone:         p := p     + Items[I].Params.Items[J].ParamName +
+                             ': '  + Items[I].Params.Items[J].ParamType;
+      end;
+
+      if J <> Items[J].Params.Count - 1 then
+        p := p + '; ';
+    end;
+
+    s := s + p + ')';
+
+    case Items[I].MethodType of
+      ftFunction:  s := s + ': ' + Items[I].ResultType + ';';
+      ftProcedure: s := s + ';';
+    end;
+
+    Result.Add(S);
+  end;
+
+  Result.Add('');
 end;
 
 function TSEMethodList.GenerateParameterInsertList: TStringList;
+var
+  I, J: Integer;
+  s:    string;
 begin
-  //
+  Result := TStringList.Create;
+
+  for I := 0 to Count - 1 do
+  begin
+    s := '';
+
+    for J := 0 to Items[I].Params.Count - 1 do
+    begin
+      s := s + '"' + Items[I].Params[J].ParamName + ': ' + Items[I].Params[J].ParamType + '"';
+
+      if J <> Items[I].Params.Count - 1 then
+        s := s + ', ';
+    end;
+
+    Result.Add(S);
+  end;
 end;
 
 function TSEMethodList.GenerateParameterLookupList: TStringList;
+var
+  I: Integer;
 begin
-  //
+  Result := TStringList.Create;
+
+  for I := 0 to Count - 1 do
+    Result.Add(UpperCase(Items[i].MethodName));
 end;
 
 end.
