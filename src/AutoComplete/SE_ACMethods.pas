@@ -162,13 +162,13 @@ begin
     begin // Paramter einzeln parsen
       s := Trim(s);
 
-      if Pos(' ', s) <> 0 then
+      if Pos(',', s) <> 0 then
       begin
         parseList.Add(Trim(Copy(s, 1, Pos(' ', s))));
         Delete(s, 1, Pos(' ', s));
       end else
       begin
-        ParseList.Add(s);
+        ParseList.Add(Trim(s));
         s := '';
       end;
     end;
