@@ -229,7 +229,7 @@ begin
     OnExecute         := SynCompletionExecute;
     //OnAfterCodeCompletion := AutoCompleteAfterCodeCompletion;
     ShortCut          := scCtrl + VK_SPACE; //Ctrl+Space
-    Columns.ClearAndResetID;
+    Columns.Clear;
 
     with Columns.Add do
       ColumnWidth := 96;
@@ -252,7 +252,7 @@ begin
     TimerInterval     := 500;
     //OnExecute         := AutoCompleteExecute;
     ShortCut          := scShift + scCtrl + VK_SPACE; //Shift+Ctrl+Space
-    Columns.ClearAndResetID;
+    Columns.Clear;
   end;
 
   with TSEValidationPlugin.Create(fSynEdit) do
