@@ -10,24 +10,17 @@ type
   TSEMethodType = (ftFunction, ftProcedure);
 
   TSEMethod = class
-  strict private
-    fMethodType:     TSEMethodType;
-    fParams:         TSEParamList;
-    fExternalMethod: Boolean;
-    fFuncName,
-    fResultType,
-    fPluginName:     string;
   public
+    MethodType:     TSEMethodType;
+    Params:         TSEParamList;
+    ExternalMethod: Boolean;
+    FuncName,
+    ResultType,
+    PluginName:     string;
     constructor Create;
     destructor Destroy; override;
     procedure SaveAsXML(aParent: TXmlNode);
     procedure LoadFromXML(aParent: TXmlNode);
-    property MethodType:     TSEMethodType read fMethodType     write fMethodType;
-    property Params:         TSEParamList  read fParams         write fParams;
-    property ExternalMethod: Boolean       read fExternalMethod write fExternalMethod;
-    property MethodName:     string        read fFuncName       write fFuncName;
-    property ResultType:     string        read fResultType     write fResultType;
-    property PluginName:     string        read fPluginName     write fPluginName;
   published
     class function MethodTypeToStr(aType: TSEMethodType): string;
     class function StrToMethodType(aValue: string): TSEMethodType;

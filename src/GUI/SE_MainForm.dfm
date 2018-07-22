@@ -199,14 +199,26 @@ object SEMainForm: TSEMainForm
     object tsStates: TTabSheet
       Caption = 'States'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object tsActions: TTabSheet
       Caption = 'Actions'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object tsUtils: TTabSheet
       Caption = 'Utils'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   object pcRight: TPageControl
@@ -225,6 +237,10 @@ object SEMainForm: TSEMainForm
     object tsRawSVOutput: TTabSheet
       Caption = 'Raw Validator Output'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object edtRawSVOutput: TMemo
         Left = 0
         Top = 0

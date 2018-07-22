@@ -185,75 +185,67 @@ begin
     FreeAndNil(Settings);
   end;
 
-  with fSynEdit do
-  begin
-    Parent                        := Self;
-    Align                         := alClient;
-    Highlighter                   := fSynPasSyn;
-    TabOrder                      := 1;
-    TabWidth                      := 2;
-    WantTabs                      := True;
-    UseCodeFolding                := True;
-    CodeFolding.ShowCollapsedLine := True;
-    CodeFolding.IndentGuides      := True;
-    Gutter.ShowLineNumbers        := True;
-    Gutter.ShowModification       := True;
-    Gutter.AutoSize               := True;
-    OnChange                      := SynEditorChange;
-    OnReplaceText                 := SynEditorReplaceText;
-    OnStatusChange                := SynEditorStatusChange;
-    OnGutterClick                 := SynEditorGutterClick;
-    PopupMenu                     := pmEditor;
-    Options                       := [
-      eoAutoIndent,     eoDragDropEditing, eoScrollPastEol, eoSmartTabs,
-      eoSmartTabDelete, eoTabsToSpaces,    eoTabIndent,     eoTrimTrailingSpaces,
-      eoKeepCaretX,     eoEnhanceEndKey,   eoGroupUndo
-    ];
-  end;
+  fSynEdit.Parent                        := Self;
+  fSynEdit.Align                         := alClient;
+  fSynEdit.Highlighter                   := fSynPasSyn;
+  fSynEdit.TabOrder                      := 1;
+  fSynEdit.TabWidth                      := 2;
+  fSynEdit.WantTabs                      := True;
+  fSynEdit.UseCodeFolding                := True;
+  fSynEdit.CodeFolding.ShowCollapsedLine := True;
+  fSynEdit.CodeFolding.IndentGuides      := True;
+  fSynEdit.Gutter.ShowLineNumbers        := True;
+  fSynEdit.Gutter.ShowModification       := True;
+  fSynEdit.Gutter.AutoSize               := True;
+  fSynEdit.OnChange                      := SynEditorChange;
+  fSynEdit.OnReplaceText                 := SynEditorReplaceText;
+  fSynEdit.OnStatusChange                := SynEditorStatusChange;
+  fSynEdit.OnGutterClick                 := SynEditorGutterClick;
+  fSynEdit.PopupMenu                     := pmEditor;
+  fSynEdit.Options                       := [
+    eoAutoIndent,     eoDragDropEditing, eoScrollPastEol, eoSmartTabs,
+    eoSmartTabDelete, eoTabsToSpaces,    eoTabIndent,     eoTrimTrailingSpaces,
+    eoKeepCaretX,     eoEnhanceEndKey,   eoGroupUndo
+  ];
 
-  with fSynCompletion do
-  begin
-    Editor            := fSynEdit;
-    Options           := [
-      scoLimitToMatchedText, scoUseInsertList,     scoUsePrettyText,
-      scoUseBuiltInTimer,    scoEndCharCompletion, scoCompleteWithTab,
-      scoCompleteWithEnter {, scoLimitToMatchedTextAnywhere}
-    ];
-    Width             := 750;
-    NbLinesInWindow   := 15;
-    EndOfTokenChr     := '()[];';
-    TriggerChars      := '.';
-    Title             := 'Suggested completions';
-    ClTitleBackground := clInfoBk;
-    TimerInterval     := 500;
-    OnExecute         := SynCompletionExecute;
-    //OnAfterCodeCompletion := AutoCompleteAfterCodeCompletion;
-    ShortCut          := scCtrl + VK_SPACE; //Ctrl+Space
-    Columns.Clear;
 
-    with Columns.Add do
-      ColumnWidth := 96;
-  end;
+  fSynCompletion.Editor            := fSynEdit;
+  fSynCompletion.Options           := [
+    scoLimitToMatchedText, scoUseInsertList,     scoUsePrettyText,
+    scoUseBuiltInTimer,    scoEndCharCompletion, scoCompleteWithTab,
+    scoCompleteWithEnter {, scoLimitToMatchedTextAnywhere}
+  ];
+  fSynCompletion.Width             := 750;
+  fSynCompletion.NbLinesInWindow   := 15;
+  fSynCompletion.EndOfTokenChr     := '()[];';
+  fSynCompletion.TriggerChars      := '.';
+  fSynCompletion.Title             := 'Suggested completions';
+  fSynCompletion.ClTitleBackground := clInfoBk;
+  fSynCompletion.TimerInterval     := 500;
+  fSynCompletion.OnExecute         := SynCompletionExecute;
+  //fSynCompletion.OnAfterCodeCompletion := AutoCompleteAfterCodeCompletion;
+  fSynCompletion.ShortCut          := scCtrl + VK_SPACE; //Ctrl+Space
+  fSynCompletion.Columns.Clear;
 
-  with fSynParamCompletion do
-  begin
-    Editor            := fSynEdit;
-    DefaultType       := ctParams;
-    Options           := [
-      scoLimitToMatchedText, scoUsePrettyText, scoUseBuiltInTimer
-    ];
-    Width             := 262;
-    EndOfTokenChr     := '()[]. ;';
-    TriggerChars      := '(';
-    Title             := 'Suggested completions';
-    ClBackground      := clInfoBk;
-    ClTitleBackground := clInfoBk;
-    TitleFont.Style   := [fsBold];
-    TimerInterval     := 500;
-    //OnExecute         := AutoCompleteExecute;
-    ShortCut          := scShift + scCtrl + VK_SPACE; //Shift+Ctrl+Space
-    Columns.Clear;
-  end;
+  with fSynCompletion.Columns.Add do
+    ColumnWidth := 96;
+
+  fSynParamCompletion.Editor            := fSynEdit;
+  fSynParamCompletion.DefaultType       := ctParams;
+  fSynParamCompletion.Options           := [
+    scoLimitToMatchedText, scoUsePrettyText, scoUseBuiltInTimer
+  ];
+  fSynParamCompletion.Width             := 262;
+  fSynParamCompletion.EndOfTokenChr     := '()[]. ;';
+  fSynParamCompletion.TriggerChars      := '(';
+  fSynParamCompletion.Title             := 'Suggested completions';
+  fSynParamCompletion.ClBackground      := clInfoBk;
+  fSynParamCompletion.ClTitleBackground := clInfoBk;
+  fSynParamCompletion.TitleFont.Style   := [fsBold];
+  fSynParamCompletion.TimerInterval     := 500;
+  //fSynParamCompletion.OnExecute         := AutoCompleteExecute;
+  fSynParamCompletion.ShortCut          := scShift + scCtrl + VK_SPACE; //Shift+Ctrl+Space
+  fSynParamCompletion.Columns.Clear;
 
   with TSEValidationPlugin.Create(fSynEdit) do
   begin

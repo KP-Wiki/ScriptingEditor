@@ -2,26 +2,23 @@ unit SE_ACParams;
 
 interface
 uses
-  Contnrs;
+  Generics.Collections;
 
 type
   TSEParamFlag = (pfVar, pfConst, pfOptional, pfNone);
 
   TSEParam = class
   strict private
-    fParamName,
-    fParamType,
-    fDefaultValue: string;
-    fFlag:        TSEParamFlag;
   public
+    ParamName,
+    ParamType,
+    DefaultValue: string;
+    Flag:        TSEParamFlag;
     constructor Create;
-    property ParamName:    string       read fParamName    write fParamName;
-    property ParamType:    string       read fParamType    write fParamType;
-    property DefaultValue: string       read fDefaultValue write fDefaultValue;
-    property Flag:         TSEParamFlag read fFlag         write fFlag;
   end;
 
-  TSEParamList = class(TObjectList)
+  TSEParamList = class(TObjectList<TSEParam>)
+  {
   protected
     function GetItem(aIndex: Integer): TSEParam; virtual;
     procedure SetItem(aIndex: Integer; aItem: TSEParam); virtual;
@@ -35,6 +32,7 @@ type
     function Last:  TSEParam; virtual;
     function IndexByName(aParamName: string): Integer; virtual;
     property Items[aIndex: Integer]: TSEParam Read GetItem Write SetItem; default;
+  }
   published
     class function ParamFlagToStr(aFlags: TSEParamFlag): string;
     class function StrToParamFlag(aValue: string): TSEParamFlag;
@@ -48,10 +46,10 @@ uses
 constructor TSEParam.Create;
 begin
   inherited;
-  fParamName    := 'NewParam';
-  fParamType    := 'NewParamType';
-  fFlag         := pfNone;
-  fDefaultValue := '';
+  ParamName    := 'NewParam';
+  ParamType    := 'NewParamType';
+  Flag         := pfNone;
+  DefaultValue := '';
 end;
 
 { TSEParamList }
@@ -77,6 +75,7 @@ begin
     Result := pfOptional;
 end;
 
+{
 function TSEParamList.GetItem(aIndex: Integer): TSEParam;
 begin
   Result := TSEParam(inherited Items[aIndex]);
@@ -131,10 +130,8 @@ begin
 
   for I := 0 to Count - 1 do
     if GetItem(I).ParamName = aParamName then
-    begin
-      Result := I;
-      Exit;
-    end;
+      Exit(I);
 end;
+}
 
 end.

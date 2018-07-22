@@ -197,62 +197,47 @@ begin
   fPasScriptDict    := TStringList.Create;
   fPasScriptInsDict := TStringList.Create;
 
-  with fLbIssues do
-  begin
-    Parent       := tsIssues;
-    Align        := alClient;
-    AutoComplete := False;
-    Sorted       := False;
-    ShowHint     := True;
-    PopupMenu    := pmIssues;
-    OnDblClick   := FLbIssuesDblClick;
-    OnMouseUp    := FLbIssuesMouseUp;
-    OnMouseMove  := FLbIssuesMouseMove;
-  end;
+  fLbIssues.Parent       := tsIssues;
+  fLbIssues.Align        := alClient;
+  fLbIssues.AutoComplete := False;
+  fLbIssues.Sorted       := False;
+  fLbIssues.ShowHint     := True;
+  fLbIssues.PopupMenu    := pmIssues;
+  fLbIssues.OnDblClick   := FLbIssuesDblClick;
+  fLbIssues.OnMouseUp    := FLbIssuesMouseUp;
+  fLbIssues.OnMouseMove  := FLbIssuesMouseMove;
 
-  with fLbEvents do
-  begin
-    Parent       := tsEvents;
-    Align        := alClient;
-    AutoComplete := False;
-    Sorted       := False;
-    ShowHint     := True;
-    OnDblClick   := FLbSnippetsDblClick;
-    OnMouseMove  := FLbSnippetsMouseMove;
-  end;
+  fLbEvents.Parent       := tsEvents;
+  fLbEvents.Align        := alClient;
+  fLbEvents.AutoComplete := False;
+  fLbEvents.Sorted       := False;
+  fLbEvents.ShowHint     := True;
+  fLbEvents.OnDblClick   := FLbSnippetsDblClick;
+  fLbEvents.OnMouseMove  := FLbSnippetsMouseMove;
 
-  with fLBStates do
-  begin
-    Parent       := tsStates;
-    Align        := alClient;
-    AutoComplete := False;
-    Sorted       := False;
-    ShowHint     := True;
-    OnDblClick   := FLbSnippetsDblClick;
-    OnMouseMove  := FLbSnippetsMouseMove;
-  end;
+  fLBStates.Parent       := tsStates;
+  fLBStates.Align        := alClient;
+  fLBStates.AutoComplete := False;
+  fLBStates.Sorted       := False;
+  fLBStates.ShowHint     := True;
+  fLBStates.OnDblClick   := FLbSnippetsDblClick;
+  fLBStates.OnMouseMove  := FLbSnippetsMouseMove;
 
-  with fLBActions do
-  begin
-    Parent       := tsActions;
-    Align        := alClient;
-    AutoComplete := False;
-    Sorted       := False;
-    ShowHint     := True;
-    OnDblClick   := FLbSnippetsDblClick;
-    OnMouseMove  := FLbSnippetsMouseMove;
-  end;
+  fLBActions.Parent       := tsActions;
+  fLBActions.Align        := alClient;
+  fLBActions.AutoComplete := False;
+  fLBActions.Sorted       := False;
+  fLBActions.ShowHint     := True;
+  fLBActions.OnDblClick   := FLbSnippetsDblClick;
+  fLBActions.OnMouseMove  := FLbSnippetsMouseMove;
 
-  with fLBUtils do
-  begin
-    Parent       := tsUtils;
-    Align        := alClient;
-    AutoComplete := False;
-    Sorted       := False;
-    ShowHint     := True;
-    OnDblClick   := FLbSnippetsDblClick;
-    OnMouseMove  := FLbSnippetsMouseMove;
-  end;
+  fLBUtils.Parent       := tsUtils;
+  fLBUtils.Align        := alClient;
+  fLBUtils.AutoComplete := False;
+  fLBUtils.Sorted       := False;
+  fLBUtils.ShowHint     := True;
+  fLBUtils.OnDblClick   := FLbSnippetsDblClick;
+  fLBUtils.OnMouseMove  := FLbSnippetsMouseMove;
 
   SetListboxesVisible(False);
   gCommandsDataModule := TSECommandsDataModule.Create(Self);
