@@ -1,4 +1,5 @@
 unit SE_ACParams;
+{$M+}
 
 interface
 uses

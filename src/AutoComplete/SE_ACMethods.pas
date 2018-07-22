@@ -1,4 +1,5 @@
 unit SE_ACMethods;
+{$M+}
 
 interface
 uses
