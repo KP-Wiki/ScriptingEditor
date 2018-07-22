@@ -8,6 +8,12 @@ uses
 type
   TSEParamFlag = (pfVar, pfConst, pfOptional, pfNone);
 
+const
+  ParamFlagName: array[TSEParamFlag] of string = (
+    'var', 'const', 'optional', 'none'
+  );
+
+type
   TSEParam = class
   strict private
   public
@@ -46,21 +52,20 @@ begin
   case aFlags of
     pfVar:      Result := 'var';
     pfConst:    Result := 'const';
-    pfOptional: Result := 'Optional';
-    else        Result := 'None';
+    pfOptional: Result := 'optional';
+    else        Result := 'none';
   end;
 end;
 
 class function TSEParamList.StrToParamFlag(aValue: string): TSEParamFlag;
+var
+  I: TSEParamFlag;
 begin
   Result := pfNone;
 
-  if LowerCase(aValue) = 'var' then
-    Result := pfVar;
-  if LowerCase(aValue) = 'const' then
-    Result := pfConst;
-  if LowerCase(aValue) = 'Optional' then
-    Result := pfOptional;
+  for I := Low(TSEParamFlag) to High(TSEParamFlag) do
+    if ParamFlagName[I] = aValue then
+      Exit(I);
 end;
 
 function TSEParamList.IndexByName(aParamName: string): Integer;

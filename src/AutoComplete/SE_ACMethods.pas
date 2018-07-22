@@ -10,6 +10,12 @@ uses
 type
   TSEMethodType = (ftFunction, ftProcedure);
 
+const
+  MethodTypeName: array[TSEMethodType] of string = (
+    'function', 'procedure'
+  );
+
+type
   TSEMethod = class
   public
     MethodType:     TSEMethodType;
@@ -55,13 +61,14 @@ begin
 end;
 
 class function TSEMethod.StrToMethodType(aValue: string): TSEMethodType;
+var
+  I: TSEMethodType;
 begin
   Result := ftProcedure;
 
-  if LowerCase(aValue) = 'function' then
-    Result := ftFunction;
-  if LowerCase(aValue) = 'procedure' then
-    Result := ftProcedure;
+  for I := Low(TSEMethodType) to High(TSEMethodType) do
+    if MethodTypeName[I] = aValue then
+      Exit(I);
 end;
 
 class function TSEMethod.ParseMethodStr(aValue: string): TSEMethod;
@@ -142,7 +149,7 @@ begin
     end;
 
     while s <> '' do
-    begin // Paramter einzeln parsen
+    begin
       s := Trim(s);
 
       if Pos(',', s) <> 0 then
