@@ -26,6 +26,7 @@ type
 
   TSEParamList = class(TObjectList<TSEParam>)
   public
+    function NewItem: TSEParam;
     function IndexByName(aParamName: string): Integer; virtual;
   published
     class function ParamFlagToStr(aFlags: TSEParamFlag): string;
@@ -66,6 +67,12 @@ begin
   for I := Low(TSEParamFlag) to High(TSEParamFlag) do
     if ParamFlagName[I] = aValue then
       Exit(I);
+end;
+
+function TSEParamList.NewItem: TSEParam;
+begin
+  Result := TSEParam.Create;
+  Add(Result);
 end;
 
 function TSEParamList.IndexByName(aParamName: string): Integer;
