@@ -3,9 +3,10 @@ unit SE_MainForm;
 interface
 
 uses
-  Windows, Messages, Classes, ImageList, Actions, Graphics, ToolWin, ExtCtrls,
-  Controls, Forms, ComCtrls, Menus, ImgList, ActnList, StdActns, Dialogs, StdCtrls,
-  ScriptValidatorResult, SE_IssueListBox, SE_SnippetListBox, SE_CommandsDataModule;
+  Windows, Messages, Classes, ToolWin, ExtCtrls, Controls, Forms, ComCtrls,
+  Menus, StdCtrls,
+  ScriptValidatorResult,
+  SE_IssueListBox, SE_SnippetListBox, SE_CommandsDataModule;
 
 type
   { TScriptingEditorForm }

@@ -6,13 +6,14 @@ uses
   SE_Interfaces, SE_MainForm, SE_SnippetListBox, SE_IssueListBox;
 
 type
-  TFontOptions = record
+  TSEFontOptions = record
     Name: string;
     Size: Integer;
   end;
+
   TSEOptions = record
     KPMode:  Boolean;
-    Font:    TFontOptions;
+    Font:    TSEFontOptions;
   end;
 
 const
