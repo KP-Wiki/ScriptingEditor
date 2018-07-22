@@ -23,7 +23,7 @@ type
 
 implementation
 uses
-  SysUtils;
+  SysUtils, SE_Globals;
 
 destructor TSEIssueListBox.Destroy;
 begin
@@ -59,7 +59,7 @@ function TSEIssueListBox.GetIssue(aText: string): TScriptValidatorIssue;
 var
   I: Integer;
 begin
-  Result.Line := -2;
+  Result.Line := NON_EXISTING_ITEM;
 
   if Length(fIssues) = 0 then
     Exit;
@@ -74,7 +74,7 @@ end;
 
 function TSEIssueListBox.GetIssue(aIndex: Integer): TScriptValidatorIssue;
 begin
-  Result.Line := -2;
+  Result.Line := NON_EXISTING_ITEM;
 
   if (Length(fIssues) = 0) or (aIndex < 0) or (aIndex > (Length(fIssues) - 1)) then
     Exit;

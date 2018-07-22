@@ -396,12 +396,12 @@ begin
   index     := fLbIssues.ItemAtPos(cursorPos, True);
   issue     := fLbIssues.GetIssue(index);
 
-  if issue.Line = -2 then
+  if issue.Line = NON_EXISTING_ITEM then
   begin
     Application.CancelHint;
     fLbIssues.Hint := '';
     fHintIndex     := -1;
-    Exit; // Non-existing item
+    Exit;
   end;
 
   if fHintIndex <> index then
@@ -452,8 +452,8 @@ var
 begin
   issue := fLbIssues.GetIssue(aIndex);
 
-  if issue.Line = -2 then
-    Exit; // Non-existing item
+  if issue.Line = NON_EXISTING_ITEM then
+    Exit;
 
   if issue.Line < 1 then
     issue.Line := 1;
@@ -471,8 +471,8 @@ var
 begin
   issue := fLbIssues.GetIssue(aIndex);
 
-  if issue.Line = -2 then
-    Exit; // Non-existing item
+  if issue.Line = NON_EXISTING_ITEM then
+    Exit;
 
   Clipboard.AsText := Format('[%d:%d] <Module: %s | Param: %s> %s',
                              [issue.Line, issue.Column, issue.Module,

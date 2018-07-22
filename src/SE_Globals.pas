@@ -21,6 +21,8 @@ const
 
   MAX_MRI_FILES = 10;
 
+  NON_EXISTING_ITEM = -1;
+
   VERSION_PREFIX = 'Alpha ';
   VERSION        = '1.6.3';
   VERSION_SUFFIX = ' DEV ONLY!';
