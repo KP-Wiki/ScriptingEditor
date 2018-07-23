@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{06E0071C-510D-4C76-8D82-4A1A868F519B}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ScriptingEditor.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DictManagementUtil\DictManagementUtil.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ScriptingEditor">
+        <MSBuild Projects="ScriptingEditor.dproj"/>
+    </Target>
+    <Target Name="ScriptingEditor:Clean">
+        <MSBuild Projects="ScriptingEditor.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ScriptingEditor:Make">
+        <MSBuild Projects="ScriptingEditor.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DictManagementUtil">
+        <MSBuild Projects="DictManagementUtil\DictManagementUtil.dproj"/>
+    </Target>
+    <Target Name="DictManagementUtil:Clean">
+        <MSBuild Projects="DictManagementUtil\DictManagementUtil.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DictManagementUtil:Make">
+        <MSBuild Projects="DictManagementUtil\DictManagementUtil.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ScriptingEditor;DictManagementUtil"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ScriptingEditor:Clean;DictManagementUtil:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ScriptingEditor:Make;DictManagementUtil:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
