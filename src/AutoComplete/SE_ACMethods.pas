@@ -24,8 +24,8 @@ type
     ResultType:     string;
     constructor Create;
     destructor Destroy; override;
-    procedure AppendToXML(aParent: TXmlNode);
-    procedure FromXML(aParent: TXmlNode);
+    procedure AppendToXML(const aParent: TXmlNode);
+    procedure FromXML(const aNode: TXmlNode);
   published
     class function MethodTypeToStr(aType: TSEMethodType): string;
     class function StrToMethodType(aValue: string): TSEMethodType;
@@ -34,12 +34,13 @@ type
 
   TSEMethodList = class(TObjectList<TSEMethod>)
   public
+    property Items;
     function NewItem: TSEMethod;
     function IndexByName(aMethodName: string): Integer; virtual;
     procedure SaveToFile(aFileName: string);
     procedure LoadFromFile(aFileName: string);
-    function GenerateFunctionInsertNames: TStringList;
-    function GenerateFunctionItemList: TStringList;
+    function GenerateMethodInsertNames: TStringList;
+    function GenerateMethodItemList: TStringList;
     function GenerateParameterInsertList: TStringList;
     function GenerateParameterLookupList: TStringList;
   end;
@@ -91,102 +92,123 @@ begin
     Case:
     We need to parse the following string to a TSEMethod with it's params:
     'function Example(aId, aAmount: Integer; var aDest: TObjList; aType: TObjType = otSimple): Boolean;'
-
-    Note:
-    Also need to make this compatible with parameterless methods
   }
   // Grab the method type; Expected output: ftFunction
-  Result.MethodType := StrToMethodType(Copy(s, 1, Pos(' ', s) - 1));
-  Delete(s, 1, Pos(' ', s));
-  // Grab the method name; Expected output: Example
-  Result.MethodName := Copy(s, 1, Pos('(', s) - 1);
-  Delete(s, 1, Pos('(', s));
-  // Grab the params; Expected output: aId, aAmount: Integer; var aDest: TObjList; aType: TObjType = otSimple
-  params := Copy(s, 1, Pos(')', s) - 1);
-  Delete(s, 1, Pos(')', s));
+  splitPos := Pos(' ', s);
+  Result.MethodType := StrToMethodType(Copy(s, 1, splitPos - 1));
+  Delete(s, 1, splitPos);
 
-  if Result.MethodType = ftFunction then
+  if (Pos('(', s) > 0) then
   begin
-    // Grab the result type; Expected output: Boolean
-    Delete(s, 1, 1); // Delete ':'
-    Result.ResultType := Trim(Copy(s, 1, Pos(';', s) - 1));
-  end;
+    // Grab the method name; Expected output: Example
+    splitPos := Pos('(', s);
+    Result.MethodName := Copy(s, 1, splitPos - 1);
+    Delete(s, 1, splitPos);
+    // Grab the params; Expected output: aId, aAmount: Integer; var aDest: TObjList; aType: TObjType = otSimple
+    splitPos := Pos(')', s);
+    params := Copy(s, 1, splitPos - 1);
+    Delete(s, 1, splitPos);
 
-  // Split the parameters into a list
-  while params <> '' do
-  begin
-
-    s := Copy(params, 1, Pos(';', params) - 1);
-    Delete(params, 1, Pos(';', params));
-    params := Trim(params);
-
-    if s = '' then
+    if Result.MethodType = ftFunction then
     begin
-      s      := params;
-      params := '';
+      // Grab the result type; Expected output: Boolean
+      Delete(s, 1, 1); // Delete ':'
+      Result.ResultType := Trim(Copy(s, 1, Pos(';', s) - 1));
     end;
 
-    paramList.Add(s);
-  end;
-
-  for I := 0 to paramList.Count - 1 do
-  begin
-    parseList.Clear;
-    paramFlag    := pfNone;
-    defaultValue := '';
-    paramType    := '';
-    s            := Trim(paramList[I]);
-
-    // Grab the param flags; Expected output (In order): pfNone, pfVar, pfOptional
-    splitPos  := Pos('=', s);
-
-    if splitPos > 0 then
+    // Split the parameters into a list
+    while params <> '' do
     begin
-      // Grab the default values; Expected output: otSimple
-      defaultValue := Trim(Copy(s, splitPos + 1, Length(s) - (splitPos + 1)));
-      paramFlag    := pfOptional;
-      Delete(s, splitPos, Length(s) - splitPos);
-    end;
+      splitPos := Pos(';', params);
+      s        := Copy(params, 1, splitPos - 1);
+      Delete(params, 1, splitPos);
+      params := Trim(params);
 
-    if LowerCase(s).StartsWith('var ', True) then
-    begin
-      paramFlag := pfVar;
-      Delete(s, 1, 4);
-    end else if LowerCase(s).StartsWith('const ', True) then
-    begin
-      paramFlag := pfConst;
-      Delete(s, 1, 6);
-    end;
-
-    // Grab the parameter types; Expected output (In order): Integer, TObjList, TObjType
-    splitPos  := Pos(':', s);
-    paramType := Trim(Copy(s, splitPos + 1, Length(s) - (splitPos + 1)));
-    Delete(s, splitPos, Length(s) - splitPos);
-
-    // Grab the parameter names; Expected output (In order): [aId, aAmount], [aDest], [aType]
-    while s <> '' do
-    begin
-      s := Trim(s);
-
-      if Pos(',', s) <> 0 then
+      if s = '' then
       begin
-        parseList.Add(Trim(Copy(s, 1, Pos(',', s))));
-        Delete(s, 1, Pos(',', s));
-      end else
+        s      := params;
+        params := '';
+      end;
+
+      paramList.Add(s);
+    end;
+
+    for I := 0 to paramList.Count - 1 do
+    begin
+      parseList.Clear;
+      paramFlag    := pfNone;
+      defaultValue := '';
+      paramType    := '';
+      s            := Trim(paramList[I]);
+
+      // Grab the param flags; Expected output (In order): pfNone, pfVar, pfOptional
+      splitPos := Pos('=', s);
+
+      if splitPos > 0 then
       begin
-        ParseList.Add(Trim(s));
-        s := '';
+        // Grab the default values; Expected output: otSimple
+        defaultValue := Trim(Copy(s, splitPos + 1, Length(s) - splitPos));
+        paramFlag    := pfOptional;
+        Delete(s, splitPos, Length(s) - splitPos + 1);
+      end;
+
+      if LowerCase(s).StartsWith('var ', True) then
+      begin
+        paramFlag := pfVar;
+        Delete(s, 1, 4);
+      end else if LowerCase(s).StartsWith('const ', True) then
+      begin
+        paramFlag := pfConst;
+        Delete(s, 1, 6);
+      end;
+
+      // Grab the parameter types; Expected output (In order): Integer, TObjList, TObjType
+      splitPos  := Pos(':', s);
+      paramType := Trim(Copy(s, splitPos + 1, Length(s) - splitPos));
+      Delete(s, splitPos, Length(s) - splitPos + 1);
+
+      // Grab the parameter names; Expected output (In order): [aId, aAmount], [aDest], [aType]
+      while s <> '' do
+      begin
+        s         := Trim(s);
+        splitPos  := Pos(',', s);
+
+        if splitPos > 0 then
+        begin
+          parseList.Add(Trim(Copy(s, 1, splitPos - 1)));
+          Delete(s, 1, splitPos);
+        end else
+        begin
+          parseList.Add(s);
+          s := '';
+        end;
+      end;
+
+      // Create param objects and add them to the result
+      for J := 0 to parseList.Count - 1 do
+      begin
+        param              := Result.Params.NewItem;
+        param.ParamName    := parseList[J];
+        param.ParamType    := paramType;
+        param.DefaultValue := defaultValue;
+        param.Flag         := paramFlag;
       end;
     end;
-
-    // Create param objects and add them to the result
-    for J := 0 to paramList.Count - 1 do
+  end else
+  begin
+    // Grab the method name; Expected output: Example
+    if Result.MethodType = ftFunction then
     begin
-      param              := Result.Params.NewItem;
-      param.ParamName    := paramList[J];
-      param.ParamType    := paramType;
-      param.DefaultValue := defaultValue;
-      param.Flag         := paramFlag;
+      // Grab the result type; Expected output: Boolean
+      splitPos := Pos(':', s);
+      Result.MethodName := Copy(s, 1, splitPos - 1);
+      Delete(s, 1, splitPos);
+      Result.ResultType := Trim(Copy(s, 1, Pos(';', s) - 1));
+    end else
+    begin
+      splitPos := Pos(';', s);
+      Result.MethodName := Copy(s, 1, splitPos - 1);
+      Delete(s, 1, splitPos);
     end;
   end;
 
@@ -206,7 +228,7 @@ begin
   inherited;
 end;
 
-procedure TSEMethod.AppendToXML(aParent: TXmlNode);
+procedure TSEMethod.AppendToXML(const aParent: TXmlNode);
 var
   item,
   paramParent,
@@ -219,7 +241,7 @@ begin
   item.SetAttribute('ResultType', ResultType);
   paramParent := item.AddChild('ParameterList');
 
-  for I := 0 to Params.Count do
+  for I := 0 to Params.Count - 1 do
   begin
     param := paramParent.AddChild('Parameter');
     param.SetAttribute('Name', Params[I].ParamName);
@@ -233,17 +255,17 @@ begin
   end;
 end;
 
-procedure TSEMethod.FromXML(aParent: TXmlNode);
+procedure TSEMethod.FromXML(const aNode: TXmlNode);
 var
   paramParent,
   param:       TXmlNode;
   newItem:     TSEParam;
   I:           Integer;
 begin
-  MethodType  := StrToMethodType(aParent.Attribute['Type']);
-  MethodName  := aParent.Attribute['Name'];
-  ResultType  := aParent.Attribute['ResultType'];
-  paramParent := aParent.Find('ParameterList');
+  MethodType  := StrToMethodType(aNode.Attribute['Type']);
+  MethodName  := aNode.Attribute['Name'];
+  ResultType  := aNode.Attribute['ResultType'];
+  paramParent := aNode.Find('ParameterList');
 
   for I := 0 to paramParent.ChildNodes.Count - 1 do
   begin
@@ -294,17 +316,20 @@ var
   item: TSEMethod;
   I:    Integer;
 begin
+  if not FileExists(aFileName) then
+    Exit;
+
   xml := TXmlVerySimple.Create;
   xml.LoadFromFile(aFileName);
 
   for I := 0 to xml.Root.ChildNodes.Count - 1 do
   begin
     item := NewItem;
-    item.FromXML(xml.Root.ChildNodes[i]);
+    item.FromXML(xml.Root.ChildNodes[I]);
   end;
 end;
 
-function TSEMethodList.GenerateFunctionInsertNames: TStringList;
+function TSEMethodList.GenerateMethodInsertNames: TStringList;
 var
   I: Integer;
   s: string;
@@ -320,7 +345,7 @@ begin
   Result.Add('');
 end;
 
-function TSEMethodList.GenerateFunctionItemList: TStringList;
+function TSEMethodList.GenerateMethodItemList: TStringList;
 var
   I, J: Integer;
   s, p: string;
@@ -329,29 +354,34 @@ begin
 
   for I := 0 to Count - 1 do
   begin
-    s := TSEMethod.MethodTypeToStr(Items[I].MethodType) + ' \column{}' +
-         Items[I].MethodName + '(';
     p := '';
+    s := TSEMethod.MethodTypeToStr(Items[I].MethodType) + ' \column{}' +
+         Items[I].MethodName;
 
-    for J := 0 to Items[I].Params.Count - 1 do
+    if Items[I].Params.Count > 0 then
     begin
-      case Items[I].Params.Items[J].Flag of
-        pfVar, pfConst: p := p    + TSEParam.ParamFlagToStr(Items[I].Params.Items[J].Flag) +
-                             ' '  + Items[I].Params.Items[J].ParamName +
-                             ': ' + Items[I].Params.Items[J].ParamType;
-        pfOptional:     p := p     + TSEParam.ParamFlagToStr(Items[I].Params.Items[J].Flag) +
-                             ' '   + Items[I].Params.Items[J].ParamName +
-                             ': '  + Items[I].Params.Items[J].ParamType +
-                             ' = ' + Items[I].Params.Items[J].DefaultValue;
-        pfNone:         p := p     + Items[I].Params.Items[J].ParamName +
-                             ': '  + Items[I].Params.Items[J].ParamType;
+      s := s + '(';
+
+      for J := 0 to Items[I].Params.Count - 1 do
+      begin
+        case Items[I].Params.Items[J].Flag of
+          pfVar, pfConst: p := p    + TSEParam.ParamFlagToStr(Items[I].Params.Items[J].Flag) +
+                               ' '  + Items[I].Params.Items[J].ParamName +
+                               ': ' + Items[I].Params.Items[J].ParamType;
+          pfOptional:     p := p     + TSEParam.ParamFlagToStr(Items[I].Params.Items[J].Flag) +
+                               ' '   + Items[I].Params.Items[J].ParamName +
+                               ': '  + Items[I].Params.Items[J].ParamType +
+                               ' = ' + Items[I].Params.Items[J].DefaultValue;
+          pfNone:         p := p     + Items[I].Params.Items[J].ParamName +
+                               ': '  + Items[I].Params.Items[J].ParamType;
+        end;
+
+        if J <> Items[I].Params.Count - 1 then
+          p := p + '; ';
       end;
 
-      if J <> Items[J].Params.Count - 1 then
-        p := p + '; ';
+      s := s + p + ')';
     end;
-
-    s := s + p + ')';
 
     case Items[I].MethodType of
       ftFunction:  s := s + ': ' + Items[I].ResultType + ';';

@@ -37,6 +37,12 @@ const
   DATA_DIR_LOGS     = DATA_DIR  + 'Logs'     + PathDelim;
   DATA_DIR_EXAMPLES = DATA_DIR  + 'Examples' + PathDelim;
 
+  DICT_FILE_ACTIONS   = 'Actions.xml';
+  DICT_FILE_EVENTS    = 'Events.xml';
+  DICT_FILE_States    = 'States.xml';
+  DICT_FILE_Utils     = 'Utils.xml';
+  DICT_FILE_PASSCRIPT = 'PasScript.xml';
+
 var
   gExeDir:  string;
   gOptions: TSEOptions;
