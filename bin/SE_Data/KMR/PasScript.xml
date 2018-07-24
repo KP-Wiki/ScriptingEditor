@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<SEMethodDict>
+  <Definition Type="function" Name="Length" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="S" Type="<string or dynamic array>"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="SetLength" ResultType="">
+    <ParameterList>
+      <Parameter Name="S" Type="<string or dynamic array>" Flag="var"></Parameter>
+      <Parameter Name="NewLength" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="Low" ResultType="Ordinal">
+    <ParameterList>
+      <Parameter Name="X" Type="X" Flag="var"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="High" ResultType="Ordinal">
+    <ParameterList>
+      <Parameter Name="X" Type="X" Flag="var"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="Inc" ResultType="">
+    <ParameterList>
+      <Parameter Name="X" Type="Ordinal" Flag="var"></Parameter>
+      <Parameter Name="[N" Type="Integer]"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="Dec" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="X" Type="Ordinal" Flag="var"></Parameter>
+      <Parameter Name="[N" Type="Integer]"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="Ord" ResultType="Ordinal">
+    <ParameterList>
+      <Parameter Name="X" Type="Ordinal"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="Pred" ResultType="Ordinal">
+    <ParameterList>
+      <Parameter Name="X" Type="Ordinal"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="Succ" ResultType="Ordinal">
+    <ParameterList>
+      <Parameter Name="X" Type="Ordinal"></Parameter>
+    </ParameterList>
+  </Definition>
+</SEMethodDict>

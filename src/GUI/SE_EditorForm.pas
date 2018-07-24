@@ -38,9 +38,15 @@ type
     fConfirmReplaceDialog: TSEConfirmReplaceForm;
     fIssues:               TScriptValidatorResult;
     fRawIssues:            string;
-    procedure SynCompletionExecute(aKind: SynCompletionType; aSender: TObject;
-                                   var aCurrentInput: String; var aX, aY: Integer;
-                                   var aCanExecute: Boolean);
+    procedure SynCompletionAfterCodeCompletion(Sender: TObject; const Value: string;
+                                               Shift: TShiftState; Index: Integer;
+                                               EndToken: Char);
+    procedure SynCompletionExecute(Kind: SynCompletionType; Sender: TObject;
+                                   var CurrentInput: string; var x, y: Integer;
+                                   var CanExecute: Boolean);
+    procedure SynParamCompletionExecute(Kind: SynCompletionType; Sender: TObject;
+                                        var CurrentInput: string; var x, y: Integer;
+                                        var CanExecute: Boolean);
     procedure SynEditorReplaceText(aSender: TObject; const aSearch, aReplace: UnicodeString;
                                    aLine, aColumn: Integer; var aAction: TSynReplaceAction);
     procedure SynEditorGutterClick(aSender: TObject; aButton: TMouseButton;
@@ -208,43 +214,39 @@ begin
     eoKeepCaretX,     eoEnhanceEndKey,   eoGroupUndo
   ];
 
-
-  fSynCompletion.Editor            := fSynEdit;
-  fSynCompletion.Options           := [
+  fSynCompletion.Editor                := fSynEdit;
+  fSynCompletion.Options               := [
     scoLimitToMatchedText, scoUseInsertList,     scoUsePrettyText,
     scoUseBuiltInTimer,    scoEndCharCompletion, scoCompleteWithTab,
     scoCompleteWithEnter {, scoLimitToMatchedTextAnywhere}
   ];
-  fSynCompletion.Width             := 750;
-  fSynCompletion.NbLinesInWindow   := 15;
-  fSynCompletion.EndOfTokenChr     := '()[];';
-  fSynCompletion.TriggerChars      := '.';
-  fSynCompletion.Title             := 'Suggested completions';
-  fSynCompletion.ClTitleBackground := clInfoBk;
-  fSynCompletion.TimerInterval     := 500;
-  fSynCompletion.OnExecute         := SynCompletionExecute;
-  //fSynCompletion.OnAfterCodeCompletion := AutoCompleteAfterCodeCompletion;
-  fSynCompletion.ShortCut          := scCtrl + VK_SPACE; //Ctrl+Space
+  fSynCompletion.Width                 := 750;
+  fSynCompletion.NbLinesInWindow       := 15;
+  fSynCompletion.EndOfTokenChr         := '()[]. ;';
+  fSynCompletion.TriggerChars          := '.';
+  fSynCompletion.Title                 := 'Suggested completions';
+  fSynCompletion.ClTitleBackground     := clInfoBk;
+  fSynCompletion.TimerInterval         := 500;
+  fSynCompletion.OnExecute             := SynCompletionExecute;
+  fSynCompletion.OnAfterCodeCompletion := SynCompletionAfterCodeCompletion;
+  fSynCompletion.ShortCut              := scCtrl + VK_SPACE; //Ctrl+Space
   fSynCompletion.Columns.Clear;
 
   with fSynCompletion.Columns.Add do
     ColumnWidth := 96;
 
-  fSynParamCompletion.Editor            := fSynEdit;
-  fSynParamCompletion.DefaultType       := ctParams;
-  fSynParamCompletion.Options           := [
+  fSynParamCompletion.Editor          := fSynEdit;
+  fSynParamCompletion.DefaultType     := ctParams;
+  fSynParamCompletion.Options         := [
     scoLimitToMatchedText, scoUsePrettyText, scoUseBuiltInTimer
   ];
-  fSynParamCompletion.Width             := 262;
-  fSynParamCompletion.EndOfTokenChr     := '()[]. ;';
-  fSynParamCompletion.TriggerChars      := '(';
-  fSynParamCompletion.Title             := 'Suggested completions';
-  fSynParamCompletion.ClBackground      := clInfoBk;
-  fSynParamCompletion.ClTitleBackground := clInfoBk;
-  fSynParamCompletion.TitleFont.Style   := [fsBold];
-  fSynParamCompletion.TimerInterval     := 500;
-  //fSynParamCompletion.OnExecute         := AutoCompleteExecute;
-  fSynParamCompletion.ShortCut          := scShift + scCtrl + VK_SPACE; //Shift+Ctrl+Space
+  fSynParamCompletion.Width           := 262;
+  fSynParamCompletion.EndOfTokenChr   := '()[]. ;';
+  fSynParamCompletion.TriggerChars    := '(';
+  fSynParamCompletion.ClBackground    := clInfoBk;
+  fSynParamCompletion.TimerInterval   := 500;
+  fSynParamCompletion.OnExecute       := SynParamCompletionExecute;
+  fSynParamCompletion.ShortCut        := scShift + scCtrl + VK_SPACE; //Shift+Ctrl+Space
   fSynParamCompletion.Columns.Clear;
 
   with TSEValidationPlugin.Create(fSynEdit) do
@@ -296,101 +298,154 @@ begin
   DoAssignInterfacePointer(False);
 end;
 
-procedure TSEEditorForm.SynCompletionExecute(aKind: SynCompletionType; aSender: TObject;
-                                             var aCurrentInput: String; var aX, aY: Integer;
-                                             var aCanExecute: Boolean);
+procedure TSEEditorForm.SynCompletionAfterCodeCompletion(Sender: TObject; const Value: string;
+                                                         Shift: TShiftState; Index: Integer;
+                                                         EndToken: Char);
+begin
+  fSynParamCompletion.ActivateCompletion;
+end;
+
+procedure TSEEditorForm.SynCompletionExecute(Kind: SynCompletionType; Sender: TObject;
+                                             var CurrentInput: string; var x, y: Integer;
+                                             var CanExecute: Boolean);
 const
   LEN_UTILS   = 5;
   LEN_STATES  = 6;
   LEN_ACTIONS = 7;
 var
-  caretPos: TBufferCoord;
-  str:      string;
-  I:        Integer;
+  s: string;
+  I: Integer;
 begin
-  caretPos := fSynEdit.CaretXY;
+  CanExecute := True;
   fSynCompletion.ItemList.Clear;
   fSynCompletion.InsertList.Clear;
-  aCanExecute := True;
 
   if fSynEdit.Lines.Text <> '' then
   begin
-    str := fSynEdit.Lines[caretPos.Line - 1];
+    s := fSynEdit.LineText;
 
-    if str <> '' then
+    if s <> '' then
     begin
-      for I := caretPos.Char downto 0 do
-        if str[I] = '.' then
+      for I := fSynEdit.CaretX downto 0 do
+        if s[I] = '.' then
         begin
-          if LowerCase(Copy(str, I - LEN_UTILS, LEN_UTILS)) = 'utils' then
+          if LowerCase(Copy(s, I - LEN_ACTIONS, LEN_ACTIONS)) = 'actions' then
           begin
-            fSynCompletion.ItemList.AddStrings(gMainForm.UtilsDict);
-            fSynCompletion.InsertList.AddStrings(gMainForm.UtilsInsDict);
+            fSynCompletion.ItemList.AddStrings(gActionsMethodList.GenerateMethodItemList);
+            fSynCompletion.InsertList.AddStrings(gActionsMethodList.GenerateMethodInsertNames);
             Exit;
-          end else if LowerCase(Copy(str, I - LEN_STATES, LEN_STATES)) = 'states' then
+          end else if LowerCase(Copy(s, I - LEN_STATES, LEN_STATES)) = 'states' then
           begin
-            fSynCompletion.ItemList.AddStrings(gMainForm.StatesDict);
-            fSynCompletion.InsertList.AddStrings(gMainForm.StatesInsDict);
+            fSynCompletion.ItemList.AddStrings(gStatesMethodList.GenerateMethodItemList);
+            fSynCompletion.InsertList.AddStrings(gStatesMethodList.GenerateMethodInsertNames);
             Exit;
-          end else if LowerCase(Copy(str, I - LEN_ACTIONS, LEN_ACTIONS)) = 'actions' then
+          end else if LowerCase(Copy(s, I - LEN_UTILS, LEN_UTILS)) = 'utils' then
           begin
-            fSynCompletion.ItemList.AddStrings(gMainForm.ActionsDict);
-            fSynCompletion.InsertList.AddStrings(gMainForm.ActionsInsDict);
+            fSynCompletion.ItemList.AddStrings(gUtilsMethodList.GenerateMethodItemList);
+            fSynCompletion.InsertList.AddStrings(gUtilsMethodList.GenerateMethodInsertNames);
             Exit;
           end;
         end;
     end;
+  end;
 
-    fSynCompletion.ItemList.AddStrings(gMainForm.PasScriptDict);
-    fSynCompletion.InsertList.AddStrings(gMainForm.PasScriptInsDict);
-    fSynCompletion.ItemList.AddStrings(gMainForm.UtilsDict);
-    fSynCompletion.InsertList.AddStrings(gMainForm.UtilsInsDict);
-    fSynCompletion.ItemList.AddStrings(gMainForm.EventsDict);
-    fSynCompletion.InsertList.AddStrings(gMainForm.EventsInsDict);
-    fSynCompletion.ItemList.AddStrings(gMainForm.StatesDict);
-    fSynCompletion.InsertList.AddStrings(gMainForm.StatesInsDict);
-    fSynCompletion.ItemList.AddStrings(gMainForm.ActionsDict);
-    fSynCompletion.InsertList.AddStrings(gMainForm.ActionsInsDict);
+  fSynCompletion.ItemList.AddStrings(gPasScriptMethodList.GenerateMethodItemList);
+  fSynCompletion.InsertList.AddStrings(gPasScriptMethodList.GenerateMethodInsertNames);
+  fSynCompletion.ItemList.AddStrings(gEventsMethodList.GenerateMethodItemList);
+  fSynCompletion.InsertList.AddStrings(gEventsMethodList.GenerateMethodInsertNames);
+end;
 
-    {
-    if fSynEdit.Lines[caretPos.Line - 1][caretPos.Char - 1] = '.' then
-    begin
-      if LowerCase(Copy(fSynEdit.Lines[caretPos.Line - 1],
-                        caretPos.Char - (LEN_UTILS + 1), LEN_UTILS)) = 'utils' then
-      begin
-        fSynCompletion.ItemList.AddStrings(gMainForm.UtilsDict);
-        fSynCompletion.InsertList.AddStrings(gMainForm.UtilsInsDict);
-      end else if LowerCase(Copy(fSynEdit.Lines[caretPos.Line - 1],
-                        caretPos.Char - (LEN_STATES + 1), LEN_STATES)) = 'states' then
-      begin
-        fSynCompletion.ItemList.AddStrings(gMainForm.StatesDict);
-        fSynCompletion.InsertList.AddStrings(gMainForm.StatesInsDict);
-      end else if LowerCase(Copy(fSynEdit.Lines[caretPos.Line - 1],
-                        caretPos.Char - (LEN_ACTIONS + 1), LEN_ACTIONS)) = 'actions' then
-      begin
-        fSynCompletion.ItemList.AddStrings(gMainForm.ActionsDict);
-        fSynCompletion.InsertList.AddStrings(gMainForm.ActionsInsDict);
-      end
-    end else
-    begin
-      fSynCompletion.ItemList.AddStrings(gMainForm.PasScriptDict);
-      fSynCompletion.InsertList.AddStrings(gMainForm.PasScriptInsDict);
-      fSynCompletion.ItemList.AddStrings(gMainForm.UtilsDict);
-      fSynCompletion.InsertList.AddStrings(gMainForm.UtilsInsDict);
-      fSynCompletion.ItemList.AddStrings(gMainForm.EventsDict);
-      fSynCompletion.InsertList.AddStrings(gMainForm.EventsInsDict);
-      fSynCompletion.ItemList.AddStrings(gMainForm.StatesDict);
-      fSynCompletion.InsertList.AddStrings(gMainForm.StatesInsDict);
-      fSynCompletion.ItemList.AddStrings(gMainForm.ActionsDict);
-      fSynCompletion.InsertList.AddStrings(gMainForm.ActionsInsDict);
-    end;
-    }
-  end else
+procedure TSEEditorForm.SynParamCompletionExecute(Kind: SynCompletionType; Sender: TObject;
+                                                  var CurrentInput: string; var x, y: Integer;
+                                                  var CanExecute: Boolean);
+var
+  lookup,
+  curLineStr: string;
+  tmpX,
+  oldPos,
+  startX,
+  counter,
+  tmpLoc:     Integer;
+  found:      Boolean;
+begin
+  curLineStr := fSynEdit.LineText;
+  tmpX       := fSynEdit.CaretX;
+  found      := False;
+  tmpLoc     := 0;
+
+  // Go back from caret to find the first open bracket
+  if tmpX > Length(curLineStr) then
+    tmpX := Length(curLineStr)
+  else
+    Dec(tmpX);
+
+  while (tmpX > 0) and not found do
   begin
-    fSynCompletion.ItemList.AddStrings(gMainForm.PasScriptDict);
-    fSynCompletion.InsertList.AddStrings(gMainForm.PasScriptInsDict);
-    fSynCompletion.ItemList.AddStrings(gMainForm.EventsDict);
-    fSynCompletion.InsertList.AddStrings(gMainForm.EventsInsDict);
+    if curLineStr[tmpX] = ',' then
+    begin
+      Inc(tmpLoc);
+      Dec(tmpX);
+    end else if curLineStr[tmpX] = ')' then
+    begin
+      // Found a close, go till a new open is found
+      counter := 1;
+      Dec(tmpX);
+
+      while (tmpX > 0) and (counter > 0) do
+      begin
+        if curLineStr[tmpX] = ')' then
+          Inc(counter)
+        else if curLineStr[tmpX] = '(' then
+          Dec(counter);
+
+        Dec(tmpX);
+      end;
+
+      if tmpX > 0 then
+        Dec(tmpX);
+    end else if curLineStr[tmpX] = '(' then
+    begin
+      // Found a valid open, check what's infront of it
+      startX := tmpX;
+
+      while (tmpX > 0) and not CharInSet(curLineStr[tmpX], TSynValidStringChars) do
+        Dec(tmpX);
+
+      if tmpX > 0 then
+      begin
+        oldPos := tmpX;
+
+        while (tmpX > 0) and CharInSet(curLineStr[tmpX], TSynValidStringChars) do
+          Dec(tmpX);
+
+        Inc(tmpX);
+        lookup := UpperCase(Copy(curLineStr, tmpX, oldPos - tmpX + 1));
+        found  := gAllACItems.IndexOf(Lookup) > -1;
+
+        if not found then
+        begin
+          tmpX := startX;
+          Dec(tmpX);
+        end;
+      end;
+    end else
+      Dec(tmpX);
+  end;
+
+  CanExecute := found;
+
+  if found then
+  begin
+    fSynParamCompletion.Form.CurrentIndex := tmpLoc;
+
+    if lookup <> fSynParamCompletion.PreviousToken then
+    begin
+      fSynParamCompletion.ItemList.Clear;
+      fSynParamCompletion.ItemList.Add(
+        gAllACInserts[gAllACItems.IndexOf(lookup)]
+      );
+    end else
+      fSynParamCompletion.ItemList.Clear;
   end;
 end;
 
@@ -696,7 +751,7 @@ begin
   }
 
   if fConfirmReplaceDialog <> nil then
-    fConfirmReplaceDialog.Free;
+    FreeAndNil(fConfirmReplaceDialog);
 end;
 
 procedure TSEEditorForm.DoValidate;

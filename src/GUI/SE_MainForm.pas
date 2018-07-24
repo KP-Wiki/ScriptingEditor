@@ -111,20 +111,10 @@ type
     fLbEvents,
     fLBStates,
     fLBActions,
-    fLBUtils:          TSESnippetListBox;
-    fLbIssues:         TSEIssueListBox;
-    fEventsDict,
-    fEventsInsDict,
-    fStatesDict,
-    fStatesInsDict,
-    fActionsDict,
-    fActionsInsDict,
-    fUtilsDict,
-    fUtilsInsDict,
-    fPasScriptDict,
-    fPasScriptInsDict: TStringList;
-    fHintIndex:        Integer;
-    fMRIItems:         array[0..9] of TMenuItem;
+    fLBUtils:   TSESnippetListBox;
+    fLbIssues:  TSEIssueListBox;
+    fHintIndex: Integer;
+    fMRIItems:  array[0..9] of TMenuItem;
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
     procedure FLbIssuesDblClick(Sender: TObject);
     procedure FLbSnippetsDblClick(Sender: TObject);
@@ -140,24 +130,14 @@ type
     function ExecuteScriptValidator(const aFileName: string): string;
     procedure ReloadDictionaries;
     procedure SetListboxesVisible(aState: Boolean);
-    property EventsDict:       TStringList     read fEventsDict;
-    property EventsInsDict:    TStringList     read fEventsInsDict;
-    property StatesDict:       TStringList     read fStatesDict;
-    property StatesInsDict:    TStringList     read fStatesInsDict;
-    property ActionsDict:      TStringList     read fActionsDict;
-    property ActionsInsDict:   TStringList     read fActionsInsDict;
-    property UtilsDict:        TStringList     read fUtilsDict;
-    property UtilsInsDict:     TStringList     read fUtilsInsDict;
-    property PasScriptDict:    TStringList     read fPasScriptDict;
-    property PasScriptInsDict: TStringList     read fPasScriptInsDict;
-    property LbIssues:         TSEIssueListBox read fLbIssues;
+    property LbIssues: TSEIssueListBox read fLbIssues;
   end;
 
 implementation
 {$R *.dfm}
 uses
   IOUtils, SysUtils, ClipBrd, ShellAPI, UITypes, IniFiles,
-  SE_Globals, SE_Log, SE_Exceptions, SE_WelcomeTab;
+  SE_Globals, SE_Log, SE_Exceptions, SE_WelcomeTab, SE_ACMethods;
 
 { TScriptingEditorForm }
 procedure TSEMainForm.FormCreate(Sender: TObject);
@@ -181,21 +161,19 @@ begin
   fMRIItems[8] := mri9;
   fMRIItems[9] := mri10;
 
-  fLbEvents         := TSESnippetListBox.Create(tsEvents);
-  fLBStates         := TSESnippetListBox.Create(tsStates);
-  fLBActions        := TSESnippetListBox.Create(tsActions);
-  fLBUtils          := TSESnippetListBox.Create(tsUtils);
-  fLbIssues         := TSEIssueListBox.Create(tsIssues);
-  fEventsDict       := TStringList.Create;
-  fEventsInsDict    := TStringList.Create;
-  fStatesDict       := TStringList.Create;
-  fStatesInsDict    := TStringList.Create;
-  fActionsDict      := TStringList.Create;
-  fActionsInsDict   := TStringList.Create;
-  fUtilsDict        := TStringList.Create;
-  fUtilsInsDict     := TStringList.Create;
-  fPasScriptDict    := TStringList.Create;
-  fPasScriptInsDict := TStringList.Create;
+  fLbEvents  := TSESnippetListBox.Create(tsEvents);
+  fLBStates  := TSESnippetListBox.Create(tsStates);
+  fLBActions := TSESnippetListBox.Create(tsActions);
+  fLBUtils   := TSESnippetListBox.Create(tsUtils);
+  fLbIssues  := TSEIssueListBox.Create(tsIssues);
+
+  gAllACItems          := TStringList.Create;
+  gAllACInserts        := TStringList.Create;
+  gActionsMethodList   := TSEMethodList.Create;
+  gEventsMethodList    := TSEMethodList.Create;
+  gStatesMethodList    := TSEMethodList.Create;
+  gUtilsMethodList     := TSEMethodList.Create;
+  gPasScriptMethodList := TSEMethodList.Create;
 
   fLbIssues.Parent       := tsIssues;
   fLbIssues.Align        := alClient;
@@ -259,16 +237,13 @@ begin
   FreeAndNil(fLBActions);
   FreeAndNil(fLBUtils);
   FreeAndNil(fLbIssues);
-  FreeAndNil(fEventsDict);
-  FreeAndNil(fEventsInsDict);
-  FreeAndNil(fStatesDict);
-  FreeAndNil(fStatesInsDict);
-  FreeAndNil(fActionsDict);
-  FreeAndNil(fActionsInsDict);
-  FreeAndNil(fUtilsDict);
-  FreeAndNil(fUtilsInsDict);
-  FreeAndNil(fPasScriptDict);
-  FreeAndNil(fPasScriptInsDict);
+  FreeAndNil(gAllACItems);
+  FreeAndNil(gAllACInserts);
+  FreeAndNil(gActionsMethodList);
+  FreeAndNil(gEventsMethodList);
+  FreeAndNil(gStatesMethodList);
+  FreeAndNil(gUtilsMethodList);
+  FreeAndNil(gPasScriptMethodList);
 end;
 
 procedure TSEMainForm.FormShow(Sender: TObject);
@@ -347,7 +322,6 @@ begin
   GoToIssue(fLbIssues.ItemAtPos(cursorPos, True));
 end;
 
-
 procedure TSEMainForm.FLbSnippetsDblClick(Sender: TObject);
 var
   cursorPos: TPoint;
@@ -368,7 +342,6 @@ begin
   Clipboard.AsText := temp;
 end;
 
-
 procedure TSEMainForm.FLbIssuesMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   popPos,
@@ -384,7 +357,6 @@ begin
       pmIssues.Popup(popPos.X, popPos.Y);
   end;
 end;
-
 
 procedure TSEMainForm.FLbIssuesMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 var
@@ -413,7 +385,6 @@ begin
 
   fLbIssues.Hint := Format('[%d:%d] %s', [issue.Line, issue.Column, issue.Msg]);
 end;
-
 
 procedure TSEMainForm.FLbSnippetsMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 var
@@ -445,7 +416,6 @@ begin
   listBox.Hint := snippet;
 end;
 
-
 procedure TSEMainForm.GoToIssue(aIndex: Integer);
 var
   issue: TScriptValidatorIssue;
@@ -464,7 +434,6 @@ begin
   gActiveEditor.SetCaret(issue.Column, issue.Line);
 end;
 
-
 procedure TSEMainForm.CopyIssue(aIndex: Integer);
 var
   issue: TScriptValidatorIssue;
@@ -478,7 +447,6 @@ begin
                              [issue.Line, issue.Column, issue.Module,
                               issue.Param, issue.Msg]);
 end;
-
 
 function TSEMainForm.ExecuteScriptValidator(const aFileName: string): string;
 var
@@ -498,26 +466,19 @@ begin
   Result  := '';
   Command := Format(SV_EXE_FORMAT, [GetDataDir, aFileName]);
 
-  with SA do begin
-    nLength              := SizeOf(SA);
-    bInheritHandle       := True;
-    lpSecurityDescriptor := nil;
-  end;
-
+  SA.nLength              := SizeOf(SA);
+  SA.bInheritHandle       := True;
+  SA.lpSecurityDescriptor := nil;
   CreatePipe(StdOutPipeRead, StdOutPipeWrite, @SA, 0);
 
   try
     ZeroMemory(@SI, SizeOf(SI));
-
-    with SI do
-    begin
-      cb          := SizeOf(SI);
-      dwFlags     := STARTF_USESHOWWINDOW or STARTF_USESTDHANDLES;
-      wShowWindow := SW_HIDE;
-      hStdInput   := GetStdHandle(STD_INPUT_HANDLE); // Don't redirect stdin
-      hStdOutput  := StdOutPipeWrite;
-      hStdError   := StdOutPipeWrite;
-    end;
+    SI.cb          := SizeOf(SI);
+    SI.dwFlags     := STARTF_USESHOWWINDOW or STARTF_USESTDHANDLES;
+    SI.wShowWindow := SW_HIDE;
+    SI.hStdInput   := GetStdHandle(STD_INPUT_HANDLE); // Don't redirect stdin
+    SI.hStdOutput  := StdOutPipeWrite;
+    SI.hStdError   := StdOutPipeWrite;
 
     if CreateProcess(nil, PChar(Command), nil, nil, True, 0, nil, PChar(gExeDir), SI, PI) then
       try
@@ -551,47 +512,46 @@ end;
 
 procedure TSEMainForm.ReloadDictionaries;
 begin
-  fEventsDict.LoadFromFile(GetDataDir       + 'Events.dict');
-  fEventsInsDict.LoadFromFile(GetDataDir    + 'Events.ins.dict');
-  fStatesDict.LoadFromFile(GetDataDir       + 'States.dict');
-  fStatesInsDict.LoadFromFile(GetDataDir    + 'States.ins.dict');
-  fActionsDict.LoadFromFile(GetDataDir      + 'Actions.dict');
-  fActionsInsDict.LoadFromFile(GetDataDir   + 'Actions.ins.dict');
-  fUtilsDict.LoadFromFile(GetDataDir        + 'Utils.dict');
-  fUtilsInsDict.LoadFromFile(GetDataDir     + 'Utils.ins.dict');
-  fPasScriptDict.LoadFromFile(GetDataDir    + 'PasScript.dict');
-  fPasScriptInsDict.LoadFromFile(GetDataDir + 'PasScript.ins.dict');
+  gAllACItems.Clear;
+  gAllACInserts.Clear;
+  gActionsMethodList.LoadFromFile(GetDataDir + DICT_FILE_ACTIONS);
+  gEventsMethodList.LoadFromFile(GetDataDir + DICT_FILE_EVENTS);
+  gStatesMethodList.LoadFromFile(GetDataDir + DICT_FILE_STATES);
+  gUtilsMethodList.LoadFromFile(GetDataDir + DICT_FILE_UTILS);
+  gPasScriptMethodList.LoadFromFile(GetDataDir + DICT_FILE_PASSCRIPT);
   gLog.AddTime('Dictionaries loaded');
 
-  with fLbEvents do
-  begin
-    Clear;
-    AppendSnippets(fEventsDict, fEventsInsDict, True);
-    SetListboxScrollWidth(fLbEvents);
-  end;
+  fLBActions.Clear;
+  fLBActions.AppendSnippets(gActionsMethodList.GenerateMethodItemList,
+                            gActionsMethodList.GenerateMethodInsertNames);
+  SetListboxScrollWidth(fLBActions);
+  gAllACItems.AddStrings(gActionsMethodList.GenerateParameterLookupList);
+  gAllACInserts.AddStrings(gActionsMethodList.GenerateParameterInsertList);
 
-  with fLBStates do
-  begin
-    Clear;
-    AppendSnippets(fStatesDict, fStatesInsDict);
-    SetListboxScrollWidth(fLBStates);
-  end;
+  fLbEvents.Clear;
+  fLbEvents.AppendSnippets(gEventsMethodList.GenerateMethodItemList,
+                           gEventsMethodList.GenerateMethodInsertNames, True);
+  SetListboxScrollWidth(fLbEvents);
+  gAllACItems.AddStrings(gEventsMethodList.GenerateParameterLookupList);
+  gAllACInserts.AddStrings(gEventsMethodList.GenerateParameterInsertList);
 
-  with fLBActions do
-  begin
-    Clear;
-    AppendSnippets(fActionsDict, fActionsInsDict);
-    SetListboxScrollWidth(fLBActions);
-  end;
+  fLBStates.Clear;
+  fLBStates.AppendSnippets(gStatesMethodList.GenerateMethodItemList,
+                           gStatesMethodList.GenerateMethodInsertNames);
+  SetListboxScrollWidth(fLBStates);
+  gAllACItems.AddStrings(gStatesMethodList.GenerateParameterLookupList);
+  gAllACInserts.AddStrings(gStatesMethodList.GenerateParameterInsertList);
 
-  with fLBUtils do
-  begin
-    Clear;
-    AppendSnippets(fUtilsDict, fUtilsInsDict);
-    SetListboxScrollWidth(fLBUtils);
-  end;
+  fLBUtils.Clear;
+  fLBUtils.AppendSnippets(gUtilsMethodList.GenerateMethodItemList,
+                          gUtilsMethodList.GenerateMethodInsertNames);
+  SetListboxScrollWidth(fLBUtils);
+  gAllACItems.AddStrings(gUtilsMethodList.GenerateParameterLookupList);
+  gAllACInserts.AddStrings(gUtilsMethodList.GenerateParameterInsertList);
+
+  gAllACItems.AddStrings(gPasScriptMethodList.GenerateParameterLookupList);
+  gAllACInserts.AddStrings(gPasScriptMethodList.GenerateParameterInsertList);
 end;
-
 
 procedure TSEMainForm.SetListboxesVisible(aState: Boolean);
 begin
@@ -604,7 +564,6 @@ begin
     fLBUtils.Visible   := aState;
   end;
 end;
-
 
 procedure TSEMainForm.ReadSettings;
 var

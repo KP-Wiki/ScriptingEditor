@@ -56,11 +56,10 @@
         <SanitizedProjectName>ScriptingEditor</SanitizedProjectName>
         <DCC_UnitSearchPath>.\src\Common;.\src\Common\SynEdit;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_Locale>2057</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.6.3.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=2.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_MinorVer>6</VerInfo_MinorVer>
         <VerInfo_PreRelease>true</VerInfo_PreRelease>
-        <VerInfo_Release>3</VerInfo_Release>
+        <VerInfo_MajorVer>2</VerInfo_MajorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_UsePackage>rtl;fmxase;vcl;CustomIPTransport;vclactnband;vcldsnap;IndyCore;IndySystem;IcsFmxDXE8Run;vclx;bindcomp;tethering;svnui;appanalytics;dsnap;IcsVclDXE8Run;bindcompvcl;vclimg;vcltouch;IcsCommonDXE8Run;VclSmp;vcldb;bindcompfmx;svn;vclie;bindengine;dbrtl;IndyProtocols;fmx;fmxdae;xmlrtl;fmxobj;vclwinx;$(DCC_UsePackage)</DCC_UsePackage>

@@ -25,8 +25,8 @@ type
     function GetSnippet(aDisplayText: string): string; overload;
     function GetSnippet(aIndex: Integer): string; overload;
     procedure AppendSnippets(aSnippetArray: TSESnippetArray); overload;
-    procedure AppendSnippets(var aDisplayTextDict: TStringList;
-                             var aSnippetTextDict: TStringList;
+    procedure AppendSnippets(const aDisplayTextDict: TStringList;
+                             const aSnippetTextDict: TStringList;
                              indAppendBeginEnd: Boolean = False); overload;
   published
     property Snippets: TSESnippetArray read GetSnippets write SetSnippets;
@@ -110,8 +110,8 @@ begin
     AddSnippet(item);
 end;
 
-procedure TSESnippetListBox.AppendSnippets(var aDisplayTextDict: TStringList;
-                                           var aSnippetTextDict: TStringList;
+procedure TSESnippetListBox.AppendSnippets(const aDisplayTextDict: TStringList;
+                                           const aSnippetTextDict: TStringList;
                                            indAppendBeginEnd: Boolean = False);
 const
   EOL              = #13#10;

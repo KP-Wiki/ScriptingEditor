@@ -16,6 +16,7 @@ object Form1: TForm1
   Font.Name = 'Courier New'
   Font.Style = []
   OldCreateOrder = False
+  OnDestroy = FormDestroy
   OnShow = FormShow
   DesignSize = (
     1107
@@ -54,43 +55,43 @@ object Form1: TForm1
     OnExit = Edit1Exit
     OnKeyPress = Edit1KeyPress
   end
-  object Button1: TButton
-    Left = 728
+  object btnAddNew: TButton
+    Left = 544
     Top = 441
     Width = 161
     Height = 25
     Caption = 'Add New Item'
     TabOrder = 2
-    OnClick = Button1Click
+    OnClick = btnAddNewClick
   end
-  object Button2: TButton
-    Left = 728
+  object btnDeleteSelected: TButton
+    Left = 544
     Top = 482
     Width = 161
     Height = 25
     Caption = 'Delete Selected Item'
     TabOrder = 3
-    OnClick = Button2Click
+    OnClick = btnDeleteSelectedClick
   end
-  object Button3: TButton
+  object btnSave: TButton
     Left = 928
     Top = 482
     Width = 161
     Height = 25
     Caption = 'Save'
     TabOrder = 4
-    OnClick = Button3Click
+    OnClick = btnSaveClick
   end
-  object Button4: TButton
+  object btnReset: TButton
     Left = 928
     Top = 441
     Width = 161
     Height = 25
     Caption = 'Reset'
     TabOrder = 5
-    OnClick = Button4Click
+    OnClick = btnResetClick
   end
-  object RadioGroup1: TRadioGroup
+  object rgGame: TRadioGroup
     Left = 16
     Top = 441
     Width = 161
@@ -101,9 +102,9 @@ object Form1: TForm1
       'KaM Remake'
       'Knights Province')
     TabOrder = 6
-    OnClick = RadioGroup1Click
+    OnClick = rgGameClick
   end
-  object ComboBox1: TComboBox
+  object cbDict: TComboBox
     Left = 199
     Top = 462
     Width = 155
@@ -113,12 +114,21 @@ object Form1: TForm1
     ItemIndex = 0
     TabOrder = 7
     Text = 'Actions'
-    OnChange = ComboBox1Change
+    OnChange = cbDictChange
     Items.Strings = (
       'Actions'
       'Events'
       'States'
       'Utils'
       'PasScript')
+  end
+  object btnA1Import: TButton
+    Left = 744
+    Top = 441
+    Width = 161
+    Height = 25
+    Caption = 'Import SE A1 Dict'
+    TabOrder = 8
+    OnClick = btnA1ImportClick
   end
 end

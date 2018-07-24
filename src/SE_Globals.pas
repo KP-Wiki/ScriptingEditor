@@ -2,8 +2,8 @@ unit SE_Globals;
 
 interface
 uses
-  Messages, SysUtils, StdCtrls,
-  SE_Interfaces, SE_MainForm, SE_SnippetListBox, SE_IssueListBox;
+  Messages, SysUtils, StdCtrls, Classes,
+  SE_Interfaces, SE_MainForm, SE_SnippetListBox, SE_IssueListBox, SE_ACMethods;
 
 type
   TSEFontOptions = record
@@ -24,7 +24,7 @@ const
   NON_EXISTING_ITEM = -1;
 
   VERSION_PREFIX = 'Alpha ';
-  VERSION        = '1.6.3';
+  VERSION        = '2.0.0';
   VERSION_SUFFIX = ' DEV ONLY!';
   FULL_VERSION   = VERSION_PREFIX + VERSION + VERSION_SUFFIX;
 
@@ -39,9 +39,12 @@ const
 
   DICT_FILE_ACTIONS   = 'Actions.xml';
   DICT_FILE_EVENTS    = 'Events.xml';
-  DICT_FILE_States    = 'States.xml';
-  DICT_FILE_Utils     = 'Utils.xml';
+  DICT_FILE_STATES    = 'States.xml';
+  DICT_FILE_UTILS     = 'Utils.xml';
   DICT_FILE_PASSCRIPT = 'PasScript.xml';
+
+  TSynSpecialChars     = [#128..#255]; // MG: special chars. Meaning depends on system encoding/codepage.
+  TSynValidStringChars = ['_', '0'..'9', 'A'..'Z', 'a'..'z'] + TSynSpecialChars;
 
 var
   gExeDir:  string;
@@ -59,6 +62,14 @@ var
   gReplaceAll:         Boolean;
   gReplaceText,
   gReplaceTextHistory: string;
+
+  gAllACInserts,
+  gAllACItems:          TStringList;
+  gActionsMethodList,
+  gEventsMethodList,
+  gStatesMethodList,
+  gUtilsMethodList,
+  gPasScriptMethodList: TSEMethodList;
 
   gMainForm:      TSEMainForm;
   gEditorFactory: ISEEditorFactory;
