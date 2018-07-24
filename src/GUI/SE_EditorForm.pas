@@ -218,11 +218,11 @@ begin
   fSynCompletion.Options               := [
     scoLimitToMatchedText, scoUseInsertList,     scoUsePrettyText,
     scoUseBuiltInTimer,    scoEndCharCompletion, scoCompleteWithTab,
-    scoCompleteWithEnter {, scoLimitToMatchedTextAnywhere}
+    scoCompleteWithEnter {,  scoLimitToMatchedTextAnywhere}
   ];
   fSynCompletion.Width                 := 750;
   fSynCompletion.NbLinesInWindow       := 15;
-  fSynCompletion.EndOfTokenChr         := '()[]. ;';
+  fSynCompletion.EndOfTokenChr         := '()[] ;';
   fSynCompletion.TriggerChars          := '.';
   fSynCompletion.Title                 := 'Suggested completions';
   fSynCompletion.ClTitleBackground     := clInfoBk;
@@ -735,20 +735,6 @@ begin
     if fSynEdit.SearchReplace(gSearchText, gReplaceText, Options) = 0 then
       fSynEdit.CaretXY := CaretPosOld;
   end;
-
-  {
-  if SynEditor.SearchReplace(gSearchText, gReplaceText, Options) = 0 then
-  begin
-    MessageBeep(MB_ICONASTERISK);
-
-    if ssoBackwards in Options then
-      fSynEdit.BlockEnd := fSynEdit.BlockBegin
-    else
-      fSynEdit.BlockBegin := fSynEdit.BlockEnd;
-
-    fSynEdit.CaretXY := fSynEdit.BlockBegin;
-  end;
-  }
 
   if fConfirmReplaceDialog <> nil then
     FreeAndNil(fConfirmReplaceDialog);

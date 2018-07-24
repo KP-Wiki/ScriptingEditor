@@ -167,13 +167,14 @@ begin
   fLBUtils   := TSESnippetListBox.Create(tsUtils);
   fLbIssues  := TSEIssueListBox.Create(tsIssues);
 
-  gAllACItems          := TStringList.Create;
-  gAllACInserts        := TStringList.Create;
-  gActionsMethodList   := TSEMethodList.Create;
-  gEventsMethodList    := TSEMethodList.Create;
-  gStatesMethodList    := TSEMethodList.Create;
-  gUtilsMethodList     := TSEMethodList.Create;
-  gPasScriptMethodList := TSEMethodList.Create;
+  gAllACItems                   := TStringList.Create;
+  gAllACInserts                 := TStringList.Create;
+  gActionsMethodList            := TSEMethodList.Create;
+  gEventsMethodList             := TSEMethodList.Create;
+  gEventsMethodList.IsEventList := True;
+  gStatesMethodList             := TSEMethodList.Create;
+  gUtilsMethodList              := TSEMethodList.Create;
+  gPasScriptMethodList          := TSEMethodList.Create;
 
   fLbIssues.Parent       := tsIssues;
   fLbIssues.Align        := alClient;
@@ -522,33 +523,30 @@ begin
   gLog.AddTime('Dictionaries loaded');
 
   fLBActions.Clear;
+  fLbEvents.Clear;
+  fLBStates.Clear;
+  fLBUtils.Clear;
+
   fLBActions.AppendSnippets(gActionsMethodList.GenerateMethodItemList,
                             gActionsMethodList.GenerateMethodInsertNames);
-  SetListboxScrollWidth(fLBActions);
-  gAllACItems.AddStrings(gActionsMethodList.GenerateParameterLookupList);
-  gAllACInserts.AddStrings(gActionsMethodList.GenerateParameterInsertList);
-
-  fLbEvents.Clear;
   fLbEvents.AppendSnippets(gEventsMethodList.GenerateMethodItemList,
-                           gEventsMethodList.GenerateMethodInsertNames, True);
-  SetListboxScrollWidth(fLbEvents);
-  gAllACItems.AddStrings(gEventsMethodList.GenerateParameterLookupList);
-  gAllACInserts.AddStrings(gEventsMethodList.GenerateParameterInsertList);
-
-  fLBStates.Clear;
+                           gEventsMethodList.GenerateMethodInsertNames);
   fLBStates.AppendSnippets(gStatesMethodList.GenerateMethodItemList,
                            gStatesMethodList.GenerateMethodInsertNames);
-  SetListboxScrollWidth(fLBStates);
-  gAllACItems.AddStrings(gStatesMethodList.GenerateParameterLookupList);
-  gAllACInserts.AddStrings(gStatesMethodList.GenerateParameterInsertList);
-
-  fLBUtils.Clear;
   fLBUtils.AppendSnippets(gUtilsMethodList.GenerateMethodItemList,
                           gUtilsMethodList.GenerateMethodInsertNames);
+
+  SetListboxScrollWidth(fLBActions);
+  SetListboxScrollWidth(fLbEvents);
+  SetListboxScrollWidth(fLBStates);
   SetListboxScrollWidth(fLBUtils);
+
+  gAllACItems.AddStrings(gActionsMethodList.GenerateParameterLookupList);
+  gAllACInserts.AddStrings(gActionsMethodList.GenerateParameterInsertList);
+  gAllACItems.AddStrings(gStatesMethodList.GenerateParameterLookupList);
+  gAllACInserts.AddStrings(gStatesMethodList.GenerateParameterInsertList);
   gAllACItems.AddStrings(gUtilsMethodList.GenerateParameterLookupList);
   gAllACInserts.AddStrings(gUtilsMethodList.GenerateParameterInsertList);
-
   gAllACItems.AddStrings(gPasScriptMethodList.GenerateParameterLookupList);
   gAllACInserts.AddStrings(gPasScriptMethodList.GenerateParameterInsertList);
 end;

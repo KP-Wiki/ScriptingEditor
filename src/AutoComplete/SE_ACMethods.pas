@@ -1,5 +1,4 @@
 unit SE_ACMethods;
-{$M+}
 
 interface
 uses
@@ -16,25 +15,25 @@ const
   );
 
 type
-  TSEMethod = class
+  TSEMethod = class(TObject)
   public
     MethodType:     TSEMethodType;
     Params:         TSEParamList;
     MethodName,
     ResultType:     string;
+    class function MethodTypeToStr(aType: TSEMethodType): string;
+    class function StrToMethodType(aValue: string): TSEMethodType;
+    class function ParseMethodStr(aValue: string): TSEMethod;
     constructor Create;
     destructor Destroy; override;
     procedure AppendToXML(const aParent: TXmlNode);
     procedure FromXML(const aNode: TXmlNode);
-  published
-    class function MethodTypeToStr(aType: TSEMethodType): string;
-    class function StrToMethodType(aValue: string): TSEMethodType;
-    class function ParseMethodStr(aValue: string): TSEMethod;
   end;
 
   TSEMethodList = class(TObjectList<TSEMethod>)
   public
-    property Items;
+    IsEventList: Boolean;
+    constructor Create(aOwnsObjects: Boolean = True); overload;
     function NewItem: TSEMethod;
     function IndexByName(aMethodName: string): Integer; virtual;
     procedure SaveToFile(aFileName: string);
@@ -279,6 +278,12 @@ begin
 end;
 
 { TSEMethodList }
+constructor TSEMethodList.Create(aOwnsObjects: Boolean = True);
+begin
+  Inherited Create(aOwnsObjects);
+  IsEventList := False;
+end;
+
 function TSEMethodList.NewItem: TSEMethod;
 begin
   Result := TSEMethod.Create;
@@ -330,16 +335,56 @@ begin
 end;
 
 function TSEMethodList.GenerateMethodInsertNames: TStringList;
+const
+  EOL              = #13#10;
+  DEOL             = #13#10#13#10;
+  BEGIN_END_CLAUSE = EOL + 'begin' + DEOL + 'end;'  + EOL;
 var
-  I: Integer;
-  s: string;
+  I, J: Integer;
+  s, p: string;
 begin
   Result := TStringList.Create;
 
   for I := 0 to Count - 1 do
   begin
-    s := Items[I].MethodName + '(';
-    Result.Add(s);
+    if IsEventList then
+    begin
+      s := TSEMethod.MethodTypeToStr(Items[I].MethodType) + ' ' + Items[I].MethodName;
+
+      if Items[I].Params.Count > 0 then
+      begin
+        p := '';
+        s := s + '(';
+
+        for J := 0 to Items[I].Params.Count - 1 do
+        begin
+          case Items[I].Params.Items[J].Flag of
+            pfVar, pfConst: p := p    + TSEParam.ParamFlagToStr(Items[I].Params.Items[J].Flag) +
+                                 ' '  + Items[I].Params.Items[J].ParamName +
+                                 ': ' + Items[I].Params.Items[J].ParamType;
+            pfOptional:     p := p     + TSEParam.ParamFlagToStr(Items[I].Params.Items[J].Flag) +
+                                 ' '   + Items[I].Params.Items[J].ParamName +
+                                 ': '  + Items[I].Params.Items[J].ParamType +
+                                 ' = ' + Items[I].Params.Items[J].DefaultValue;
+            pfNone:         p := p     + Items[I].Params.Items[J].ParamName +
+                                 ': '  + Items[I].Params.Items[J].ParamType;
+          end;
+
+          if J < Items[I].Params.Count - 1 then
+            p := p + '; ';
+        end;
+
+        s := s + p + ')';
+      end;
+
+      Result.Add(s + ';' + BEGIN_END_CLAUSE);
+    end else
+    begin
+      if Items[I].Params.Count > 0 then
+        Result.Add(Items[I].MethodName + '(')
+      else
+        Result.Add(Items[I].MethodName + ';');
+    end;
   end;
 
   Result.Add('');
@@ -376,7 +421,7 @@ begin
                                ': '  + Items[I].Params.Items[J].ParamType;
         end;
 
-        if J <> Items[I].Params.Count - 1 then
+        if J < Items[I].Params.Count - 1 then
           p := p + '; ';
       end;
 

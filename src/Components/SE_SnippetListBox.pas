@@ -14,7 +14,6 @@ type
   TSESnippetListBox = class(TListBox)
   strict private
     fSnippets: TSESnippetArray;
-    function GetSnippets: TSESnippetArray;
     procedure SetSnippets(aSnippetArray: TSESnippetArray);
     function SanitizeDisplayText(aDisplayText: string): string;
   public
@@ -26,10 +25,9 @@ type
     function GetSnippet(aIndex: Integer): string; overload;
     procedure AppendSnippets(aSnippetArray: TSESnippetArray); overload;
     procedure AppendSnippets(const aDisplayTextDict: TStringList;
-                             const aSnippetTextDict: TStringList;
-                             indAppendBeginEnd: Boolean = False); overload;
+                             const aSnippetTextDict: TStringList); overload;
   published
-    property Snippets: TSESnippetArray read GetSnippets write SetSnippets;
+    property Snippets: TSESnippetArray read fSnippets write SetSnippets;
   end;
 
 implementation
@@ -111,12 +109,7 @@ begin
 end;
 
 procedure TSESnippetListBox.AppendSnippets(const aDisplayTextDict: TStringList;
-                                           const aSnippetTextDict: TStringList;
-                                           indAppendBeginEnd: Boolean = False);
-const
-  EOL              = #13#10;
-  DEOL             = #13#10#13#10;
-  BEGIN_END_CLAUSE = EOL + 'begin' + DEOL + 'end;'  + EOL;
+                                           const aSnippetTextDict: TStringList);
 var
   item: TSESnippet;
   I,
@@ -128,10 +121,6 @@ begin
   begin
     item.DisplayText := aDisplayTextDict[I];
     item.SnippetText := aSnippetTextDict[I];
-
-    if indAppendBeginEnd then
-      item.SnippetText := item.SnippetText + BEGIN_END_CLAUSE;
-
     AddSnippet(item);
   end;
 end;
@@ -140,11 +129,6 @@ procedure TSESnippetListBox.SetSnippets(aSnippetArray: TSESnippetArray);
 begin
   Clear;
   AppendSnippets(aSnippetArray);
-end;
-
-function TSESnippetListBox.GetSnippets: TSESnippetArray;
-begin
-  Result := fSnippets;
 end;
 
 function TSESnippetListBox.SanitizeDisplayText(aDisplayText: string): string;

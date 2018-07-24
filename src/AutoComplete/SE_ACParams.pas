@@ -1,5 +1,4 @@
 unit SE_ACParams;
-{$M+}
 
 interface
 uses
@@ -14,17 +13,15 @@ const
   );
 
 type
-  TSEParam = class
-  strict private
+  TSEParam = class(TObject)
   public
     ParamName,
     ParamType,
     DefaultValue: string;
     Flag:        TSEParamFlag;
-    constructor Create;
-  published
     class function ParamFlagToStr(aFlags: TSEParamFlag): string;
     class function StrToParamFlag(aValue: string): TSEParamFlag;
+    constructor Create;
   end;
 
   TSEParamList = class(TObjectList<TSEParam>)
