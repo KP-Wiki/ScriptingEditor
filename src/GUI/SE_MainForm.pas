@@ -461,11 +461,12 @@ var
   BytesRead:       Cardinal;
   Command:         string;
 const
-  SV_EXE_FORMAT = 'cmd.exe /C "^"%sScriptValidator.exe^" -x ^"%s^""';
+  CMD_EXE = 'C:\Windows\System32\cmd.exe';
+  SV_EXE_FORMAT = '%s /c ""%sScriptValidator.exe" -x "%s""';
 begin
   gLog.AddTime('Starting script validator');
   Result  := '';
-  Command := Format(SV_EXE_FORMAT, [GetDataDir, aFileName]);
+  Command := Format(SV_EXE_FORMAT, [CMD_EXE, GetDataDir, aFileName]);
 
   SA.nLength              := SizeOf(SA);
   SA.bInheritHandle       := True;
@@ -481,7 +482,10 @@ begin
     SI.hStdOutput  := StdOutPipeWrite;
     SI.hStdError   := StdOutPipeWrite;
 
-    if CreateProcess(nil, PChar(Command), nil, nil, True, 0, nil, PChar(gExeDir), SI, PI) then
+    if CreateProcess(
+      PChar(CMD_EXE), PChar(Command), nil, nil, True,
+      CREATE_NEW_CONSOLE or NORMAL_PRIORITY_CLASS, nil, nil, SI, PI
+    ) then
       try
         CloseHandle(StdOutPipeWrite);
         WaitForSingleObject(PI.hProcess, INFINITE);
