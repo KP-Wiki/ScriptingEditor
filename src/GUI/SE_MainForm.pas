@@ -461,7 +461,7 @@ var
   BytesRead:       Cardinal;
   Command:         string;
 const
-  SV_EXE_FORMAT = 'cmd.exe /C "%sScriptValidator.exe -x ^"%s^""';
+  SV_EXE_FORMAT = 'cmd.exe /C "^"%sScriptValidator.exe^" -x ^"%s^""';
 begin
   gLog.AddTime('Starting script validator');
   Result  := '';
