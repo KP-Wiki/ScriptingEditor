@@ -152,6 +152,19 @@ uses
   SE_Globals, SE_ValidationPlugin, SE_CommandsDataModule, SE_GoToLineForm,
   SE_FindForm, SE_ReplaceForm, SE_SaveModifiedForm, SE_EditorFactory;
 
+type
+  TUTF8NoBOMEncoding = class(TUTF8Encoding)
+  public
+    function GetPreamble: TBytes; override;
+  end;
+
+{ TUTF8NoBOMEncoding }
+
+function TUTF8NoBOMEncoding.GetPreamble: TBytes;
+begin
+  SetLength(Result, 0);
+end;
+
 { TSEEditorForm }
 
 procedure TSEEditorForm.FormShow(aSender: TObject);
@@ -308,47 +321,14 @@ end;
 procedure TSEEditorForm.SynCompletionExecute(Kind: SynCompletionType; Sender: TObject;
                                              var CurrentInput: string; var x, y: Integer;
                                              var CanExecute: Boolean);
-const
-  LEN_UTILS   = 5;
-  LEN_STATES  = 6;
-  LEN_ACTIONS = 7;
-var
-  s: string;
-  I: Integer;
 begin
   CanExecute := True;
-  fSynCompletion.ItemList.Clear;
-  fSynCompletion.InsertList.Clear;
-
-  if fSynEdit.Lines.Text <> '' then
-  begin
-    s := fSynEdit.LineText;
-
-    if s <> '' then
-    begin
-      for I := fSynEdit.CaretX downto 0 do
-        if s[I] = '.' then
-        begin
-          if LowerCase(Copy(s, I - LEN_ACTIONS, LEN_ACTIONS)) = 'actions' then
-          begin
-            fSynCompletion.ItemList.AddStrings(gActionsMethodList.GenerateMethodItemList);
-            fSynCompletion.InsertList.AddStrings(gActionsMethodList.GenerateMethodInsertNames);
-            Exit;
-          end else if LowerCase(Copy(s, I - LEN_STATES, LEN_STATES)) = 'states' then
-          begin
-            fSynCompletion.ItemList.AddStrings(gStatesMethodList.GenerateMethodItemList);
-            fSynCompletion.InsertList.AddStrings(gStatesMethodList.GenerateMethodInsertNames);
-            Exit;
-          end else if LowerCase(Copy(s, I - LEN_UTILS, LEN_UTILS)) = 'utils' then
-          begin
-            fSynCompletion.ItemList.AddStrings(gUtilsMethodList.GenerateMethodItemList);
-            fSynCompletion.InsertList.AddStrings(gUtilsMethodList.GenerateMethodInsertNames);
-            Exit;
-          end;
-        end;
-    end;
-  end;
-
+  fSynCompletion.ItemList.SetStrings(gActionsMethodList.GenerateMethodItemList);
+  fSynCompletion.InsertList.SetStrings(gActionsMethodList.GenerateMethodInsertNames);
+  fSynCompletion.ItemList.AddStrings(gStatesMethodList.GenerateMethodItemList);
+  fSynCompletion.InsertList.AddStrings(gStatesMethodList.GenerateMethodInsertNames);
+  fSynCompletion.ItemList.AddStrings(gUtilsMethodList.GenerateMethodItemList);
+  fSynCompletion.InsertList.AddStrings(gUtilsMethodList.GenerateMethodInsertNames);
   fSynCompletion.ItemList.AddStrings(gPasScriptMethodList.GenerateMethodItemList);
   fSynCompletion.InsertList.AddStrings(gPasScriptMethodList.GenerateMethodInsertNames);
   fSynCompletion.ItemList.AddStrings(gEventsMethodList.GenerateMethodItemList);
@@ -629,18 +609,25 @@ begin
 end;
 
 function TSEEditorForm.DoSaveFile: Boolean;
+var
+  enc: TEncoding;
 begin
   Assert(fEditor <> nil);
 
   try
-    fSynEdit.Lines.SaveToFile(fEditor.FileName);
-    fSynEdit.Modified := False;
-    SynEditorStatusChange(Self, [scAll]);
-    fSynEdit.ResetModificationIndicator;
-    Result := True;
-  except
-    Application.HandleException(Self);
-    Result := False;
+    try
+      enc := TUTF8NoBOMEncoding.Create;
+      fSynEdit.Lines.SaveToFile(fEditor.FileName, enc);
+      fSynEdit.Modified := False;
+      SynEditorStatusChange(Self, [scAll]);
+      fSynEdit.ResetModificationIndicator;
+      Result := True;
+    except
+      Application.HandleException(Self);
+      Result := False;
+    end;
+  finally
+    FreeAndNil(enc);
   end;
 end;
 
@@ -743,13 +730,16 @@ end;
 procedure TSEEditorForm.DoValidate;
 var
   tempFileName: string;
+  enc:          TEncoding;
 begin
   if fSynEdit.Modified then
   begin
     tempFileName := TPath.GetTempPath + TPath.GetRandomFileName + '.script';
-    fSynEdit.Lines.SaveToFile(tempFileName);
+    enc          := TUTF8NoBOMEncoding.Create;
+    fSynEdit.Lines.SaveToFile(tempFileName, enc);
     RunValidate(tempFileName);
     DeleteFile(PWideChar(tempFileName));
+    FreeAndNil(enc);
   end else if fEditor.FileName <> '' then
     RunValidate(fEditor.FileName);
 end;

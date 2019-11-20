@@ -18,6 +18,8 @@ object SEEditorForm: TSEEditorForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 16
   object pmEditor: TPopupMenu

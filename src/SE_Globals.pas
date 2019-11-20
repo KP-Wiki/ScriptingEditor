@@ -12,28 +12,25 @@ type
   end;
 
   TSEOptions = record
-    KPMode:  Boolean;
     Font:    TSEFontOptions;
   end;
 
 const
-  WM_DELETETHIS =  WM_USER + 42;
+  WM_DELETETHIS = WM_USER + 42;
 
   MAX_MRI_FILES = 10;
 
   NON_EXISTING_ITEM = -1;
 
   VERSION_PREFIX = 'Alpha ';
-  VERSION        = '2.0.1';
-  VERSION_SUFFIX = ' DEV ONLY!';
+  VERSION        = '2.1.0';
+  VERSION_SUFFIX = '';
   FULL_VERSION   = VERSION_PREFIX + VERSION + VERSION_SUFFIX;
 
   SYNEDIT_URL = 'https://github.com/SynEdit/SynEdit';
   VSXML_URL   = 'http://blog.spreendigital.de/2011/11/10/verysimplexml-a-lightweight-delphi-xml-reader-and-writer/';
 
   DATA_DIR          = 'SE_Data' + PathDelim;
-  DATA_DIR_KMR      = DATA_DIR  + 'KMR'      + PathDelim;
-  DATA_DIR_KP       = DATA_DIR  + 'KP'       + PathDelim;
   DATA_DIR_LOGS     = DATA_DIR  + 'Logs'     + PathDelim;
   DATA_DIR_EXAMPLES = DATA_DIR  + 'Examples' + PathDelim;
 

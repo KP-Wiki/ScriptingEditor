@@ -2,9 +2,11 @@ unit SE_SnippetListBox;
 
 interface
 uses
-  StdCtrls, Classes;
+  Controls, StdCtrls, Classes, Types;
 
 type
+  PImageList = ^TImageList;
+
   TSESnippet = record
     DisplayText,
     SnippetText: string;
@@ -14,9 +16,13 @@ type
   TSESnippetListBox = class(TListBox)
   strict private
     fSnippets: TSESnippetArray;
+    fImgList:  PImageList;
     procedure SetSnippets(aSnippetArray: TSESnippetArray);
     function SanitizeDisplayText(aDisplayText: string): string;
+    procedure DoDrawItem(aControl: TWinControl; aIndex: Integer; aRect: TRect;
+                         aState: TOwnerDrawState);
   public
+    constructor Create(aOwner: TComponent; aImgList: PImageList); overload;
     destructor Destroy; override;
     procedure Clear; override;
     procedure AddSnippet(aSnippet: TSESnippet); overload;
@@ -33,6 +39,14 @@ type
 implementation
 uses
   SysUtils, Math;
+
+constructor TSESnippetListBox.Create(aOwner: TComponent; aImgList: PImageList);
+begin
+  inherited Create(aOwner);
+  fImgList   := aImgList;
+  OnDrawItem := DoDrawItem;
+  Style      := lbOwnerDrawFixed;
+end;
 
 destructor TSESnippetListBox.Destroy;
 begin
@@ -139,6 +153,39 @@ begin
   Result := StringReplace(Result,       'Utils.',     '', [rfReplaceAll, rfIgnoreCase]);
   Result := StringReplace(Result,       'States.',    '', [rfReplaceAll, rfIgnoreCase]);
   Result := StringReplace(Result,       'Actions.',   '', [rfReplaceAll, rfIgnoreCase]);
+end;
+
+procedure TSESnippetListBox.DoDrawItem(aControl: TWinControl; aIndex: Integer;
+                                       aRect: TRect; aState: TOwnerDrawState);
+var
+  s:          string;
+  txtTopPos,
+  txtLeftPos,
+  txtHeight:  Integer;
+const
+  IMG_TXT_PAD    = 5;
+  IMG_IDX_FUNC_A = 0;
+  IMG_IDX_FUNC_B = 1;
+  IMG_IDX_PROC_A = 2;
+  IMG_IDX_PROC_B = 3;
+begin
+  s := Items[aIndex];
+  Canvas.FillRect(aRect);
+
+  if s.StartsWith('procedure') then
+  begin
+    s := StringReplace(s, 'procedure ', '', [rfReplaceAll, rfIgnoreCase]);
+    fImgList.Draw(Canvas, aRect.Left, aRect.Top, IMG_IDX_PROC_B);
+  end else if s.StartsWith('function') then
+  begin
+    s := StringReplace(s, 'function ', '', [rfReplaceAll, rfIgnoreCase]);
+    fImgList.Draw(Canvas, aRect.Left, aRect.Top, IMG_IDX_FUNC_B);
+  end;
+
+  txtHeight  := Canvas.TextHeight(s);
+  txtLeftPos := aRect.Left + fImgList.Width + IMG_TXT_PAD;
+  txtTopPos  := aRect.Top + (aRect.Height div 2) - (txtHeight div 2);
+  Canvas.TextOut(txtLeftPos, txtTopPos, s);
 end;
 
 end.

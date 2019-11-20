@@ -35,4 +35,3 @@ procedure OnMissionStart;
 begin
   PrepVariables;
 end;
-

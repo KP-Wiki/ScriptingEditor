@@ -24,7 +24,7 @@ object Form1: TForm1
   PixelsPerInch = 96
   TextHeight = 15
   object Label1: TLabel
-    Left = 199
+    Left = 8
     Top = 441
     Width = 77
     Height = 15
@@ -91,28 +91,15 @@ object Form1: TForm1
     TabOrder = 5
     OnClick = btnResetClick
   end
-  object rgGame: TRadioGroup
-    Left = 16
-    Top = 441
-    Width = 161
-    Height = 66
-    Caption = 'Game'
-    ItemIndex = 0
-    Items.Strings = (
-      'KaM Remake'
-      'Knights Province')
-    TabOrder = 6
-    OnClick = rgGameClick
-  end
   object cbDict: TComboBox
-    Left = 199
+    Left = 8
     Top = 462
     Width = 155
     Height = 23
     AutoComplete = False
     Style = csDropDownList
     ItemIndex = 0
-    TabOrder = 7
+    TabOrder = 6
     Text = 'Actions'
     OnChange = cbDictChange
     Items.Strings = (
@@ -128,7 +115,7 @@ object Form1: TForm1
     Width = 161
     Height = 25
     Caption = 'Import SE A1 Dict'
-    TabOrder = 8
+    TabOrder = 7
     OnClick = btnA1ImportClick
   end
 end

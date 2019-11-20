@@ -31,9 +31,11 @@ type
   end;
 
   TSEMethodList = class(TObjectList<TSEMethod>)
+  private
+    fPrefix: string;
   public
     IsEventList: Boolean;
-    constructor Create(aOwnsObjects: Boolean = True); overload;
+    constructor Create(aPrefix: string = ''; aOwnsObjects: Boolean = True); overload;
     function NewItem: TSEMethod;
     function IndexByName(aMethodName: string): Integer; virtual;
     procedure SaveToFile(aFileName: string);
@@ -278,10 +280,11 @@ begin
 end;
 
 { TSEMethodList }
-constructor TSEMethodList.Create(aOwnsObjects: Boolean = True);
+constructor TSEMethodList.Create(aPrefix: string = ''; aOwnsObjects: Boolean = True);
 begin
   Inherited Create(aOwnsObjects);
   IsEventList := False;
+  fPrefix     := aPrefix;
 end;
 
 function TSEMethodList.NewItem: TSEMethod;
@@ -381,9 +384,9 @@ begin
     end else
     begin
       if Items[I].Params.Count > 0 then
-        Result.Add(Items[I].MethodName + '(')
+        Result.Add(fPrefix + Items[I].MethodName + '(')
       else
-        Result.Add(Items[I].MethodName + ';');
+        Result.Add(fPrefix + Items[I].MethodName + ';');
     end;
   end;
 
@@ -401,7 +404,7 @@ begin
   begin
     p := '';
     s := TSEMethod.MethodTypeToStr(Items[I].MethodType) + ' \column{}' +
-         Items[I].MethodName;
+         fPrefix + Items[I].MethodName;
 
     if Items[I].Params.Count > 0 then
     begin
@@ -433,7 +436,7 @@ begin
       ftProcedure: s := s + ';';
     end;
 
-    Result.Add(S);
+    Result.Add(s);
   end;
 
   Result.Add('');
@@ -458,7 +461,7 @@ begin
         s := s + ', ';
     end;
 
-    Result.Add(S);
+    Result.Add(s);
   end;
 end;
 

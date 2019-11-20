@@ -89,12 +89,19 @@ object SECommandsDataModule: TSECommandsDataModule
       OnExecute = ActValidateExecute
       OnUpdate = ActValidateUpdate
     end
-    object ActDocWiki: TAction
+    object ActKMRDocWiki: TAction
       Category = 'Help'
-      Caption = 'Doc Wiki'
-      Hint = 'Doc Wiki|Open the documentation wiki'
+      Caption = 'KMR Doc Wiki'
+      Hint = 'KMR Doc Wiki|Open the documentation wiki'
       ImageIndex = 2
-      OnExecute = ActDocWikiExecute
+      OnExecute = ActKMRDocWikiExecute
+    end
+    object ActKPDocWiki: TAction
+      Category = 'Help'
+      Caption = 'KP Doc Wiki'
+      Hint = 'KP Doc Wiki|Open the documentation wiki'
+      ImageIndex = 2
+      OnExecute = ActKPDocWikiExecute
     end
     object ActSaveFile: TAction
       Category = 'File'
@@ -211,16 +218,6 @@ object SECommandsDataModule: TSECommandsDataModule
       ImageIndex = 2
       OnExecute = ActAboutSEExecute
     end
-    object ActModeKMR: TAction
-      Category = 'Game Mode'
-      Caption = 'KaM Remake'
-      OnExecute = ActModeKMRExecute
-    end
-    object ActModeKP: TAction
-      Category = 'Game Mode'
-      Caption = 'Knights Province'
-      OnExecute = ActModeKPExecute
-    end
     object ActShowWelcome: TAction
       Category = 'Help'
       Caption = 'Show Welcome Tab'
@@ -248,7 +245,7 @@ object SECommandsDataModule: TSECommandsDataModule
     Left = 40
     Top = 112
     Bitmap = {
-      494C010116001800F80010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800FC0010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000B0006104000183979002A5F9C00295D9B0016347400050C390000
@@ -1055,7 +1052,7 @@ object SECommandsDataModule: TSECommandsDataModule
     Left = 40
     Top = 64
     Bitmap = {
-      494C010116006C015C0216001600FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116006C01600216001600FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000005800000084000000010020000000000080B5
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000040000000C0003082E000F246100183B7B0017

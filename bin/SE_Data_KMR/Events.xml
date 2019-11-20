@@ -1,0 +1,182 @@
+<?xml version="1.0" ?>
+<SEMethodDict>
+  <Definition Type="procedure" Name="OnBeacon" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnHouseAfterDestroyed" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouseType" Type="THouseType"></Parameter>
+      <Parameter Name="aOwner" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnHouseBuilt" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouse" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnHousePlanPlaced" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+      <Parameter Name="aType" Type="THouseType"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnHousePlanRemoved" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+      <Parameter Name="aType" Type="THouseType"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnHouseDamaged" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouse" Type="Integer"></Parameter>
+      <Parameter Name="aAttacker" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnHouseDestroyed" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouse" Type="Integer"></Parameter>
+      <Parameter Name="aDestroyerIndex" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnGroupHungry" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroup" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnGroupOrderAttackHouse" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroup" Type="Integer"></Parameter>
+      <Parameter Name="aHouse" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnGroupOrderAttackUnit" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroup" Type="Integer"></Parameter>
+      <Parameter Name="aUnit" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnGroupOrderLink" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroup1" Type="Integer"></Parameter>
+      <Parameter Name="aGroup2" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnGroupOrderSplit" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroup" Type="Integer"></Parameter>
+      <Parameter Name="aNewGroup" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnMarketTrade" ResultType="">
+    <ParameterList>
+      <Parameter Name="aMarket" Type="Integer"></Parameter>
+      <Parameter Name="aFrom" Type="TWareType"></Parameter>
+      <Parameter Name="aTo" Type="TWareType"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnMissionStart" ResultType="">
+    <ParameterList></ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnPlanRoadPlaced" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnPlanRoadRemoved" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnPlanFieldPlaced" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnPlanFieldRemoved" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnPlanWinefieldPlaced" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnPlanWinefieldRemoved" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnPlayerDefeated" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnPlayerVictory" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnTick" ResultType="">
+    <ParameterList></ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnUnitAfterDied" ResultType="">
+    <ParameterList>
+      <Parameter Name="aUnitType" Type="TUnitType"></Parameter>
+      <Parameter Name="aOwner" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnUnitDied" ResultType="">
+    <ParameterList>
+      <Parameter Name="aUnit" Type="Integer"></Parameter>
+      <Parameter Name="aKillerOwner" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnUnitTrained" ResultType="">
+    <ParameterList>
+      <Parameter Name="aUnit" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnUnitWounded" ResultType="">
+    <ParameterList>
+      <Parameter Name="aUnit" Type="Integer"></Parameter>
+      <Parameter Name="aAttacker" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnUnitAttacked" ResultType="">
+    <ParameterList>
+      <Parameter Name="aUnit" Type="Integer"></Parameter>
+      <Parameter Name="aAttacker" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="OnWarriorEquipped" ResultType="">
+    <ParameterList>
+      <Parameter Name="aUnit" Type="Integer"></Parameter>
+      <Parameter Name="aGroup" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+</SEMethodDict>

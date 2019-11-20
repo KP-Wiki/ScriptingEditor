@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, Classes, ToolWin, ExtCtrls, Controls, Forms, ComCtrls,
-  Menus, StdCtrls,
+  Menus, StdCtrls, ImageList, ImgList,
   ScriptValidatorResult,
   SE_IssueListBox, SE_SnippetListBox, SE_CommandsDataModule;
 
@@ -71,11 +71,10 @@ type
     MenuGoToLine,
     MenuValidate,
     MenuOptions,
-    MenuDocWiki,
+    MenuKMRDocWiki,
+    MenuKPDocWiki,
     MenuAboutSE,
-    MenuShowWelcomeTab,
-    MenuKMR,
-    MenuKP:             TMenuItem; // Main menu items
+    MenuShowWelcomeTab: TMenuItem; // Main menu items
     miIssueGoTo,
     miIssueCopy:        TMenuItem; // fLbIssues popup items
     tbSep1,
@@ -98,6 +97,7 @@ type
     tbGoToLine:         TToolButton; // Toolbar buttons
     Splitter1,
     Splitter2:          TSplitter; // Splitters
+    ilMethodTypes: TImageList;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -121,7 +121,6 @@ type
     procedure FLbIssuesMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FLbIssuesMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FLbSnippetsMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-    function GetDataDir: string;
     procedure ReadSettings;
     procedure WriteSettings;
   public
@@ -161,18 +160,18 @@ begin
   fMRIItems[8] := mri9;
   fMRIItems[9] := mri10;
 
-  fLbEvents  := TSESnippetListBox.Create(tsEvents);
-  fLBStates  := TSESnippetListBox.Create(tsStates);
-  fLBActions := TSESnippetListBox.Create(tsActions);
-  fLBUtils   := TSESnippetListBox.Create(tsUtils);
+  fLbEvents  := TSESnippetListBox.Create(tsEvents, @ilMethodTypes);
+  fLBStates  := TSESnippetListBox.Create(tsStates, @ilMethodTypes);
+  fLBActions := TSESnippetListBox.Create(tsActions, @ilMethodTypes);
+  fLBUtils   := TSESnippetListBox.Create(tsUtils, @ilMethodTypes);
   fLbIssues  := TSEIssueListBox.Create(tsIssues);
 
   gAllACItems                   := TStringList.Create;
   gAllACInserts                 := TStringList.Create;
-  gActionsMethodList            := TSEMethodList.Create;
+  gActionsMethodList            := TSEMethodList.Create('Actions.');
   gEventsMethodList             := TSEMethodList.Create;
   gEventsMethodList.IsEventList := True;
-  gStatesMethodList             := TSEMethodList.Create;
+  gStatesMethodList             := TSEMethodList.Create('States.');
   gUtilsMethodList              := TSEMethodList.Create;
   gPasScriptMethodList          := TSEMethodList.Create;
 
@@ -466,7 +465,7 @@ const
 begin
   gLog.AddTime('Starting script validator');
   Result  := '';
-  Command := Format(SV_EXE_FORMAT, [CMD_EXE, GetDataDir, aFileName]);
+  Command := Format(SV_EXE_FORMAT, [CMD_EXE, DATA_DIR, aFileName]);
 
   SA.nLength              := SizeOf(SA);
   SA.bInheritHandle       := True;
@@ -507,23 +506,20 @@ begin
   end;
 end;
 
-function TSEMainForm.GetDataDir: string;
-begin
-  if gOptions.KPMode then
-    Result := gExeDir + DATA_DIR_KP
-  else
-    Result := gExeDir + DATA_DIR_KMR;
-end;
-
 procedure TSEMainForm.ReloadDictionaries;
 begin
   gAllACItems.Clear;
   gAllACInserts.Clear;
-  gActionsMethodList.LoadFromFile(GetDataDir + DICT_FILE_ACTIONS);
-  gEventsMethodList.LoadFromFile(GetDataDir + DICT_FILE_EVENTS);
-  gStatesMethodList.LoadFromFile(GetDataDir + DICT_FILE_STATES);
-  gUtilsMethodList.LoadFromFile(GetDataDir + DICT_FILE_UTILS);
-  gPasScriptMethodList.LoadFromFile(GetDataDir + DICT_FILE_PASSCRIPT);
+  gActionsMethodList.Clear;
+  gEventsMethodList.Clear;
+  gStatesMethodList.Clear;
+  gUtilsMethodList.Clear;
+  gPasScriptMethodList.Clear;
+  gActionsMethodList.LoadFromFile(DATA_DIR + DICT_FILE_ACTIONS);
+  gEventsMethodList.LoadFromFile(DATA_DIR + DICT_FILE_EVENTS);
+  gStatesMethodList.LoadFromFile(DATA_DIR + DICT_FILE_STATES);
+  gUtilsMethodList.LoadFromFile(DATA_DIR + DICT_FILE_UTILS);
+  gPasScriptMethodList.LoadFromFile(DATA_DIR + DICT_FILE_PASSCRIPT);
   gLog.AddTime('Dictionaries loaded');
 
   fLBActions.Clear;
@@ -589,7 +585,6 @@ begin
     PcLeftWidth  := IniFile.ReadInteger('Application', 'LeftWidth',  250);
     PcRightWidth := IniFile.ReadInteger('Application', 'RightWidth', 250);
 
-    gOptions.KPMode    := IniFile.ReadBool('Options',    'KPMode',   False);
     gOptions.Font.Name := IniFile.ReadString('Options',  'FontName', 'Courier New');
     gOptions.Font.Size := IniFile.ReadInteger('Options', 'FontSize', 10);
 
@@ -599,8 +594,6 @@ begin
     if IniFile.ReadBool('Application', 'Maximized', False) then
       WindowState := wsMaximized;
 
-    gCommandsDataModule.ActModeKP.Checked  := gOptions.KPMode;
-    gCommandsDataModule.ActModeKMR.Checked := not gOptions.KPMode;
     pcLeft.Width                           := PcLeftWidth;
     pcRight.Width                          := PcRightWidth;
 
@@ -650,7 +643,6 @@ begin
     IniFile.WriteInteger('Application', 'RightWidth', pcRight.Width);
     IniFile.WriteBool('Application',    'Maximized',  (WindowState = wsMaximized));
 
-    IniFile.WriteBool('Options',    'KPMode',   gOptions.KPMode);
     IniFile.WriteString('Options',  'FontName', gOptions.Font.Name);
     IniFile.WriteInteger('Options', 'FontSize', gOptions.Font.Size);
 

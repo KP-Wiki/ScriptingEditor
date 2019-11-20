@@ -13,7 +13,7 @@ type
     ActUndo: TAction;
     ActFind: TAction;
     ActValidate: TAction;
-    ActDocWiki: TAction;
+    ActKPDocWiki: TAction;
     ActSaveFile: TAction;
     ActSaveFileAs: TAction;
     ActOptions: TAction;
@@ -29,8 +29,6 @@ type
     ActReplace: TAction;
     ActGoToLine: TAction;
     ActAboutSE: TAction;
-    ActModeKMR: TAction;
-    ActModeKP: TAction;
     ilActions16x16: TImageList;
     ilActions22x22: TImageList;
     dlgFileOpen: TOpenDialog;
@@ -40,6 +38,7 @@ type
     ActShowWelcome: TAction;
     actIssueGoTo: TAction;
     actIssueCopy: TAction;
+    ActKMRDocWiki: TAction;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
 
@@ -84,10 +83,9 @@ type
     procedure ActCloseFileExecute(Sender: TObject);
     procedure ActCloseAllFilesExecute(Sender: TObject);
     procedure ActOptionsExecute(Sender: TObject);
-    procedure ActModeKPExecute(Sender: TObject);
-    procedure ActModeKMRExecute(Sender: TObject);
     procedure ActExitExecute(Sender: TObject);
-    procedure ActDocWikiExecute(Sender: TObject);
+    procedure ActKMRDocWikiExecute(Sender: TObject);
+    procedure ActKPDocWikiExecute(Sender: TObject);
     procedure ActAboutSEExecute(Sender: TObject);
     procedure ActShowWelcomeTabExecute(Sender: TObject);
     procedure ActIssueGoToExecute(Sender: TObject);
@@ -363,29 +361,21 @@ begin
     end;
 end;
 
-procedure TSECommandsDataModule.ActModeKMRExecute(Sender: TObject);
-begin
-  gOptions.KPMode    := False;
-  ActModeKP.Checked  := False;
-  ActModeKMR.Checked := True;
-  gMainForm.ReloadDictionaries;
-end;
-
-procedure TSECommandsDataModule.ActModeKPExecute(Sender: TObject);
-begin
-  gOptions.KPMode    := True;
-  ActModeKP.Checked  := True;
-  ActModeKMR.Checked := False;
-  gMainForm.ReloadDictionaries;
-end;
-
 procedure TSECommandsDataModule.ActExitExecute(Sender: TObject);
 begin
   gMainForm.Close;
   Application.Terminate;
 end;
 
-procedure TSECommandsDataModule.ActDocWikiExecute(Sender: TObject);
+procedure TSECommandsDataModule.ActKMRDocWikiExecute(Sender: TObject);
+const
+  DOC_WIKI_URL = 'https://github.com/reyandme/kam_remake/wiki';
+begin
+  if ShellExecute(Application.Handle, 'open', PChar(DOC_WIKI_URL), nil, nil, SW_SHOWNORMAL) <= 32 then
+    MessageDlg('Unable to open the documentation wiki.', mtError, [mbOK], 0);
+end;
+
+procedure TSECommandsDataModule.ActKPDocWikiExecute(Sender: TObject);
 const
   DOC_WIKI_URL = 'https://github.com/Kromster80/knights_province/wiki';
 begin

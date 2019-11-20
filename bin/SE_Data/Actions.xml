@@ -1,0 +1,634 @@
+﻿<?xml version="1.0" ?>
+<SEMethodDict>
+  <Definition Type="procedure" Name="AIArmyEquipRate" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aRate" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="FogCoverAll" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="FogCoverCircle" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+      <Parameter Name="aRadius" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="FogCoverRect" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="X1" Type="Word"></Parameter>
+      <Parameter Name="Y1" Type="Word"></Parameter>
+      <Parameter Name="X2" Type="Word"></Parameter>
+      <Parameter Name="Y2" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="FogRevealAll" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="FogRevealCircle" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+      <Parameter Name="aRadius" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="FogRevealRect" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="X1" Type="Word"></Parameter>
+      <Parameter Name="Y1" Type="Word"></Parameter>
+      <Parameter Name="X2" Type="Word"></Parameter>
+      <Parameter Name="Y2" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="GiveGroup" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aUnitType" Type="TKMUnitType"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+      <Parameter Name="aDir" Type="Word"></Parameter>
+      <Parameter Name="aCount" Type="Word"></Parameter>
+      <Parameter Name="aColumns" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="GiveHouse" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aHouseType" Type="TKMHouseType"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+      <Parameter Name="aFace" Type="TKMHouseFace"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="GiveUnit" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aUnitType" Type="TKMUnitType"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+      <Parameter Name="aDir" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="GiveWares" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aWareType" Type="TKMWareType"></Parameter>
+      <Parameter Name="aCount" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="GiveWeapons" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aWareType" Type="TKMWareType"></Parameter>
+      <Parameter Name="aCount" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="GroupOrderAttackHouse" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroupID" Type="Integer"></Parameter>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="GroupOrderAttackUnit" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroupID" Type="Integer"></Parameter>
+      <Parameter Name="aUnitID" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="GroupOrderFood" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroupID" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="GroupOrderHalt" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroupID" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="GroupOrderLink" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroupID" Type="Integer"></Parameter>
+      <Parameter Name="aDestGroupID" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="GroupOrderSplit" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aGroupID" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="GroupOrderStorm" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroupID" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="GroupOrderWalk" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroupID" Type="Integer"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+      <Parameter Name="aDirection" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="GroupSetFormation" ResultType="">
+    <ParameterList>
+      <Parameter Name="aGroupID" Type="Integer"></Parameter>
+      <Parameter Name="aNumColumns" Type="Byte"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseAddDamage" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="aDamage" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseAddRepair" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="aRepair" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseAddWaresTo" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="aWareType" Type="TKMWareType"></Parameter>
+      <Parameter Name="aCount" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseAllow" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aHouseType" Type="TKMHouseType"></Parameter>
+      <Parameter Name="aAllowed" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseDestroy" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="aSilent" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="HouseOwnerChange" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseRepairEnable" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="aRepairEnabled" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="HouseTrainQueueAdd" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="aUnitType" Type="TKMUnitType"></Parameter>
+      <Parameter Name="aCount" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseTrainQueueRemove" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="QueueIndex" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseUnlock" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aHouseType" Type="TKMHouseType"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseWareInBlock" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="aWareType" Type="TKMWareType"></Parameter>
+      <Parameter Name="aBlocked" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseWeaponsOrderSet" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="aWareType" Type="TKMWareType"></Parameter>
+      <Parameter Name="aAmount" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="HouseWoodcutterChopOnly" ResultType="">
+    <ParameterList>
+      <Parameter Name="aHouseID" Type="Integer"></Parameter>
+      <Parameter Name="aChopOnly" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="PlanAddField" ResultType="Boolean">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="PlanAddHouse" ResultType="Boolean">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aHouseType" Type="TKMHouseType"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+      <Parameter Name="aFace" Type="TKMHouseFace"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="PlanAddOrchard" ResultType="Boolean">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="PlanAddRoad" ResultType="Boolean">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="PlanRemove" ResultType="Boolean">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerAIArmyCompositionReset" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerAIArmyCompositionSet" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aUnitType" Type="TKMUnitType"></Parameter>
+      <Parameter Name="aWarriorsPerHour" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="PlayerAIDispositionAdd" ResultType="Boolean">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+      <Parameter Name="aDir" Type="Word"></Parameter>
+      <Parameter Name="aGroupType" Type="TKMGroupType"></Parameter>
+      <Parameter Name="aGuardRadius" Type="Word"></Parameter>
+      <Parameter Name="aNumUnits" Type="Word"></Parameter>
+      <Parameter Name="aUnitsPerRow" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="PlayerAIDispositionRemove" ResultType="Boolean">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerAllianceChange" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer1" Type="Integer"></Parameter>
+      <Parameter Name="aPlayer2" Type="Integer"></Parameter>
+      <Parameter Name="aAllied" Type="Boolean"></Parameter>
+      <Parameter Name="aShareFOW" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerColorChange" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aColor" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerDefeat" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerGoalsSetDefault" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aBuildings" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerMessage" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aText" Type="String"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerMessageFormatted" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aText" Type="String"></Parameter>
+      <Parameter Name="Params" Type="array of const"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerMessageGoto" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+      <Parameter Name="aText" Type="String"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerMessageGotoFormatted" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aX" Type="Word"></Parameter>
+      <Parameter Name="aY" Type="Word"></Parameter>
+      <Parameter Name="aText" Type="String"></Parameter>
+      <Parameter Name="Params" Type="array of const"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerMessageOpen" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aText" Type="String"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerNameSet" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aName" Type="String"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="PlayerObjectiveAdd" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aObjectiveType" Type="TKMObjectiveType"></Parameter>
+      <Parameter Name="aPriority" Type="Integer"></Parameter>
+      <Parameter Name="aStatus" Type="TKMObjectiveStatus"></Parameter>
+      <Parameter Name="aCaption" Type="String"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerObjectiveUpdateStatus" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aObjectiveId" Type="Integer"></Parameter>
+      <Parameter Name="aStatus" Type="TKMObjectiveStatus"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerObjectiveUpdateText" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aObjectiveId" Type="Integer"></Parameter>
+      <Parameter Name="aText" Type="String"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerOverlayAppend" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aText" Type="String"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerOverlayAppendFormatted" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aText" Type="String"></Parameter>
+      <Parameter Name="Params" Type="array of const"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerOverlaySet" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aText" Type="String"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerOverlaySetFormatted" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aText" Type="String"></Parameter>
+      <Parameter Name="Params" Type="array of const"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerShareFog" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer1" Type="Integer"></Parameter>
+      <Parameter Name="aPlayer2" Type="Integer"></Parameter>
+      <Parameter Name="aShare" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerWareDistribution" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aWareType" Type="TKMWareType"></Parameter>
+      <Parameter Name="aHouseType" Type="TKMHouseType"></Parameter>
+      <Parameter Name="aAmount" Type="Byte"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayerWin" ResultType="">
+    <ParameterList>
+      <Parameter Name="aVictors" Type="TIntegerArray"></Parameter>
+      <Parameter Name="aTeamVictory" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayWAV" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aFileName" Type="String"></Parameter>
+      <Parameter Name="aVolume" Type="Single"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="PlayWAVAtLocation" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aFileName" Type="String"></Parameter>
+      <Parameter Name="aVolume" Type="Single"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="SetTradeAllowed" ResultType="">
+    <ParameterList>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+      <Parameter Name="aWareType" Type="TKMWareType"></Parameter>
+      <Parameter Name="aAllowed" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="StockpileAdd" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aWareType" Type="TKMWareType"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+      <Parameter Name="aCount" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="StockpileSetCount" ResultType="">
+    <ParameterList>
+      <Parameter Name="aStockpileID" Type="Integer"></Parameter>
+      <Parameter Name="aCount" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="TerrainTriggerAdd" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aLeft" Type="Word"></Parameter>
+      <Parameter Name="aTop" Type="Word"></Parameter>
+      <Parameter Name="aRight" Type="Word"></Parameter>
+      <Parameter Name="aBottom" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="TerrainTriggerDelete" ResultType="">
+    <ParameterList>
+      <Parameter Name="aId" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="UnitCarryTake" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aUnitID" Type="Integer"></Parameter>
+      <Parameter Name="aCarry" Type="TKMWareType"></Parameter>
+      <Parameter Name="aCount" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="UnitDirectionSet" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aUnitID" Type="Integer"></Parameter>
+      <Parameter Name="aDirection" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="UnitHungerSet" ResultType="">
+    <ParameterList>
+      <Parameter Name="aUnitID" Type="Integer"></Parameter>
+      <Parameter Name="aHungerLevel" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="UnitKill" ResultType="">
+    <ParameterList>
+      <Parameter Name="aUnitID" Type="Integer"></Parameter>
+      <Parameter Name="aSilent" Type="Boolean"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="UnitOrderWalk" ResultType="Boolean">
+    <ParameterList>
+      <Parameter Name="aUnitID" Type="Integer"></Parameter>
+      <Parameter Name="X" Type="Word"></Parameter>
+      <Parameter Name="Y" Type="Word"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="function" Name="UnitOwnerChange" ResultType="Integer">
+    <ParameterList>
+      <Parameter Name="aUnitID" Type="Integer"></Parameter>
+      <Parameter Name="aPlayer" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicBarsHide" ResultType="">
+    <ParameterList></ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicBarsShow" ResultType="">
+    <ParameterList></ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicBegin" ResultType="">
+    <ParameterList></ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicEnd" ResultType="">
+    <ParameterList></ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicFadeIn" ResultType="">
+    <ParameterList>
+      <Parameter Name="aDurationSec" Type="Single"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicFadeOut" ResultType="">
+    <ParameterList>
+      <Parameter Name="aDurationSec" Type="Single"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicSubtitle" ResultType="">
+    <ParameterList>
+      <Parameter Name="aText" Type="String"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicText" ResultType="">
+    <ParameterList>
+      <Parameter Name="aText" Type="String"></Parameter>
+      <Parameter Name="aScale" Type="Byte"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicViewMoveTo" ResultType="">
+    <ParameterList>
+      <Parameter Name="aX" Type="Single"></Parameter>
+      <Parameter Name="aY" Type="Single"></Parameter>
+      <Parameter Name="aHeading" Type="Single"></Parameter>
+      <Parameter Name="aZoom" Type="Single"></Parameter>
+      <Parameter Name="aDurationSec" Type="Single"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicViewMoveToEx" ResultType="">
+    <ParameterList>
+      <Parameter Name="aX" Type="Single"></Parameter>
+      <Parameter Name="aY" Type="Single"></Parameter>
+      <Parameter Name="aHeading" Type="Single"></Parameter>
+      <Parameter Name="aPitch" Type="Single"></Parameter>
+      <Parameter Name="aDist" Type="Single"></Parameter>
+      <Parameter Name="aFOV" Type="Single"></Parameter>
+      <Parameter Name="aDurationSec" Type="Single"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicViewReset" ResultType="">
+    <ParameterList></ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicViewRevert" ResultType="">
+    <ParameterList></ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicViewSetTo" ResultType="">
+    <ParameterList>
+      <Parameter Name="aX" Type="Single"></Parameter>
+      <Parameter Name="aY" Type="Single"></Parameter>
+      <Parameter Name="aHeading" Type="Single"></Parameter>
+      <Parameter Name="aZoom" Type="Single"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicViewSetToDefault" ResultType="">
+    <ParameterList>
+      <Parameter Name="aX" Type="Single"></Parameter>
+      <Parameter Name="aY" Type="Single"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicViewSetToEx" ResultType="">
+    <ParameterList>
+      <Parameter Name="aX" Type="Single"></Parameter>
+      <Parameter Name="aY" Type="Single"></Parameter>
+      <Parameter Name="aHeading" Type="Single"></Parameter>
+      <Parameter Name="aPitch" Type="Single"></Parameter>
+      <Parameter Name="aDist" Type="Single"></Parameter>
+      <Parameter Name="aFOV" Type="Single"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="CinematicViewStore" ResultType="">
+    <ParameterList></ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="TerrainHighlightDelete" ResultType="">
+    <ParameterList>
+      <Parameter Name="aUID" Type="Integer"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="TerrainHighlightFill" ResultType="">
+    <ParameterList>
+      <Parameter Name="aX" Type="Single"></Parameter>
+      <Parameter Name="aY" Type="Single"></Parameter>
+      <Parameter Name="aWidth" Type="Single"></Parameter>
+      <Parameter Name="aHeight" Type="Single"></Parameter>
+      <Parameter Name="aColor" Type="Cardinal"></Parameter>
+    </ParameterList>
+  </Definition>
+  <Definition Type="procedure" Name="TerrainHighlightLine" ResultType="">
+    <ParameterList>
+      <Parameter Name="aX" Type="Single"></Parameter>
+      <Parameter Name="aY" Type="Single"></Parameter>
+      <Parameter Name="aWidth" Type="Single"></Parameter>
+      <Parameter Name="aHeight" Type="Single"></Parameter>
+      <Parameter Name="aThickness" Type="Single"></Parameter>
+      <Parameter Name="aColor" Type="Cardinal"></Parameter>
+    </ParameterList>
+  </Definition>
+</SEMethodDict>

@@ -1,0 +1,14 @@
+procedure OnHouseBuilt(aHouse: Integer);
+procedure OnHouseDamaged(aHouse, aAttacker: Integer);
+procedure OnHouseDestroyed(aHouse, aDestroyerIndex: Integer);
+procedure OnHousePlanPlaced(aPlayer: Integer; aX, aY: Word; aType: TKMHouseType);
+procedure OnMissionStart;
+procedure OnPlayerDefeated(aPlayer: Integer);
+procedure OnPlayerVictory(aPlayer: Integer);
+procedure OnTerrainTrigger(aTriggerId, aUnit: Integer; aX, aY: Word);
+procedure OnTick(aTick: Integer);
+procedure OnUnitDied(aUnit, aKillerOwner: Integer);
+procedure OnUnitTrained(aUnit: Integer);
+procedure OnUnitWoundedByHouse(aUnit, aAttackerHouse: Integer);
+procedure OnUnitWoundedByUnit(aUnit, aAttackerUnit: Integer);
+procedure OnWarriorEquipped(aUnit, aGroup: Integer);

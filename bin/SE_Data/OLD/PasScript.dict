@@ -1,0 +1,24 @@
+type \column{}\style{+B}Byte\style{-B} = \column{}0..255
+type \column{}\style{+B}Word\style{-B} = \column{}0..65535
+type \column{}\style{+B}Integer\style{-B} = \column{}-2147483648..2147483647
+type \column{}\style{+B}Single\style{-B} = \column{}1.18e-38 .. 3.40e+38
+type \column{}\style{+B}Boolean\style{-B} = \column{}False..True
+type \column{}\style{+B}string\style{-B} = \column{}~2^31 characters
+type \column{}\style{+B}Array[n..n] of\style{-B} 
+type \column{}\style{+B}Array of\style{-B} 
+type \column{}\style{+B}set of\style{-B} 
+type \column{}\style{+B}record\style{-B}
+type \column{}\style{+B}TIntegerArray\style{-B} = \column{}array of Integer;
+type \column{}\style{+B}TByteSet\style{-B} = \column{}set of Byte;
+type \column{}\style{+B}THouseType\style{-B}
+type \column{}\style{+B}TWareType\style{-B}
+type \column{}\style{+B}TUnitType\style{-B}
+function \column{}\style{+B}Length\style{-B}(S: <string or dynamic array>): \column{}Integer;
+procedure \column{}\style{+B}SetLength\style{-B}(var S: <string or dynamic array>; NewLength: Integer);
+function \column{}\style{+B}Low\style{-B}(var X): \column{}Ordinal;
+function \column{}\style{+B}High\style{-B}(var X): \column{}Ordinal;
+procedure \column{}\style{+B}Inc\style{-B}(var X: Ordinal; [N: Integer]);
+function \column{}\style{+B}Dec\style{-B}(var X: Ordinal; [N: Integer]): \column{}Integer;
+function \column{}\style{+B}Ord\style{-B}(X: Ordinal): \column{}Ordinal;
+function \column{}\style{+B}Pred\style{-B}(X: Ordinal): \column{}Ordinal;
+function \column{}\style{+B}Succ\style{-B}(X: Ordinal): \column{}Ordinal;

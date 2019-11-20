@@ -1,0 +1,14 @@
+procedure \column{}\style{+B}OnHouseBuilt\style{-B}(aHouse: Integer);
+procedure \column{}\style{+B}OnHouseDamaged\style{-B}(aHouse, aAttacker: Integer);
+procedure \column{}\style{+B}OnHouseDestroyed\style{-B}(aHouse, aDestroyerIndex: Integer);
+procedure \column{}\style{+B}OnHousePlanPlaced\style{-B}(aPlayer: Integer; aX, aY: Word; aType: TKMHouseType);
+procedure \column{}\style{+B}OnMissionStart\style{-B};
+procedure \column{}\style{+B}OnPlayerDefeated\style{-B}(aPlayer: Integer);
+procedure \column{}\style{+B}OnPlayerVictory\style{-B}(aPlayer: Integer);
+procedure \column{}\style{+B}OnTerrainTrigger\style{-B}(aTriggerId, aUnit: Integer; aX, aY: Word);
+procedure \column{}\style{+B}OnTick\style{-B}(aTick: Integer);
+procedure \column{}\style{+B}OnUnitDied\style{-B}(aUnit, aKillerOwner: Integer);
+procedure \column{}\style{+B}OnUnitTrained\style{-B}(aUnit: Integer);
+procedure \column{}\style{+B}OnUnitWoundedByHouse\style{-B}(aUnit, aAttackerHouse: Integer);
+procedure \column{}\style{+B}OnUnitWoundedByUnit\style{-B}(aUnit, aAttackerUnit: Integer);
+procedure \column{}\style{+B}OnWarriorEquipped\style{-B}(aUnit, aGroup: Integer);

@@ -15,7 +15,6 @@ type
     btnDeleteSelected: TButton;
     btnSave: TButton;
     btnReset: TButton;
-    rgGame: TRadioGroup;
     cbDict: TComboBox;
     Label1: TLabel;
     btnA1Import: TButton;
@@ -105,13 +104,7 @@ var
   parsedMethod: TSEMethod;
   methodList:   TSEMethodList;
 begin
-  impFile := gExeDir;
-
-  case rgGame.ItemIndex of
-    0:   impFile := impFile + DATA_DIR_KMR;
-    1:   impFile := impFile + DATA_DIR_KP;
-    else impFile := impFile + DATA_DIR_KMR;
-  end;
+  impFile := gExeDir + DATA_DIR;
 
   case cbDict.ItemIndex of
     0:   impFile := impFile + DICT_OLD_FILE_ACTIONS;
@@ -202,13 +195,7 @@ end;
 
 function TForm1.GetCurrentDict: string;
 begin
-  Result := gExeDir;
-
-  case rgGame.ItemIndex of
-    0:   Result := Result + DATA_DIR_KMR;
-    1:   Result := Result + DATA_DIR_KP;
-    else Result := Result + DATA_DIR_KMR;
-  end;
+  Result := gExeDir + DATA_DIR;
 
   case cbDict.ItemIndex of
     0:   Result := Result + DICT_FILE_ACTIONS;
