@@ -73,6 +73,7 @@ type
     procedure ParentTabHide(Sender: TObject);
     procedure DoAssignInterfacePointer(aActive: Boolean);
     procedure ShowSearchReplaceDialog(aReplace: Boolean);
+    procedure ReloadTheme;
     property Editor: TSEEditor read fEditor write fEditor;
     property SynEditor: TSynEdit read fSynEdit write fSynEdit;
   end;
@@ -102,6 +103,7 @@ type
     function GetModified: Boolean;
     procedure SetCaret(aX, aY: Integer);
     procedure ReloadSettings;
+    procedure ReloadTheme;
     // ISEEditCommands implementation
     function CanCut: Boolean;
     function CanCopy: Boolean;
@@ -186,23 +188,11 @@ begin
 end;
 
 procedure TSEEditorForm.FormCreate(aSender: TObject);
-var
-  Settings: TStringList;
 begin
-  Settings            := TStringList.Create;
   fSynEdit            := TSynEdit.Create(Self);
   fSynPasSyn          := TSynPasSyn.Create(Self);
   fSynCompletion      := TSynCompletionProposal.Create(fSynEdit);
   fSynParamCompletion := TSynCompletionProposal.Create(fSynEdit);
-
-  try
-    fSynPasSyn.EnumUserSettings(Settings);
-
-    if Settings.Count > 0 then
-      fSynPasSyn.UseUserSettings(Settings.Count - 1);
-  finally
-    FreeAndNil(Settings);
-  end;
 
   fSynEdit.Parent                        := Self;
   fSynEdit.Align                         := alClient;
@@ -809,6 +799,313 @@ begin
     end;
 end;
 
+procedure TSEEditorForm.ReloadTheme;
+begin
+  case gOptions.Theme of
+    tkLight: begin
+      // Assembler
+      fSynPasSyn.AsmAttri.Style      := [];
+      fSynPasSyn.AsmAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.AsmAttri.Foreground := StringToColor('clWindowText'); // clBlack
+      // Char
+      fSynPasSyn.CharAttri.Style      := [];
+      fSynPasSyn.CharAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.CharAttri.Foreground := StringToColor('clPurple');
+      // Comment
+      fSynPasSyn.CommentAttri.Style      := [fsItalic];
+      fSynPasSyn.CommentAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.CommentAttri.Foreground := StringToColor('clGreen');
+      // Float
+      fSynPasSyn.FloatAttri.Style      := [];
+      fSynPasSyn.FloatAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.FloatAttri.Foreground := StringToColor('clBlue');
+      // Hex
+      fSynPasSyn.HexAttri.Style      := [];
+      fSynPasSyn.HexAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.HexAttri.Foreground := StringToColor('clBlue');
+      // Identifier
+      fSynPasSyn.IdentifierAttri.Style      := [];
+      fSynPasSyn.IdentifierAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.IdentifierAttri.Foreground := StringToColor('clWindowText'); // clBlack
+      // Number
+      fSynPasSyn.NumberAttri.Style      := [];
+      fSynPasSyn.NumberAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.NumberAttri.Foreground := StringToColor('clBlue');
+      // Preprocessor
+      fSynPasSyn.DirectiveAttri.Style      := [];
+      fSynPasSyn.DirectiveAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.DirectiveAttri.Foreground := StringToColor('clTeal');
+      // Reserved word
+      fSynPasSyn.KeyAttri.Style      := [fsBold];
+      fSynPasSyn.KeyAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.KeyAttri.Foreground := StringToColor('clNavy');
+      // String
+      fSynPasSyn.StringAttri.Style      := [];
+      fSynPasSyn.StringAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.StringAttri.Foreground := StringToColor('clBlue');
+      // Symbol
+      fSynPasSyn.SymbolAttri.Style      := [];
+      fSynPasSyn.SymbolAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.SymbolAttri.Foreground := StringToColor('clWindowText'); // clBlack
+      // Whitespace
+      fSynPasSyn.SpaceAttri.Style      := [];
+      fSynPasSyn.SpaceAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.SpaceAttri.Foreground := StringToColor('clWindowText'); // clBlack
+    end;
+    tkClassic: begin
+      // Assembler
+      fSynPasSyn.AsmAttri.Style      := [];
+      fSynPasSyn.AsmAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.AsmAttri.Foreground := StringToColor('clLime');
+      // Char
+      fSynPasSyn.CharAttri.Style      := [];
+      fSynPasSyn.CharAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.CharAttri.Foreground := StringToColor('clAqua');
+      // Comment
+      fSynPasSyn.CommentAttri.Style      := [fsItalic];
+      fSynPasSyn.CommentAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.CommentAttri.Foreground := StringToColor('clSilver');
+      // Float
+      fSynPasSyn.FloatAttri.Style      := [];
+      fSynPasSyn.FloatAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.FloatAttri.Foreground := StringToColor('clFuchsia');
+      // Hex
+      fSynPasSyn.HexAttri.Style      := [];
+      fSynPasSyn.HexAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.HexAttri.Foreground := StringToColor('clFuchsia');
+      // Identifier
+      fSynPasSyn.IdentifierAttri.Style      := [];
+      fSynPasSyn.IdentifierAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.IdentifierAttri.Foreground := StringToColor('clYellow');
+      // Number
+      fSynPasSyn.NumberAttri.Style      := [];
+      fSynPasSyn.NumberAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.NumberAttri.Foreground := StringToColor('clFuchsia');
+      // Preprocessor
+      fSynPasSyn.DirectiveAttri.Style      := [];
+      fSynPasSyn.DirectiveAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.DirectiveAttri.Foreground := StringToColor('clSilver');
+      // Reserved word
+      fSynPasSyn.KeyAttri.Style      := [];
+      fSynPasSyn.KeyAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.KeyAttri.Foreground := StringToColor('clWhite');
+      // String
+      fSynPasSyn.StringAttri.Style      := [];
+      fSynPasSyn.StringAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.StringAttri.Foreground := StringToColor('clAqua');
+      // Symbol
+      fSynPasSyn.SymbolAttri.Style      := [];
+      fSynPasSyn.SymbolAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.SymbolAttri.Foreground := StringToColor('clLime');
+      // Whitespace
+      fSynPasSyn.SpaceAttri.Style      := [];
+      fSynPasSyn.SpaceAttri.Background := StringToColor('clNavy');
+      fSynPasSyn.SpaceAttri.Foreground := StringToColor('clYellow');
+    end;
+    tkOcean: begin
+      // Assembler
+      fSynPasSyn.AsmAttri.Style      := [];
+      fSynPasSyn.AsmAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.AsmAttri.Foreground := StringToColor('clBlue');
+      // Char
+      fSynPasSyn.CharAttri.Style      := [];
+      fSynPasSyn.CharAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.CharAttri.Foreground := StringToColor('clPurple');
+      // Comment
+      fSynPasSyn.CommentAttri.Style      := [fsItalic];
+      fSynPasSyn.CommentAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.CommentAttri.Foreground := StringToColor('clTeal');
+      // Float
+      fSynPasSyn.FloatAttri.Style      := [];
+      fSynPasSyn.FloatAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.FloatAttri.Foreground := StringToColor('clOlive');
+      // Hex
+      fSynPasSyn.HexAttri.Style      := [];
+      fSynPasSyn.HexAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.HexAttri.Foreground := StringToColor('clOlive');
+      // Identifier
+      fSynPasSyn.IdentifierAttri.Style      := [];
+      fSynPasSyn.IdentifierAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.IdentifierAttri.Foreground := StringToColor('clBlue');
+      // Number
+      fSynPasSyn.NumberAttri.Style      := [];
+      fSynPasSyn.NumberAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.NumberAttri.Foreground := StringToColor('clOlive');
+      // Preprocessor
+      fSynPasSyn.DirectiveAttri.Style      := [fsItalic];
+      fSynPasSyn.DirectiveAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.DirectiveAttri.Foreground := StringToColor('clBlack');
+      // Reserved word
+      fSynPasSyn.KeyAttri.Style      := [];
+      fSynPasSyn.KeyAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.KeyAttri.Foreground := StringToColor('clBlack');
+      // String
+      fSynPasSyn.StringAttri.Style      := [];
+      fSynPasSyn.StringAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.StringAttri.Foreground := StringToColor('clPurple');
+      // Symbol
+      fSynPasSyn.SymbolAttri.Style      := [];
+      fSynPasSyn.SymbolAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.SymbolAttri.Foreground := StringToColor('clBlack');
+      // Whitespace
+      fSynPasSyn.SpaceAttri.Style      := [];
+      fSynPasSyn.SpaceAttri.Background := StringToColor('clAqua');
+      fSynPasSyn.SpaceAttri.Foreground := StringToColor('clBlack');
+    end;
+    tkVisualStudio: begin
+      // Assembler
+      fSynPasSyn.AsmAttri.Style      := [];
+      fSynPasSyn.AsmAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.AsmAttri.Foreground := StringToColor('clBlack');
+      // Char
+      fSynPasSyn.CharAttri.Style      := [];
+      fSynPasSyn.CharAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.CharAttri.Foreground := StringToColor('clWindowText'); // clBlack
+      // Comment
+      fSynPasSyn.CommentAttri.Style      := [fsItalic];
+      fSynPasSyn.CommentAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.CommentAttri.Foreground := StringToColor('clGreen');
+      // Float
+      fSynPasSyn.FloatAttri.Style      := [];
+      fSynPasSyn.FloatAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.FloatAttri.Foreground := StringToColor('clWindowText'); // clBlack
+      // Hex
+      fSynPasSyn.HexAttri.Style      := [];
+      fSynPasSyn.HexAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.HexAttri.Foreground := StringToColor('clWindowText'); // clBlack
+      // Identifier
+      fSynPasSyn.IdentifierAttri.Style      := [];
+      fSynPasSyn.IdentifierAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.IdentifierAttri.Foreground := StringToColor('clBlack');
+      // Number
+      fSynPasSyn.NumberAttri.Style      := [];
+      fSynPasSyn.NumberAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.NumberAttri.Foreground := StringToColor('clWindowText'); // clBlack
+      // Preprocessor
+      fSynPasSyn.DirectiveAttri.Style      := [];
+      fSynPasSyn.DirectiveAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.DirectiveAttri.Foreground := StringToColor('clBlue');
+      // Reserved word
+      fSynPasSyn.KeyAttri.Style      := [];
+      fSynPasSyn.KeyAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.KeyAttri.Foreground := StringToColor('clBlue');
+      // String
+      fSynPasSyn.StringAttri.Style      := [];
+      fSynPasSyn.StringAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.StringAttri.Foreground := StringToColor('clWindowText'); // clBlack
+      // Symbol
+      fSynPasSyn.SymbolAttri.Style      := [];
+      fSynPasSyn.SymbolAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.SymbolAttri.Foreground := StringToColor('clWindowText'); // clBlack
+      // Whitespace
+      fSynPasSyn.SpaceAttri.Style      := [];
+      fSynPasSyn.SpaceAttri.Background := StringToColor('clWindow'); // clWhite
+      fSynPasSyn.SpaceAttri.Foreground := StringToColor('clWindowText'); // clBlack
+    end;
+    tkTwilight: begin
+      // Assembler
+      fSynPasSyn.AsmAttri.Style      := [];
+      fSynPasSyn.AsmAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.AsmAttri.Foreground := StringToColor('clLime');
+      // Char
+      fSynPasSyn.CharAttri.Style      := [];
+      fSynPasSyn.CharAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.CharAttri.Foreground := StringToColor('clYellow');
+      // Comment
+      fSynPasSyn.CommentAttri.Style      := [fsItalic];
+      fSynPasSyn.CommentAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.CommentAttri.Foreground := StringToColor('clLime');
+      // Float
+      fSynPasSyn.FloatAttri.Style      := [];
+      fSynPasSyn.FloatAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.FloatAttri.Foreground := StringToColor('clFuchsia');
+      // Hex
+      fSynPasSyn.HexAttri.Style      := [];
+      fSynPasSyn.HexAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.HexAttri.Foreground := StringToColor('clFuchsia');
+      // Identifier
+      fSynPasSyn.IdentifierAttri.Style      := [];
+      fSynPasSyn.IdentifierAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.IdentifierAttri.Foreground := StringToColor('clWhite');
+      // Number
+      fSynPasSyn.NumberAttri.Style      := [];
+      fSynPasSyn.NumberAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.NumberAttri.Foreground := StringToColor('clFuchsia');
+      // Preprocessor
+      fSynPasSyn.DirectiveAttri.Style      := [fsItalic];
+      fSynPasSyn.DirectiveAttri.Background := StringToColor('clWhite');
+      fSynPasSyn.DirectiveAttri.Foreground := StringToColor('clGreen');
+      // Reserved word
+      fSynPasSyn.KeyAttri.Style      := [];
+      fSynPasSyn.KeyAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.KeyAttri.Foreground := StringToColor('clAqua');
+      // String
+      fSynPasSyn.StringAttri.Style      := [];
+      fSynPasSyn.StringAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.StringAttri.Foreground := StringToColor('clYellow');
+      // Symbol
+      fSynPasSyn.SymbolAttri.Style      := [];
+      fSynPasSyn.SymbolAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.SymbolAttri.Foreground := StringToColor('clSilver');
+      // Whitespace
+      fSynPasSyn.SpaceAttri.Style      := [];
+      fSynPasSyn.SpaceAttri.Background := StringToColor('clBlack');
+      fSynPasSyn.SpaceAttri.Foreground := StringToColor('clWhite');
+    end;
+    tkDark: begin
+      {$IFDEF Hy} { Test } {$ENDIF}
+      // Assembler
+      fSynPasSyn.AsmAttri.Style      := [];
+      fSynPasSyn.AsmAttri.Background := $00322F2D;
+      fSynPasSyn.AsmAttri.Foreground := $00D0E3F0;
+      // Char
+      fSynPasSyn.CharAttri.Style      := [];
+      fSynPasSyn.CharAttri.Background := $00322F2D;
+      fSynPasSyn.CharAttri.Foreground := $00AA7FFF;
+      // Comment
+      fSynPasSyn.CommentAttri.Style      := [fsItalic];
+      fSynPasSyn.CommentAttri.Background := $00322F2D;
+      fSynPasSyn.CommentAttri.Foreground := $0084E7BC;
+      // Float
+      fSynPasSyn.FloatAttri.Style      := [];
+      fSynPasSyn.FloatAttri.Background := $00322F2D;
+      fSynPasSyn.FloatAttri.Foreground := $00AA7FFF;
+      // Hex
+      fSynPasSyn.HexAttri.Style      := [];
+      fSynPasSyn.HexAttri.Background := $00322F2D;
+      fSynPasSyn.HexAttri.Foreground := $00AA7FFF;
+      // Identifier
+      fSynPasSyn.IdentifierAttri.Style      := [];
+      fSynPasSyn.IdentifierAttri.Background := $00322F2D;
+      fSynPasSyn.IdentifierAttri.Foreground := $00F0F9FF;
+      // Number
+      fSynPasSyn.NumberAttri.Style      := [];
+      fSynPasSyn.NumberAttri.Background := $00322F2D;
+      fSynPasSyn.NumberAttri.Foreground := $00AA7FFF;
+      // Preprocessor
+      fSynPasSyn.DirectiveAttri.Style      := [];
+      fSynPasSyn.DirectiveAttri.Background := $00322F2D;
+      fSynPasSyn.DirectiveAttri.Foreground := $00FFCD66;
+      // Reserved word
+      fSynPasSyn.KeyAttri.Style      := [fsBold];
+      fSynPasSyn.KeyAttri.Background := $00322F2D;
+      fSynPasSyn.KeyAttri.Foreground := $00BCE0FF;
+      // String
+      fSynPasSyn.StringAttri.Style      := [];
+      fSynPasSyn.StringAttri.Background := $00322F2D;
+      fSynPasSyn.StringAttri.Foreground := $00FFAA7F;
+      // Symbol
+      fSynPasSyn.SymbolAttri.Style      := [];
+      fSynPasSyn.SymbolAttri.Background := $00322F2D;
+      fSynPasSyn.SymbolAttri.Foreground := $00F0F9FF;
+      // Whitespace
+      fSynPasSyn.SpaceAttri.Style      := [];
+      fSynPasSyn.SpaceAttri.Background := $00322F2D;
+      fSynPasSyn.SpaceAttri.Foreground := $00FFFEFA;
+    end;
+  end;
+end;
+
 procedure TSEEditorForm.RunValidate(const aFileName: string);
 var
   noIssues: TScriptValidatorIssue;
@@ -945,6 +1242,7 @@ begin
   inherited Create;
   fForm := aForm;
   fUntitledNumber := -1;
+  ReloadTheme;
 end;
 
 procedure TSEEditor.DoSetFileName(aFileName: string);
@@ -1077,6 +1375,11 @@ begin
   EditFont.Name        := gOptions.Font.Name;
   EditFont.Size        := gOptions.Font.Size;
   fForm.SynEditor.Font := EditFont;
+end;
+
+procedure TSEEditor.ReloadTheme;
+begin
+  fForm.ReloadTheme;
 end;
 
 // ISEEditCommands implementation

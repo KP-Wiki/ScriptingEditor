@@ -11,26 +11,26 @@ uses
 type
   { TScriptingEditorForm }
   TSEMainForm = class(TForm)
-    MainMenu1:          TMainMenu;
-    StatusBar1:         TStatusBar;
-    ToolBar1:           TToolBar;
+    MainMenu1:             TMainMenu;
+    StatusBar1:            TStatusBar;
+    ToolBar1:              TToolBar;
     pcLeft,
     pcRight,
-    pcEditors:          TPageControl; // Page controls
+    pcEditors:             TPageControl; // Page controls
     tsIssues,
     tsRawSVOutput,
     tsEvents,
     tsStates,
     tsActions,
-    tsUtils:            TTabSheet; // Tab sheets
-    edtRawSVOutput:     TMemo; // Memos
-    pmIssues:           TPopupMenu; // Popups
+    tsUtils:               TTabSheet; // Tab sheets
+    edtRawSVOutput:        TMemo; // Memos
+    pmIssues:              TPopupMenu; // Popups
     Edit1,
     File1,
-    Mode1,
     Help1,
     Run1,
-    Search1:            TMenuItem; // Main menu categories
+    Search1,
+    Theme1:                TMenuItem; // Main menu categories
     N1,
     N2,
     N3,
@@ -38,7 +38,7 @@ type
     N5,
     N6,
     N7,
-    N8:                 TMenuItem; // Main menu seperators
+    N8:                    TMenuItem; // Main menu seperators
     mri1,
     mri2,
     mri3,
@@ -48,7 +48,7 @@ type
     mri7,
     mri8,
     mri9,
-    mri10:              TMenuItem; // Main menu reopen items
+    mri10:                 TMenuItem; // Main menu reopen items
     MenuNew,
     MenuOpen,
     MenuSave,
@@ -74,13 +74,19 @@ type
     MenuKMRDocWiki,
     MenuKPDocWiki,
     MenuAboutSE,
-    MenuShowWelcomeTab: TMenuItem; // Main menu items
+    MenuShowWelcomeTab,
+    MenuThemeLight,
+    MenuThemeClassic,
+    MenuThemeOcean,
+    MenuthemeVisualStudio,
+    MenuthemeTwilight,
+    MenuthemeDark:         TMenuItem; // Main menu items
     miIssueGoTo,
-    miIssueCopy:        TMenuItem; // fLbIssues popup items
+    miIssueCopy:           TMenuItem; // fLbIssues popup items
     tbSep1,
     tbSep2,
     tbSep3,
-    tbSep4:             TToolButton; // Toolbar button seperators
+    tbSep4:                TToolButton; // Toolbar button seperators
     tbNewFile,
     tbOpen,
     tbSaveFile,
@@ -94,10 +100,10 @@ type
     tbRedo,
     tbFind,
     tbReplace,
-    tbGoToLine:         TToolButton; // Toolbar buttons
+    tbGoToLine:            TToolButton; // Toolbar buttons
     Splitter1,
-    Splitter2:          TSplitter; // Splitters
-    ilMethodTypes: TImageList;
+    Splitter2:             TSplitter; // Splitters
+    ilMethodTypes:         TImageList;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -585,8 +591,9 @@ begin
     PcLeftWidth  := IniFile.ReadInteger('Application', 'LeftWidth',  250);
     PcRightWidth := IniFile.ReadInteger('Application', 'RightWidth', 250);
 
-    gOptions.Font.Name := IniFile.ReadString('Options',  'FontName', 'Courier New');
-    gOptions.Font.Size := IniFile.ReadInteger('Options', 'FontSize', 10);
+    gOptions.Theme     := TSEThemeKind(IniFile.ReadInteger('Options', 'Theme',    Ord(tkLight)));
+    gOptions.Font.Name := IniFile.ReadString('Options',               'FontName', 'Courier New');
+    gOptions.Font.Size := IniFile.ReadInteger('Options',              'FontSize', 10);
 
     if (W > 0) and (H > 0) then
       SetBounds(X, Y, W, H);
@@ -594,8 +601,14 @@ begin
     if IniFile.ReadBool('Application', 'Maximized', False) then
       WindowState := wsMaximized;
 
-    pcLeft.Width                           := PcLeftWidth;
-    pcRight.Width                          := PcRightWidth;
+    gCommandsDataModule.ActThemeLight.Checked        := gOptions.Theme = tkLight;
+    gCommandsDataModule.ActThemeClassic.Checked      := gOptions.Theme = tkClassic;
+    gCommandsDataModule.ActThemeOcean.Checked        := gOptions.Theme = tkOcean;
+    gCommandsDataModule.ActThemeVisualStudio.Checked := gOptions.Theme = tkVisualStudio;
+    gCommandsDataModule.ActThemeTwilight.Checked     := gOptions.Theme = tkTwilight;
+    gCommandsDataModule.ActThemeDark.Checked         := gOptions.Theme = tkDark;
+    pcLeft.Width                                     := PcLeftWidth;
+    pcRight.Width                                    := PcRightWidth;
 
     gSearchBackwards     := IniFile.ReadBool('SearchReplace',   'Backwards',      False);
     gSearchCaseSensitive := IniFile.ReadBool('SearchReplace',   'CaseSensitive',  False);
@@ -643,6 +656,7 @@ begin
     IniFile.WriteInteger('Application', 'RightWidth', pcRight.Width);
     IniFile.WriteBool('Application',    'Maximized',  (WindowState = wsMaximized));
 
+    IniFile.WriteInteger('Options', 'Theme',    Ord(gOptions.Theme));
     IniFile.WriteString('Options',  'FontName', gOptions.Font.Name);
     IniFile.WriteInteger('Options', 'FontSize', gOptions.Font.Size);
 

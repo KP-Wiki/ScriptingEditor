@@ -8,6 +8,7 @@
 const
   PLAYER_1   = 0;
   PLAYER_MAX = 4;
+  {$IFDEF Hy} { Test } {$ENDIF}
 
 type
   TPlayerInfo = record
@@ -26,7 +27,7 @@ begin
   for I := 0 to PLAYER_MAX - 1 do
   begin
     PlayerInfo.Id     := I;
-    PlayerInfo.Name   := States.PlayerName(I);
+    PlayerInfo.Name   := States.PlayerName(I) + 'Some Text';
     fPlayerInfoArr[I] := PlayerInfo;
   end;
 end;

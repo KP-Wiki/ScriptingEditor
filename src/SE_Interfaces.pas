@@ -18,6 +18,7 @@ type
     function GetModified: Boolean;
     procedure SetCaret(aX, aY: Integer);
     procedure ReloadSettings;
+    procedure ReloadTheme;
   end;
 
   ISEEditorFactory = interface
@@ -31,6 +32,7 @@ type
     function GetEditorCount: Integer;
     function GetEditor(Index: Integer): ISEEditor;
     procedure RemoveEditor(aEditor: ISEEditor);
+    procedure ReloadTheme;
     property Editor[Index: Integer]: ISEEditor read GetEditor;
   end;
 

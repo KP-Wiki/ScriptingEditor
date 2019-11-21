@@ -238,6 +238,44 @@ object SECommandsDataModule: TSECommandsDataModule
       ImageIndex = 12
       OnExecute = ActIssueCopyExecute
     end
+    object ActThemeLight: TAction
+      Category = 'Theme'
+      Caption = 'Light'
+      Hint = 'Light Theme|Enable the light editor theme'
+      OnExecute = ActThemeLightExecute
+    end
+    object ActThemeClassic: TAction
+      Category = 'Theme'
+      Caption = 'Classic'
+      Hint = 'Classic Theme|Enable the classic editor theme'
+      OnExecute = ActThemeClassicExecute
+    end
+    object ActThemeOcean: TAction
+      Category = 'Theme'
+      Caption = 'Ocean'
+      Hint = 'Ocean Theme|Enable the ocean editor theme'
+      OnExecute = ActThemeOceanExecute
+    end
+    object ActThemeVisualStudio: TAction
+      Category = 'Theme'
+      Caption = 'Visual Studio (TM)'
+      Hint = 
+        'Visual Studio (TM) Theme|Enable the Visual Studio (TM) editor th' +
+        'eme'
+      OnExecute = ActThemeVisualStudioExecute
+    end
+    object ActThemeTwilight: TAction
+      Category = 'Theme'
+      Caption = 'Twilight'
+      Hint = 'Twilight Theme|Enable the twilight editor theme'
+      OnExecute = ActThemeTwilightExecute
+    end
+    object ActThemeDark: TAction
+      Category = 'Theme'
+      Caption = 'Dark'
+      Hint = 'Dark Theme|Enable the dark editor theme'
+      OnExecute = ActThemeDarkExecute
+    end
   end
   object ilActions16x16: TImageList
     ColorDepth = cd32Bit
@@ -245,7 +283,7 @@ object SECommandsDataModule: TSECommandsDataModule
     Left = 40
     Top = 112
     Bitmap = {
-      494C010116001800FC0010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800040010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000B0006104000183979002A5F9C00295D9B0016347400050C390000
@@ -1052,7 +1090,7 @@ object SECommandsDataModule: TSECommandsDataModule
     Left = 40
     Top = 64
     Bitmap = {
-      494C010116006C01600216001600FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116006C01040016001600FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000005800000084000000010020000000000080B5
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000040000000C0003082E000F246100183B7B0017

@@ -199,14 +199,26 @@ object SEMainForm: TSEMainForm
     object tsStates: TTabSheet
       Caption = 'States'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object tsActions: TTabSheet
       Caption = 'Actions'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object tsUtils: TTabSheet
       Caption = 'Utils'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   object pcRight: TPageControl
@@ -225,6 +237,10 @@ object SEMainForm: TSEMainForm
     object tsRawSVOutput: TTabSheet
       Caption = 'Raw Validator Output'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object edtRawSVOutput: TMemo
         Left = 0
         Top = 0
@@ -410,6 +426,27 @@ object SEMainForm: TSEMainForm
         Action = SECommandsDataModule.ActShowWelcome
       end
     end
+    object Theme1: TMenuItem
+      Caption = 'Theme'
+      object MenuThemeLight: TMenuItem
+        Action = SECommandsDataModule.ActThemeLight
+      end
+      object MenuThemeClassic: TMenuItem
+        Action = SECommandsDataModule.ActThemeClassic
+      end
+      object MenuThemeOcean: TMenuItem
+        Action = SECommandsDataModule.ActThemeOcean
+      end
+      object MenuthemeVisualStudio: TMenuItem
+        Action = SECommandsDataModule.ActThemeVisualStudio
+      end
+      object MenuthemeTwilight: TMenuItem
+        Action = SECommandsDataModule.ActThemeTwilight
+      end
+      object MenuthemeDark: TMenuItem
+        Action = SECommandsDataModule.ActThemeDark
+      end
+    end
   end
   object pmIssues: TPopupMenu
     AutoPopup = False
@@ -431,7 +468,7 @@ object SEMainForm: TSEMainForm
     Left = 168
     Top = 40
     Bitmap = {
-      494C01010400300038000E000E00FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010400300004000E000E00FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000380000001C00000001002000000000008018
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

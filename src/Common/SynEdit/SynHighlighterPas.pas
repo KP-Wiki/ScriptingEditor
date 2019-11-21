@@ -3,11 +3,9 @@ The contents of this file are subject to the Mozilla Public License
 Version 1.1 (the "License"); you may not use this file except in compliance
 with the License. You may obtain a copy of the License at
 http://www.mozilla.org/MPL/
-
 Software distributed under the License is distributed on an "AS IS" basis,
 WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 the specific language governing rights and limitations under the License.
-
 The Original Code is: SynHighlighterPas.pas, released 2000-04-17.
 The Original Code is based on the mwPasSyn.pas file from the
 mwEdit component suite by Martin Waldenburg and other developers, the Initial
@@ -15,10 +13,8 @@ Author of this file is Martin Waldenburg.
 Portions created by Martin Waldenburg are Copyright (C) 1998 Martin Waldenburg.
 Unicode translation by Maël Hörz.
 All Rights Reserved.
-
 Contributors to the SynEdit and mwEdit projects are listed in the
 Contributors.txt file.
-
 Alternatively, the contents of this file may be used under the terms of the
 GNU General Public License Version 2 or later (the "GPL"), in which case
 the provisions of the GPL are applicable instead of those above.
@@ -28,12 +24,9 @@ under the MPL, indicate your decision by deleting the provisions above and
 replace them with the notice and other provisions required by the GPL.
 If you do not delete the provisions above, a recipient may use your version
 of this file under either the MPL or the GPL.
-
 $Id: SynHighlighterPas.pas,v 1.27.2.10 2009/02/23 15:43:50 maelh Exp $
-
 You may retrieve the latest version of this file at the SynEdit home page,
 located at http://SynEdit.SourceForge.net
-
 Known Issues:
 -------------------------------------------------------------------------------}
 {
@@ -48,9 +41,7 @@ Two extra properties included (DelphiVersion, PackageSource):
   PackageSource - Allows you to enable/disable the highlighting of package keywords
 }
 
-{$IFNDEF QSYNHIGHLIGHTERPAS}
 unit SynHighlighterPas;
-{$ENDIF}
 
 {$I SynEdit.Inc}
 
@@ -1373,13 +1364,22 @@ procedure TSynPasSyn.EnumUserSettings(DelphiVersions: TStrings);
     end;
   end;
 
+var
+  LWowNode : string;
 begin
   { returns the user settings that exist in the registry }
   // See UseUserSettings below where these strings are used
-  LoadKeyVersions('\SOFTWARE\Borland\Delphi', '');
-  LoadKeyVersions('\SOFTWARE\Borland\BDS', BDSVersionPrefix);
-  LoadKeyVersions('\SOFTWARE\CodeGear\BDS', BDSVersionPrefix);
-  LoadKeyVersions('\SOFTWARE\Embarcadero\BDS', BDSVersionPrefix);
+  {$ifdef WIN64}
+  LWowNode := 'WOW6432Node\';
+  {$else}
+  LWowNode := '';
+  {$ENDIF}
+
+  LoadKeyVersions('\SOFTWARE\'+ LWOWNode + 'Borland\Delphi', '');
+  LoadKeyVersions('\SOFTWARE\'+ LWOWNode + 'Borland\BDS', BDSVersionPrefix);
+  LoadKeyVersions('\SOFTWARE\'+ LWOWNode + 'CodeGear\BDS', BDSVersionPrefix);
+  LoadKeyVersions('\SOFTWARE\'+ LWOWNode + 'Embarcadero\BDS', BDSVersionPrefix);
+
 end;
 
 function TSynPasSyn.UseUserSettings(VersionIndex: Integer): Boolean;
@@ -1602,4 +1602,3 @@ initialization
   RegisterPlaceableHighlighter(TSynPasSyn);
 {$ENDIF}
 end.
-

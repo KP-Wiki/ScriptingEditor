@@ -27,6 +27,7 @@ type
     function GetEditorCount: Integer;
     function GetEditor(aIndex: Integer): ISEEditor;
     procedure RemoveEditor(aEditor: ISEEditor);
+    procedure ReloadTheme;
   end;
 
 implementation
@@ -178,6 +179,14 @@ begin
 
   if I > -1 then
     fEditors.Delete(I);
+end;
+
+procedure TSEEditorFactory.ReloadTheme;
+var
+  I: Integer;
+begin
+  for I := 0 to fEditors.Count - 1 do
+    ISEEditor(fEditors[I]).ReloadTheme;
 end;
 
 procedure TSEEditorFactory.DoOpenFile(aFileName: string);

@@ -39,6 +39,12 @@ type
     actIssueGoTo: TAction;
     actIssueCopy: TAction;
     ActKMRDocWiki: TAction;
+    ActThemeLight: TAction;
+    ActThemeClassic: TAction;
+    ActThemeOcean: TAction;
+    ActThemeVisualStudio: TAction;
+    ActThemeTwilight: TAction;
+    ActThemeDark: TAction;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
 
@@ -90,6 +96,12 @@ type
     procedure ActShowWelcomeTabExecute(Sender: TObject);
     procedure ActIssueGoToExecute(Sender: TObject);
     procedure ActIssueCopyExecute(Sender: TObject);
+    procedure ActThemeLightExecute(Sender: TObject);
+    procedure ActThemeClassicExecute(Sender: TObject);
+    procedure ActThemeOceanExecute(Sender: TObject);
+    procedure ActThemeVisualStudioExecute(Sender: TObject);
+    procedure ActThemeTwilightExecute(Sender: TObject);
+    procedure ActThemeDarkExecute(Sender: TObject);
   private
     fMRIFiles:        TStringList;
     fUntitledNumbers: TBits;
@@ -226,6 +238,90 @@ end;
 procedure TSECommandsDataModule.ActShowWelcomeTabUpdate(Sender: TObject);
 begin
   ActShowWelcome.Enabled := GetWelcomePageIndex = -1;
+end;
+
+procedure TSECommandsDataModule.ActThemeLightExecute(Sender: TObject);
+begin
+  gOptions.Theme               := tkLight;
+  ActThemeLight.Checked        := True;
+  ActThemeClassic.Checked      := False;
+  ActThemeOcean.Checked        := False;
+  ActThemeVisualStudio.Checked := False;
+  ActThemeTwilight.Checked     := False;
+  ActThemeDark.Checked         := False;
+
+  if gEditorFactory <> nil then
+    gEditorFactory.ReloadTheme;
+end;
+
+procedure TSECommandsDataModule.ActThemeClassicExecute(Sender: TObject);
+begin
+  gOptions.Theme               := tkClassic;
+  ActThemeLight.Checked        := False;
+  ActThemeClassic.Checked      := True;
+  ActThemeOcean.Checked        := False;
+  ActThemeVisualStudio.Checked := False;
+  ActThemeTwilight.Checked     := False;
+  ActThemeDark.Checked         := False;
+
+  if gEditorFactory <> nil then
+    gEditorFactory.ReloadTheme;
+end;
+
+procedure TSECommandsDataModule.ActThemeOceanExecute(Sender: TObject);
+begin
+  gOptions.Theme               := tkOcean;
+  ActThemeLight.Checked        := False;
+  ActThemeClassic.Checked      := False;
+  ActThemeOcean.Checked        := True;
+  ActThemeVisualStudio.Checked := False;
+  ActThemeTwilight.Checked     := False;
+  ActThemeDark.Checked         := False;
+
+  if gEditorFactory <> nil then
+    gEditorFactory.ReloadTheme;
+end;
+
+procedure TSECommandsDataModule.ActThemeVisualStudioExecute(Sender: TObject);
+begin
+  gOptions.Theme               := tkVisualStudio;
+  ActThemeLight.Checked        := False;
+  ActThemeClassic.Checked      := False;
+  ActThemeOcean.Checked        := False;
+  ActThemeVisualStudio.Checked := True;
+  ActThemeTwilight.Checked     := False;
+  ActThemeDark.Checked         := False;
+
+  if gEditorFactory <> nil then
+    gEditorFactory.ReloadTheme;
+end;
+
+procedure TSECommandsDataModule.ActThemeTwilightExecute(Sender: TObject);
+begin
+  gOptions.Theme               := tkTwilight;
+  ActThemeLight.Checked        := False;
+  ActThemeClassic.Checked      := False;
+  ActThemeOcean.Checked        := False;
+  ActThemeVisualStudio.Checked := False;
+  ActThemeTwilight.Checked     := True;
+  ActThemeDark.Checked         := False;
+
+  if gEditorFactory <> nil then
+    gEditorFactory.ReloadTheme;
+end;
+
+procedure TSECommandsDataModule.ActThemeDarkExecute(Sender: TObject);
+begin
+  gOptions.Theme               := tkDark;
+  ActThemeLight.Checked        := False;
+  ActThemeClassic.Checked      := False;
+  ActThemeOcean.Checked        := False;
+  ActThemeVisualStudio.Checked := False;
+  ActThemeTwilight.Checked     := False;
+  ActThemeDark.Checked         := True;
+
+  if gEditorFactory <> nil then
+    gEditorFactory.ReloadTheme;
 end;
 
 procedure TSECommandsDataModule.ActCutExecute(Sender: TObject);

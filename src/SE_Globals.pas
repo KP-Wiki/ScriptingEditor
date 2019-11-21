@@ -6,13 +6,18 @@ uses
   SE_Interfaces, SE_MainForm, SE_SnippetListBox, SE_IssueListBox, SE_ACMethods;
 
 type
+  TSEThemeKind = (
+    tkLight, tkClassic, tkOcean, tkVisualStudio, tkTwilight, tkDark
+  );
+
   TSEFontOptions = record
     Name: string;
     Size: Integer;
   end;
 
   TSEOptions = record
-    Font:    TSEFontOptions;
+    Theme: TSEThemeKind;
+    Font:  TSEFontOptions;
   end;
 
 const
@@ -23,7 +28,7 @@ const
   NON_EXISTING_ITEM = -1;
 
   VERSION_PREFIX = 'Alpha ';
-  VERSION        = '2.1.0';
+  VERSION        = '2.1.2';
   VERSION_SUFFIX = '';
   FULL_VERSION   = VERSION_PREFIX + VERSION + VERSION_SUFFIX;
 
