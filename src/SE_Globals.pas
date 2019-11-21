@@ -28,7 +28,7 @@ const
   NON_EXISTING_ITEM = -1;
 
   VERSION_PREFIX = 'Alpha ';
-  VERSION        = '2.1.2';
+  VERSION        = '2.1.3';
   VERSION_SUFFIX = '';
   FULL_VERSION   = VERSION_PREFIX + VERSION + VERSION_SUFFIX;
 

@@ -588,10 +588,10 @@ begin
     Y            := IniFile.ReadInteger('Application', 'Top',        0);
     W            := IniFile.ReadInteger('Application', 'Width',      1024);
     H            := IniFile.ReadInteger('Application', 'Height',     600);
-    PcLeftWidth  := IniFile.ReadInteger('Application', 'LeftWidth',  250);
+    PcLeftWidth  := IniFile.ReadInteger('Application', 'LeftWidth',  270);
     PcRightWidth := IniFile.ReadInteger('Application', 'RightWidth', 250);
 
-    gOptions.Theme     := TSEThemeKind(IniFile.ReadInteger('Options', 'Theme',    Ord(tkLight)));
+    gOptions.Theme     := TSEThemeKind(IniFile.ReadInteger('Options', 'Theme',    Ord(tkDark)));
     gOptions.Font.Name := IniFile.ReadString('Options',               'FontName', 'Courier New');
     gOptions.Font.Size := IniFile.ReadInteger('Options',              'FontSize', 10);
 

@@ -2,6 +2,8 @@ program ScriptingEditor;
 
 uses
   Forms,
+  Vcl.Themes,
+  Vcl.Styles,
   VerySimpleXML in 'src\Common\VerySimpleXML.pas',
   ScriptValidatorResult in 'src\Common\ScriptValidatorResult.pas',
   SE_MainForm in 'src\GUI\SE_MainForm.pas' {SEMainForm},
@@ -30,6 +32,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+  TStyleManager.TrySetStyle('Slate Classico');
   Application.CreateForm(TSEMainForm, gMainForm);
   Application.Run;
 end.
