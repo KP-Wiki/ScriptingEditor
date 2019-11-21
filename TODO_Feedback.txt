@@ -1,26 +1,32 @@
-Done:
- - *.drc is not needed iirc
- - app starts in the middle of my desktop (inbetween 2 displays) instead of in the center of main display
- - left-right panels text is a bit too bold and small IMO
- - remove common words like "Action."
- - on scroll tooltip appears saying which line is on top - it's a bit useless since line numbers are already on the left and clearly seen )
- - Add Ctrl+W tab close shortcut and fix welcome page close shortcuts
- - would appreciate Ctrl+W to close current opened file (like in Notepad++)
- - "when I close last opened file with Ctrl+F4 I get moved to Welcome tab" move to left-neighbor if possible, else right-neighbor
- - main text area, scrollbar is disabled on new file open until I do something (e.g. click inside or alt-tab out and back)
- - left panel, add tooltip/hint on mouse hover for long lines of text
- - add a way of seeing raw SV result some way
- - GoToLine - "I like how it pops-up right below the button )" replicate properly, not accidentally
- - allow users to c/p error messages
- - include filename & line/column for error messages
- - perhaps "Validate icon" should not be a green arrow, cos it implies "Run", not "Validate". When clicking it I would expect SV to autostart the script in game ))
- - fix/debug completion suggestion
+DONE/FIXED:
+ - Go-to does not accept user input
  
-Sorta Done:
+WiP:
  - left / right panels should not be visible until script is opened otherwise it's confusing as to what happens when I click on them (AV happens)
+ - 
 
 SUGGESTIONS:
  - would it make more sense to move issues panel to be below the script text?
+ - make the center area to take more space and sidebars narrower
+ - ExtractRelativePath(SE.EXE, 'items in recent and examples lists');
+ - open dialog should start in SE folder (closer to scripts being edited)
+ - it's nicer to have extension shown "Dynamic scripts (.script)" and also have the second option below "All files (.)"
+ - "open-as read-only" seems to be useless
+ - add an option to show/hide method arguments in left panel
+ - warn the user somehow when double-clicking a method on left pane if the cursor is in the middle of some line
+ - when typing Actions. and Ctrl+space the list of suggestions should not repeat the "Actions." before each method
+ - 
 
 TODO:
- - left panel, replace all "procedure / function" with just green/yellow dots like in Delphi
+ - Remove spacing line in panels and suggestions
+ - 
+ 
+BUGS:
+ - Error message pops up when clicking on the left panel border
+ - Windows defender is a whiney little sh*t
+ - some top menu items are disabled, yet accessible from buttons, e.g. "Find"
+ - list on left (e.g. Actions) isn't sorted (Cinematic*** come in the end)
+ - AC suggestion popup is not resizable
+ - tried to Validate Romans_fort script, got a Invalid script validator response (verify)
+ - Tab is random, not 2 spaces
+ - 

@@ -55,7 +55,6 @@ object SEGoToLineForm: TSEGoToLineForm
     Top = 16
     Width = 129
     Height = 26
-    EditorEnabled = False
     MaxValue = 1
     MinValue = 1
     TabOrder = 0
