@@ -212,16 +212,30 @@ begin
   fSynEdit.OnGutterClick                 := SynEditorGutterClick;
   fSynEdit.PopupMenu                     := pmEditor;
   fSynEdit.Options                       := [
-    eoAutoIndent,     eoDragDropEditing, eoScrollPastEol, eoSmartTabs,
-    eoSmartTabDelete, eoTabsToSpaces,    eoTabIndent,     eoTrimTrailingSpaces,
-    eoKeepCaretX,     eoEnhanceEndKey,   eoGroupUndo
+    eoAltSetsColumnMode,     eoAutoIndent,         eoAutoSizeMaxScrollWidth,
+    eoDisableScrollArrows,   eoDragDropEditing,    eoEnhanceHomeKey,
+    eoEnhanceEndKey,         eoGroupUndo,          eoKeepCaretX,
+    eoRightMouseMovesCursor, eoScrollPastEol,      eoTabIndent,
+    eoTabsToSpaces,          eoTrimTrailingSpaces
+    (*
+      // Not used:
+      eoDropFiles, eoHalfPageScroll, eoHideShowScrollbars, eoNoCaret,
+      eoNoSelection, eoScrollByOneLess, eoScrollHintFollows, eoScrollPastEof,
+      eoShowScrollHint, eoShowSpecialChars, eoSmartTabDelete, eoSmartTabs,
+      eoSpecialLineDefaultFg
+    *)
   ];
 
   fSynCompletion.Editor                := fSynEdit;
   fSynCompletion.Options               := [
     scoLimitToMatchedText, scoUseInsertList,     scoUsePrettyText,
     scoUseBuiltInTimer,    scoEndCharCompletion, scoCompleteWithTab,
-    scoCompleteWithEnter {,  scoLimitToMatchedTextAnywhere}
+    scoCompleteWithEnter
+    (*
+      // Not used:
+      scoCaseSensitive, scoTitleIsCentered, scoConsiderWordBreakChars,
+      scoLimitToMatchedTextAnywhere
+    *)
   ];
   fSynCompletion.Width                 := 750;
   fSynCompletion.NbLinesInWindow       := 15;

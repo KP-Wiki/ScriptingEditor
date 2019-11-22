@@ -10,10 +10,9 @@ DONE/FIXED:
  - make the center area to take more space and sidebars narrower
  - Fix odd splitter behaviour
  - AC suggestion popup is not resizable
- - 
- 
-WiP:
- - left / right panels should not be visible until script is opened otherwise it's confusing as to what happens when I click on them (AV happens)
+ - Tab is random, not 2 spaces (Disabled smart tabs)
+ - list on left (e.g. Actions) isn't sorted (Cinematic*** come in the end)
+ - Remove additional blank line in lists and suggestion
  - 
 
 SUGGESTIONS:
@@ -29,7 +28,5 @@ TODO:
 BUGS:
  - Error message pops up when clicking on the left panel border
  - Windows defender is a whiney little sh*t
- - list on left (e.g. Actions) isn't sorted (Cinematic*** come in the end)
  - tried to Validate Romans_fort script, got a Invalid script validator response (verify)
- - Tab is random, not 2 spaces
  - 

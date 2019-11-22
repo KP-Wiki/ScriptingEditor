@@ -44,11 +44,12 @@ type
     function GenerateMethodItemList: TStringList;
     function GenerateParameterInsertList: TStringList;
     function GenerateParameterLookupList: TStringList;
+    procedure SortItems;
   end;
 
 implementation
 uses
-  SysUtils;
+  SysUtils, Generics.Defaults;
 
 { TSEMethod }
 class function TSEMethod.MethodTypeToStr(aType: TSEMethodType): string;
@@ -309,6 +310,7 @@ var
   xml: TXmlVerySimple;
   I:   integer;
 begin
+  SortItems;
   xml := TXmlVerySimple.Create;
   xml.Root.NodeName := 'SEMethodDict';
 
@@ -335,6 +337,8 @@ begin
     item := NewItem;
     item.FromXML(xml.Root.ChildNodes[I]);
   end;
+
+  SortItems;
 end;
 
 function TSEMethodList.GenerateMethodInsertNames: TStringList;
@@ -389,8 +393,6 @@ begin
         Result.Add(fPrefix + Items[I].MethodName + ';');
     end;
   end;
-
-  Result.Add('');
 end;
 
 function TSEMethodList.GenerateMethodItemList: TStringList;
@@ -438,8 +440,6 @@ begin
 
     Result.Add(s);
   end;
-
-  Result.Add('');
 end;
 
 function TSEMethodList.GenerateParameterInsertList: TStringList;
@@ -473,6 +473,16 @@ begin
 
   for I := 0 to Count - 1 do
     Result.Add(UpperCase(Items[i].MethodName));
+end;
+
+procedure TSEMethodList.SortItems;
+begin
+  Sort(TComparer<TSEMethod>.Construct(
+    function (const aLeft, aRight: TSEMethod): Integer
+    begin
+      Result := CompareText(aLeft.MethodName, aRight.MethodName);
+    end
+  ));
 end;
 
 end.
