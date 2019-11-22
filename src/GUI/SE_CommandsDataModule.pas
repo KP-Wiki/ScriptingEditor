@@ -128,7 +128,9 @@ uses
 
 procedure TSECommandsDataModule.DataModuleCreate(Sender: TObject);
 begin
-  fMRIFiles := TStringList.Create;
+  fMRIFiles              := TStringList.Create;
+  dlgFileOpen.InitialDir := gExeDir;
+  dlgFileSave.InitialDir := gExeDir;
 end;
 
 procedure TSECommandsDataModule.DataModuleDestroy(Sender: TObject);
@@ -185,12 +187,12 @@ end;
 
 procedure TSECommandsDataModule.ActFindNextUpdate(Sender: TObject);
 begin
-  ActFind.Enabled := (gSearchCmds <> nil) and gSearchCmds.CanFindNext;
+  ActFindNext.Enabled := (gSearchCmds <> nil) and gSearchCmds.CanFindNext;
 end;
 
 procedure TSECommandsDataModule.ActFindPreviousUpdate(Sender: TObject);
 begin
-  ActFind.Enabled := (gSearchCmds <> nil) and gSearchCmds.CanFindPrev;
+  ActFindPrevious.Enabled := (gSearchCmds <> nil) and gSearchCmds.CanFindPrev;
 end;
 
 procedure TSECommandsDataModule.ActReplaceUpdate(Sender: TObject);

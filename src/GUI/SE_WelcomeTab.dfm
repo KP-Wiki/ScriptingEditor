@@ -4,7 +4,7 @@ object SEWelcomeTab: TSEWelcomeTab
   Align = alClient
   BorderStyle = bsNone
   Caption = 'SEWelcomeTab'
-  ClientHeight = 564
+  ClientHeight = 420
   ClientWidth = 923
   Color = clBtnFace
   DoubleBuffered = True
@@ -21,7 +21,7 @@ object SEWelcomeTab: TSEWelcomeTab
     Left = 0
     Top = 0
     Width = 923
-    Height = 564
+    Height = 420
     Align = alClient
     BevelKind = bkTile
     BevelOuter = bvNone
@@ -69,59 +69,63 @@ object SEWelcomeTab: TSEWelcomeTab
       end
       item
         SizeStyle = ssAbsolute
-        Value = 50.000000000000000000
+        Value = 35.000000000000000000
       end
       item
         SizeStyle = ssAbsolute
-        Value = 140.000000000000000000
+        Value = 110.000000000000000000
       end
       item
         SizeStyle = ssAbsolute
-        Value = 350.000000000000000000
+        Value = 250.000000000000000000
       end
       item
         Value = 50.000000000000000000
       end>
     TabOrder = 0
+    ExplicitHeight = 564
     object Label1: TLabel
       AlignWithMargins = True
       Left = 12
       Top = 13
       Width = 894
-      Height = 44
+      Height = 29
       Align = alClient
       Caption = 'Welcome to Scripting Editor!'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -24
+      Font.Height = -21
       Font.Name = 'Courier New'
       Font.Style = [fsBold]
       ParentFont = False
-      ExplicitWidth = 392
-      ExplicitHeight = 27
+      ExplicitTop = 18
+      ExplicitWidth = 364
+      ExplicitHeight = 23
     end
     object Panel1: TPanel
       Left = 9
-      Top = 60
+      Top = 45
       Width = 450
-      Height = 140
+      Height = 110
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitTop = 60
+      ExplicitHeight = 140
       DesignSize = (
         450
-        140)
+        110)
       object btnNewScript: TSpeedButton
         Left = 12
         Top = 32
         Width = 421
-        Height = 41
+        Height = 32
         Anchors = [akLeft, akTop, akRight]
         Caption = 'Create a new script...'
         Flat = True
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 5577749
-        Font.Height = -17
+        Font.Height = -15
         Font.Name = 'Courier New'
         Font.Style = []
         Glyph.Data = {
@@ -231,15 +235,15 @@ object SEWelcomeTab: TSEWelcomeTab
       end
       object btnOpenScript: TSpeedButton
         Left = 12
-        Top = 79
+        Top = 72
         Width = 421
-        Height = 41
+        Height = 32
         Anchors = [akLeft, akTop, akRight]
         Caption = 'Open an existing script...'
         Flat = True
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 5577749
-        Font.Height = -17
+        Font.Height = -15
         Font.Name = 'Courier New'
         Font.Style = []
         Glyph.Data = {
@@ -363,15 +367,17 @@ object SEWelcomeTab: TSEWelcomeTab
     end
     object Panel2: TPanel
       Left = 9
-      Top = 200
+      Top = 155
       Width = 450
-      Height = 350
+      Height = 250
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitTop = 168
+      ExplicitHeight = 350
       DesignSize = (
         450
-        350)
+        250)
       object Label3: TLabel
         Left = 12
         Top = 14
@@ -389,7 +395,7 @@ object SEWelcomeTab: TSEWelcomeTab
         Left = 12
         Top = 43
         Width = 421
-        Height = 292
+        Height = 192
         AutoComplete = False
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -400,19 +406,22 @@ object SEWelcomeTab: TSEWelcomeTab
         ParentFont = False
         TabOrder = 0
         OnDblClick = lbRecentfilesDblClick
+        ExplicitHeight = 292
       end
     end
     object Panel3: TPanel
       Left = 459
-      Top = 60
+      Top = 45
       Width = 450
-      Height = 490
+      Height = 360
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
+      ExplicitTop = 28
+      ExplicitHeight = 490
       DesignSize = (
         450
-        490)
+        360)
       object Label4: TLabel
         Left = 16
         Top = 3
@@ -430,7 +439,7 @@ object SEWelcomeTab: TSEWelcomeTab
         Left = 16
         Top = 32
         Width = 422
-        Height = 443
+        Height = 313
         AutoComplete = False
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -441,6 +450,7 @@ object SEWelcomeTab: TSEWelcomeTab
         ParentFont = False
         TabOrder = 0
         OnDblClick = lbRecentfilesDblClick
+        ExplicitHeight = 443
       end
     end
   end

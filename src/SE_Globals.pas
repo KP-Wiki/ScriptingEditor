@@ -86,7 +86,7 @@ procedure CloseTab(aIndex: Integer);
 implementation
 
 uses
-  ComCtrls, Forms,
+  Math, ComCtrls, Forms,
   SE_WelcomeTab, SE_CommandsDataModule;
 
 procedure SetListboxScrollWidth(aListbox: TListbox);
@@ -108,48 +108,42 @@ end;
 
 procedure CloseTab(aIndex: Integer);
 var
-  WelcomeIndex: Integer;
-  Tab,
-  NewATab:      TTabSheet;
+  welcomeIdx: Integer;
+  tab,
+  newATab:    TTabSheet;
 begin
-  if aIndex < 0 then
+  if aIndex < 0 then // No tab exists at clicking pos
     Exit;
 
-  Tab     := gMainForm.pcEditors.Pages[aIndex];
-  NewATab := nil;
+  tab        := gMainForm.pcEditors.Pages[aIndex];
+  welcomeIdx := gCommandsDataModule.GetWelcomePageIndex;
 
-  if gMainForm.pcEditors.PageCount > 0 then
+  if gMainForm.pcEditors.PageCount > 1 then
   begin
-    if aIndex > 0 then
-      NewATab := gMainForm.pcEditors.Pages[aIndex - 1]
+    newATab    := gMainForm.pcEditors.Pages[
+      IfThen(aIndex > 0, aIndex - 1, aIndex + 1)
+    ];
+
+    if aIndex = welcomeIdx then
+      tab.Free
     else
-      NewATab := gMainForm.pcEditors.Pages[aIndex];
-  end;
+      gEditorFactory.GetEditor(
+        IfThen((welcomeIdx <> -1) and (aIndex > welcomeIdx), aIndex - 1, aIndex)
+      ).Close;
 
-  if Tab is TSEWelcomeTabSheet then
-      Tab.Free
-  else
+    Application.ProcessMessages;
+    gMainForm.pcEditors.ActivePage := newATab;
+    gMainForm.SetListboxesVisible(not (newATab is TSEWelcomeTabSheet));
+  end else
   begin
-    WelcomeIndex := gCommandsDataModule.GetWelcomePageIndex;
-
-    if (WelcomeIndex <> -1) and (WelcomeIndex < aIndex) then
-      gEditorFactory.GetEditor(aIndex - 1).Close
+    if aIndex = welcomeIdx then
+      tab.Free
     else
       gEditorFactory.GetEditor(aIndex).Close;
-  end;
 
-  Application.ProcessMessages;
-
-  if NewATab <> nil then
-  begin
-    if NewATab is TSEWelcomeTabSheet then
-      gMainForm.SetListboxesVisible(False)
-    else
-      gMainForm.SetListboxesVisible(True);
-
-    gMainForm.pcEditors.ActivePage := NewATab
-  end else
+    gMainForm.pcEditors.ActivePage := nil;
     gMainForm.SetListboxesVisible(False);
+  end;
 end;
 
 end.

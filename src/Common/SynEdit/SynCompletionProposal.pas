@@ -1,4 +1,4 @@
-{-------------------------------------------------------------------------------
+﻿{-------------------------------------------------------------------------------
 The contents of this file are subject to the Mozilla Public License
 Version 1.1 (the "License"); you may not use this file except in compliance
 with the License. You may obtain a copy of the License at
@@ -207,6 +207,7 @@ type
     function IsWordBreakChar(AChar: WideChar): Boolean;
   protected
     procedure DoKeyPressW(Key: WideChar);
+    function DoHandleStyleMessage(var Message: TMessage): Boolean; override;
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure KeyPress(var Key: Char); override;
     procedure KeyPressW(var Key: WideChar); virtual;
@@ -1453,6 +1454,14 @@ procedure TSynBaseCompletionProposalForm.DoKeyPressW(Key: WideChar);
 begin
   if Key <> #0 then
     KeyPressW(Key);
+end;
+
+function TSynBaseCompletionProposalForm.DoHandleStyleMessage(var Message: TMessage): Boolean;
+begin
+  if Message.Msg=WM_NCHITTEST then
+    Result := False
+  else
+    Result := inherited;
 end;
 
 procedure TSynBaseCompletionProposalForm.KeyPressW(var Key: WideChar);

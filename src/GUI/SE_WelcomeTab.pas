@@ -27,7 +27,6 @@ type
     procedure btnOpenScriptClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lbRecentfilesDblClick(Sender: TObject);
-    procedure lbExamplesDblClick(Sender: TObject);
   public
     procedure ParentTabShow(Sender: TObject);
   end;
@@ -78,7 +77,7 @@ begin
   begin
     try
       repeat
-        lbExamples.Items.Add(ExampleDir + SearchRec.Name);
+        lbExamples.Items.Add(DATA_DIR_EXAMPLES + SearchRec.Name);
       until (FindNext(SearchRec) <> 0);
     finally
       FindClose(SearchRec);
@@ -86,11 +85,6 @@ begin
   end;
 
   SetListboxScrollWidth(lbExamples);
-end;
-
-procedure TSEWelcomeTab.lbExamplesDblClick(Sender: TObject);
-begin
-  //
 end;
 
 procedure TSEWelcomeTab.lbRecentfilesDblClick(Sender: TObject);

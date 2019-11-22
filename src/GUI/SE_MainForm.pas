@@ -15,7 +15,7 @@ type
     StatusBar1:            TStatusBar;
     ToolBar1:              TToolBar;
     pcLeft,
-    pcRight,
+    pcBottom,
     pcEditors:             TPageControl; // Page controls
     tsIssues,
     tsRawSVOutput,
@@ -104,6 +104,7 @@ type
     Splitter1,
     Splitter2:             TSplitter; // Splitters
     ilMethodTypes:         TImageList;
+    Panel1:                TPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -559,21 +560,18 @@ end;
 
 procedure TSEMainForm.SetListboxesVisible(aState: Boolean);
 begin
-  if fLbIssues.Visible <> aState then
-  begin
-    fLbIssues.Visible  := aState;
-    fLbEvents.Visible  := aState;
-    fLBStates.Visible  := aState;
-    fLBActions.Visible := aState;
-    fLBUtils.Visible   := aState;
-  end;
+  fLbIssues.Visible  := aState;
+  fLbEvents.Visible  := aState;
+  fLBStates.Visible  := aState;
+  fLBActions.Visible := aState;
+  fLBUtils.Visible   := aState;
 end;
 
 procedure TSEMainForm.ReadSettings;
 var
   IniFile:      TIniFile;
   PcLeftWidth,
-  PcRightWidth,
+  PcBottomHeight,
   I,
   X,
   Y,
@@ -584,12 +582,12 @@ begin
   IniFile := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
 
   try
-    X            := IniFile.ReadInteger('Application', 'Left',       0);
-    Y            := IniFile.ReadInteger('Application', 'Top',        0);
-    W            := IniFile.ReadInteger('Application', 'Width',      1024);
-    H            := IniFile.ReadInteger('Application', 'Height',     600);
-    PcLeftWidth  := IniFile.ReadInteger('Application', 'LeftWidth',  270);
-    PcRightWidth := IniFile.ReadInteger('Application', 'RightWidth', 250);
+    X              := IniFile.ReadInteger('Application', 'Left',         0);
+    Y              := IniFile.ReadInteger('Application', 'Top',          0);
+    W              := IniFile.ReadInteger('Application', 'Width',        1024);
+    H              := IniFile.ReadInteger('Application', 'Height',       600);
+    PcLeftWidth    := IniFile.ReadInteger('Application', 'LeftWidth',    270);
+    PcBottomHeight := IniFile.ReadInteger('Application', 'BottomHeight', 150);
 
     gOptions.Theme     := TSEThemeKind(IniFile.ReadInteger('Options', 'Theme',    Ord(tkDark)));
     gOptions.Font.Name := IniFile.ReadString('Options',               'FontName', 'Courier New');
@@ -608,7 +606,7 @@ begin
     gCommandsDataModule.ActThemeTwilight.Checked     := gOptions.Theme = tkTwilight;
     gCommandsDataModule.ActThemeDark.Checked         := gOptions.Theme = tkDark;
     pcLeft.Width                                     := PcLeftWidth;
-    pcRight.Width                                    := PcRightWidth;
+    pcBottom.Height                                  := PcBottomHeight;
 
     gSearchBackwards     := IniFile.ReadBool('SearchReplace',   'Backwards',      False);
     gSearchCaseSensitive := IniFile.ReadBool('SearchReplace',   'CaseSensitive',  False);
@@ -652,9 +650,9 @@ begin
       IniFile.WriteInteger('Application', 'Height', Bottom - Top);
     end;
 
-    IniFile.WriteInteger('Application', 'LeftWidth',  pcLeft.Width);
-    IniFile.WriteInteger('Application', 'RightWidth', pcRight.Width);
-    IniFile.WriteBool('Application',    'Maximized',  (WindowState = wsMaximized));
+    IniFile.WriteInteger('Application', 'LeftWidth',    pcLeft.Width);
+    IniFile.WriteInteger('Application', 'BottomHeight', pcBottom.Height);
+    IniFile.WriteBool('Application',    'Maximized',    (WindowState = wsMaximized));
 
     IniFile.WriteInteger('Options', 'Theme',    Ord(gOptions.Theme));
     IniFile.WriteString('Options',  'FontName', gOptions.Font.Name);

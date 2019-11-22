@@ -2600,14 +2600,14 @@ object SECommandsDataModule: TSECommandsDataModule
   end
   object dlgFileOpen: TOpenDialog
     DefaultExt = '.script'
-    Filter = 'Dynamic Script|*.script'
-    Options = [ofPathMustExist, ofFileMustExist, ofEnableSizing]
+    Filter = 'Dynamic Script (.script)|*.script|All files (.)|*.*'
+    Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     Left = 119
     Top = 16
   end
   object dlgFileSave: TSaveDialog
     DefaultExt = '.script'
-    Filter = 'Dynamic Script|*.script'
+    Filter = 'Dynamic Script (.script)|*.script|All files (.)|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Left = 119
     Top = 64

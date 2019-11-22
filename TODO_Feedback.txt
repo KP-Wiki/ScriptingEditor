@@ -1,17 +1,22 @@
 DONE/FIXED:
  - Go-to does not accept user input
+ - some top menu items are disabled, yet accessible from buttons, e.g. "Find"
+ - it's nicer to have extension shown "Dynamic scripts (.script)" and also have the second option below "All files (.)"
+ - "open-as read-only" seems to be useless
+ - Simplify and fix tab closing bugs (Mainly side panel visibility messing up after closing welcome page)
+ - ExtractRelativePath(SE.EXE, 'items in recent and examples lists');
+ - open dialog should start in SE folder (closer to scripts being edited)
+ - would it make more sense to move issues panel to be below the script text?
+ - make the center area to take more space and sidebars narrower
+ - Fix odd splitter behaviour
+ - AC suggestion popup is not resizable
+ - 
  
 WiP:
  - left / right panels should not be visible until script is opened otherwise it's confusing as to what happens when I click on them (AV happens)
  - 
 
 SUGGESTIONS:
- - would it make more sense to move issues panel to be below the script text?
- - make the center area to take more space and sidebars narrower
- - ExtractRelativePath(SE.EXE, 'items in recent and examples lists');
- - open dialog should start in SE folder (closer to scripts being edited)
- - it's nicer to have extension shown "Dynamic scripts (.script)" and also have the second option below "All files (.)"
- - "open-as read-only" seems to be useless
  - add an option to show/hide method arguments in left panel
  - warn the user somehow when double-clicking a method on left pane if the cursor is in the middle of some line
  - when typing Actions. and Ctrl+space the list of suggestions should not repeat the "Actions." before each method
@@ -24,9 +29,7 @@ TODO:
 BUGS:
  - Error message pops up when clicking on the left panel border
  - Windows defender is a whiney little sh*t
- - some top menu items are disabled, yet accessible from buttons, e.g. "Find"
  - list on left (e.g. Actions) isn't sorted (Cinematic*** come in the end)
- - AC suggestion popup is not resizable
  - tried to Validate Romans_fort script, got a Invalid script validator response (verify)
  - Tab is random, not 2 spaces
  - 

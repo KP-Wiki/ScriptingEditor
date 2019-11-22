@@ -3,7 +3,7 @@ object SEMainForm: TSEMainForm
   Top = 0
   Caption = 'Scripting Editor'
   ClientHeight = 642
-  ClientWidth = 1484
+  ClientWidth = 1481
   Color = clBtnFace
   Constraints.MinHeight = 700
   Constraints.MinWidth = 1450
@@ -21,26 +21,18 @@ object SEMainForm: TSEMainForm
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 16
-  object Splitter1: TSplitter
-    Left = 1231
-    Top = 24
-    Height = 599
-    Align = alRight
-    ExplicitLeft = 895
-    ExplicitTop = 35
-    ExplicitHeight = 587
-  end
   object Splitter2: TSplitter
     Left = 250
     Top = 24
     Height = 599
+    MinSize = 200
     ExplicitLeft = 244
     ExplicitTop = 35
   end
   object StatusBar1: TStatusBar
     Left = 0
     Top = 623
-    Width = 1484
+    Width = 1481
     Height = 19
     Panels = <
       item
@@ -62,11 +54,12 @@ object SEMainForm: TSEMainForm
         Bevel = pbNone
         Width = 50
       end>
+    ExplicitWidth = 1484
   end
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
-    Width = 1484
+    Width = 1481
     Height = 24
     AutoSize = True
     ButtonWidth = 24
@@ -80,6 +73,7 @@ object SEMainForm: TSEMainForm
     ShowHint = True
     TabOrder = 1
     Wrapable = False
+    ExplicitWidth = 1484
     object tbNewFile: TToolButton
       Left = 0
       Top = 0
@@ -191,6 +185,7 @@ object SEMainForm: TSEMainForm
     Height = 599
     ActivePage = tsEvents
     Align = alLeft
+    Constraints.MinWidth = 200
     TabOrder = 2
     TabPosition = tpBottom
     object tsEvents: TTabSheet
@@ -199,70 +194,94 @@ object SEMainForm: TSEMainForm
     object tsStates: TTabSheet
       Caption = 'States'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object tsActions: TTabSheet
       Caption = 'Actions'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object tsUtils: TTabSheet
       Caption = 'Utils'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
-  object pcRight: TPageControl
-    Left = 1234
-    Top = 24
-    Width = 250
-    Height = 599
-    ActivePage = tsIssues
-    Align = alRight
-    MultiLine = True
-    TabOrder = 3
-    TabPosition = tpBottom
-    object tsIssues: TTabSheet
-      Caption = 'Issues'
-    end
-    object tsRawSVOutput: TTabSheet
-      Caption = 'Raw Validator Output'
-      ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object edtRawSVOutput: TMemo
-        Left = 0
-        Top = 0
-        Width = 242
-        Height = 570
-        Align = alClient
-        ReadOnly = True
-        ScrollBars = ssBoth
-        TabOrder = 0
-      end
-    end
-  end
-  object pcEditors: TPageControl
+  object Panel1: TPanel
     Left = 253
     Top = 24
-    Width = 978
+    Width = 1228
     Height = 599
     Align = alClient
-    HotTrack = True
-    TabOrder = 4
-    OnChange = pcEditorsChange
-    OnMouseUp = pcEditorsMouseUp
+    Caption = 'Panel1'
+    TabOrder = 3
+    ExplicitLeft = 248
+    ExplicitTop = 320
+    ExplicitWidth = 185
+    ExplicitHeight = 41
+    object Splitter1: TSplitter
+      Left = 1
+      Top = 345
+      Width = 1226
+      Height = 3
+      Cursor = crVSplit
+      Align = alBottom
+      MinSize = 125
+      ExplicitLeft = 4
+      ExplicitTop = 21
+      ExplicitWidth = 183
+    end
+    object pcBottom: TPageControl
+      Left = 1
+      Top = 348
+      Width = 1226
+      Height = 250
+      ActivePage = tsIssues
+      Align = alBottom
+      Constraints.MinHeight = 125
+      MultiLine = True
+      TabOrder = 0
+      TabPosition = tpBottom
+      ExplicitLeft = 0
+      ExplicitTop = 373
+      ExplicitWidth = 1481
+      object tsIssues: TTabSheet
+        Caption = 'Issues'
+        ExplicitWidth = 1473
+      end
+      object tsRawSVOutput: TTabSheet
+        Caption = 'Raw Validator Output'
+        ImageIndex = 1
+        ExplicitWidth = 175
+        ExplicitHeight = 200
+        object edtRawSVOutput: TMemo
+          Left = 0
+          Top = 0
+          Width = 1218
+          Height = 221
+          Align = alClient
+          ReadOnly = True
+          ScrollBars = ssBoth
+          TabOrder = 0
+          ExplicitWidth = 175
+          ExplicitHeight = 200
+        end
+      end
+    end
+    object pcEditors: TPageControl
+      Left = 1
+      Top = 1
+      Width = 1226
+      Height = 344
+      Align = alClient
+      Constraints.MinHeight = 125
+      Constraints.MinWidth = 200
+      HotTrack = True
+      TabOrder = 1
+      OnChange = pcEditorsChange
+      OnMouseUp = pcEditorsMouseUp
+      ExplicitLeft = 97
+      ExplicitTop = -7
+      ExplicitWidth = 183
+      ExplicitHeight = 599
+    end
   end
   object MainMenu1: TMainMenu
     Images = SECommandsDataModule.ilActions22x22

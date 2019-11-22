@@ -192,10 +192,8 @@ end;
 procedure TSEEditorFactory.DoOpenFile(aFileName: string);
 var
   I:       Integer;
-  LEditor: ISEEditor;
+  lEditor: ISEEditor;
 begin
-  AFileName := ExpandFileName(aFileName);
-
   if aFileName <> '' then
   begin
     gCommandsDataModule.RemoveMRIEntry(aFileName);
@@ -203,21 +201,21 @@ begin
     // activate the editor if already open
     for I := fEditors.Count - 1 downto 0 do
     begin
-      LEditor := ISEEditor(fEditors[I]);
+      lEditor := ISEEditor(fEditors[I]);
 
-      if CompareText(LEditor.GetFileName, aFileName) = 0 then
+      if CompareText(lEditor.GetFileName, aFileName) = 0 then
       begin
-        LEditor.Activate;
+        lEditor.Activate;
         Exit;
       end;
     end;
   end;
 
   // create a new editor, add it to the editor list, open the file
-  LEditor := CreateEditor;
+  lEditor := CreateEditor;
 
-  if LEditor <> nil then
-    LEditor.OpenFile(aFileName);
+  if lEditor <> nil then
+    lEditor.OpenFile(aFileName);
 end;
 
 initialization

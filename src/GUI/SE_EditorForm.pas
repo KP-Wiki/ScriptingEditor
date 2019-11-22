@@ -88,9 +88,9 @@ type
     fIsReadOnly,
     fModified:       Boolean;
     fUntitledNumber: Integer;
+    procedure DoSetFileName(aFileName: string);
   public
     constructor Create(aForm: TSEEditorForm);
-    procedure DoSetFileName(aFileName: string);
     // ISEEditor implementation
     procedure Activate;
     function AskSaveChanges: Boolean;
@@ -137,7 +137,7 @@ type
     procedure ExecFindPrev;
     procedure ExecReplace;
     procedure ExecGoTo;
-    property FileName:       string        read fFileName       write fFileName;
+    property FileName:       string        read fFileName       write DoSetFileName;
     property Form:           TSEEditorForm read fForm           write fForm;
     property HasSelection:   Boolean       read fHasSelection   write fHasSelection;
     property IsEmpty:        Boolean       read fIsEmpty        write fIsEmpty;
@@ -233,6 +233,7 @@ begin
   fSynCompletion.OnExecute             := SynCompletionExecute;
   fSynCompletion.OnAfterCodeCompletion := SynCompletionAfterCodeCompletion;
   fSynCompletion.ShortCut              := scCtrl + VK_SPACE; //Ctrl+Space
+  fSynCompletion.Resizeable            := True;
   fSynCompletion.Columns.Clear;
 
   with fSynCompletion.Columns.Add do
@@ -630,7 +631,7 @@ begin
 
   if gCommandsDataModule.GetSaveFileName(NewName) then
   begin
-    fEditor.DoSetFileName(NewName);
+    fEditor.FileName := NewName;
     DoUpdateCaption;
     Result := DoSaveFile;
   end else
@@ -1249,7 +1250,10 @@ procedure TSEEditor.DoSetFileName(aFileName: string);
 begin
   if aFileName <> fFileName then
   begin
-    fFileName := aFileName;
+    if IsRelativePath(aFileName) then
+      fFileName := aFileName
+    else
+      fFileName := ExtractRelativePath(ParamStr(0), aFileName);
 
     if fUntitledNumber <> -1 then
     begin
@@ -1276,15 +1280,15 @@ end;
 
 procedure TSEEditor.OpenFile(aFileName: string);
 begin
-  fFileName := AFileName;
+  DoSetFileName(aFileName);
 
   if fForm <> nil then
   begin
     fForm.SynEditor.BeginUpdate;
     fForm.SynEditor.Lines.Clear;
 
-    if (aFileName <> '') and FileExists(aFileName) then
-      fForm.SynEditor.Lines.LoadFromFile(aFileName)
+    if (fFileName <> '') and FileExists(fFileName) then
+      fForm.SynEditor.Lines.LoadFromFile(fFileName)
     else
       fForm.SynEditor.Lines.Clear;
 
