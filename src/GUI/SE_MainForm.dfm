@@ -6,7 +6,7 @@ object SEMainForm: TSEMainForm
   ClientWidth = 1481
   Color = clBtnFace
   Constraints.MinHeight = 700
-  Constraints.MinWidth = 1450
+  Constraints.MinWidth = 1366
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
