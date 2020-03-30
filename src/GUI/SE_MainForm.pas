@@ -473,6 +473,7 @@ begin
   gLog.AddTime('Starting script validator');
   Result  := '';
   Command := Format(SV_EXE_FORMAT, [CMD_EXE, DATA_DIR, aFileName]);
+  gLog.AddTime('Call cmd ''' + Command + '''');
 
   SA.nLength              := SizeOf(SA);
   SA.bInheritHandle       := True;
