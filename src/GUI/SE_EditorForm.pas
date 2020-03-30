@@ -1305,8 +1305,8 @@ begin
     fForm.SynEditor.BeginUpdate;
     fForm.SynEditor.Lines.Clear;
 
-    if (fFileName <> '') and FileExists(fFileName) then
-      fForm.SynEditor.Lines.LoadFromFile(fFileName)
+    if (fFileName <> '') and FileExists(aFileName) then
+      fForm.SynEditor.Lines.LoadFromFile(aFileName)
     else
       fForm.SynEditor.Lines.Clear;
 
