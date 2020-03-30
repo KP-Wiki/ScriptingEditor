@@ -328,8 +328,12 @@ procedure TSEEditorForm.SynCompletionExecute(Kind: SynCompletionType; Sender: TO
                                              var CanExecute: Boolean);
 begin
   CanExecute := True;
-  fSynCompletion.ItemList.SetStrings(gActionsMethodList.GenerateMethodItemList);
-  fSynCompletion.InsertList.SetStrings(gActionsMethodList.GenerateMethodInsertNames);
+
+  // XE8 has no SetStrings method, hence it's necessary to do the Clear+Add
+  fSynCompletion.ItemList.Clear;
+  fSynCompletion.InsertList.Clear;
+  fSynCompletion.ItemList.AddStrings(gActionsMethodList.GenerateMethodItemList);
+  fSynCompletion.InsertList.AddStrings(gActionsMethodList.GenerateMethodInsertNames);
   fSynCompletion.ItemList.AddStrings(gStatesMethodList.GenerateMethodItemList);
   fSynCompletion.InsertList.AddStrings(gStatesMethodList.GenerateMethodInsertNames);
   fSynCompletion.ItemList.AddStrings(gUtilsMethodList.GenerateMethodItemList);

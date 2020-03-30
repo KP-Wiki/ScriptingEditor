@@ -1,7 +1,5 @@
 unit SE_WelcomeTab;
-
 interface
-
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, ComCtrls, Buttons;
@@ -32,11 +30,13 @@ type
   end;
 
 implementation
-{$R *.dfm}
 uses
   SE_Globals, SE_CommandsDataModule;
 
-procedure TSEWelcomeTab.ParentTabShow(Sender: TObject);var
+{$R *.dfm}
+
+procedure TSEWelcomeTab.ParentTabShow(Sender: TObject);
+var
   I: Integer;
   S: string;
 begin
@@ -47,7 +47,7 @@ begin
     S := gCommandsDataModule.GetMRIEntry(I);
 
     if S <> '' then
-      lbRecentfiles.Items.Add(S);
+      lbRecentfiles.Items.Add(ExtractRelativePath(gExeDir, S));
   end;
 
   SetListboxScrollWidth(lbRecentfiles);
@@ -66,7 +66,7 @@ end;
 procedure TSEWelcomeTab.FormCreate(Sender: TObject);
 var
   ExampleDir: string;
-  SearchRec:  TSearchRec;
+  SearchRec: TSearchRec;
 begin
   ExampleDir := gExeDir + DATA_DIR_EXAMPLES;
 
@@ -77,7 +77,7 @@ begin
   begin
     try
       repeat
-        lbExamples.Items.Add(DATA_DIR_EXAMPLES + SearchRec.Name);
+        lbExamples.Items.Add(ExtractRelativePath(gExeDir, DATA_DIR_EXAMPLES + SearchRec.Name));
       until (FindNext(SearchRec) <> 0);
     finally
       FindClose(SearchRec);
