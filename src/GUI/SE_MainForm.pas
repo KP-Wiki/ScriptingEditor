@@ -465,14 +465,50 @@ var
   WasOK:           Boolean;
   Buffer:          array[0..255] of AnsiChar;
   BytesRead:       Cardinal;
-  Command:         string;
+  Command,
+  SVPath,
+  ExeDir:          string;
+  I:               Integer;
+  SVFound:         Boolean;
+
 const
+  SV_FILE_NAME = 'ScriptValidator.exe';
   CMD_EXE = 'C:\Windows\System32\cmd.exe';
-  SV_EXE_FORMAT = '%s /c ""%sScriptValidator.exe" -x "%s""';
+  SV_EXE_FORMAT = '%s /c ""%s" -x "%s""';
+  SV_DIRS: array[0..3] of string = (DATA_DIR, '', '..' + PathDelim, '..' + PathDelim + '..' + PathDelim);
+  ERROR_MSG = 'Error: could not find ScriptValidator.exe';
+  ERROR_VALIDATION_RESULT =  '<?xml version="1.0" ?>' + 
+                             '<ScriptValidatorResult>' + 
+                             '  <Hints></Hints>' + 
+                             '  <Warnings></Warnings>' +
+                             '  <Errors>' +
+                             '    <Issue Line="0" Column="0" Module="" Param="" Msg="' + ERROR_MSG + '"></Issue>' +
+                             '  </Errors>' +
+                             '</ScriptValidatorResult>';
 begin
   gLog.AddTime('Starting script validator');
   Result  := '';
-  Command := Format(SV_EXE_FORMAT, [CMD_EXE, ExtractFilePath(ParamStr(0)) + DATA_DIR, aFileName]);
+
+  SVFound := False;
+  ExeDir := ExtractFilePath(ParamStr(0));
+  
+  for I := Low(SV_DIRS) to High(SV_DIRS) do
+  begin
+    SVPath := ExeDir + SV_DIRS[I] + SV_FILE_NAME;
+    if FileExists(SVPath) then
+    begin
+      SVFound := True;
+      Break;
+    end;
+  end;
+
+  if not SVFound then                       
+  begin
+    gLog.AddTime(ERROR_MSG);
+    Exit(ERROR_VALIDATION_RESULT);
+  end;
+
+  Command := Format(SV_EXE_FORMAT, [CMD_EXE, SVPath, aFileName]);
   gLog.AddTime('Call cmd ''' + Command + '''');
 
   SA.nLength              := SizeOf(SA);
