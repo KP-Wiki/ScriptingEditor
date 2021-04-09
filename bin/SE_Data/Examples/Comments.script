@@ -39,7 +39,7 @@
 //>  // Can be used to comment out the single-line version of: (* comment *) and { comment }
 
 
-(* Embarcadero reccomendations: *)
+(* Embarcadero recommendations: *)
 //>  Use the double-slash "//" for commenting out temporary changes made during development.
 //>
 //>  Use the parenthesis-star "(*...*)" both for development comments and for commenting out a block of code that contains other comments.
