@@ -35,7 +35,6 @@ object SEFindForm: TSEFindForm
     Height = 24
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
-    ExplicitWidth = 475
   end
   object btnCancel: TButton
     Left = 318

@@ -1,9 +1,7 @@
 unit ScriptValidatorResult;
-
 interface
 uses
   SysUtils, VerySimpleXML;
-
 
 type
   TScriptValidatorIssue = record
@@ -20,8 +18,7 @@ type
     fHints,
     fWarnings,
     fErrors:   TScriptValidatorIssueArray;
-    procedure Add(aLine, aColumn: Integer; aParam, aMessage: string;
-                  var aDest: TScriptValidatorIssueArray); inline;
+    procedure Add(aLine, aColumn: Integer; aParam, aMessage: string; var aDest: TScriptValidatorIssueArray); inline;
     procedure ArrayToXML(aSrc: TScriptValidatorIssueArray; var aDest: TXmlNode);
     procedure XMLToArray(aSrc: TXmlNode; var aDest: TScriptValidatorIssueArray);
     function FixText(aTest: string): string;
@@ -41,8 +38,7 @@ uses
   Classes;
 
 { TSVResult }
-procedure TScriptValidatorResult.Add(aLine, aColumn: Integer; aParam, aMessage: string;
-                                     var aDest: TScriptValidatorIssueArray);
+procedure TScriptValidatorResult.Add(aLine, aColumn: Integer; aParam, aMessage: string; var aDest: TScriptValidatorIssueArray);
 var
   I: Integer;
   Issue: TScriptValidatorIssue;
@@ -75,8 +71,7 @@ begin
 end;
 
 
-procedure TScriptValidatorResult.ArrayToXML(aSrc: TScriptValidatorIssueArray;
-                                            var aDest: TXmlNode);
+procedure TScriptValidatorResult.ArrayToXML(aSrc: TScriptValidatorIssueArray; var aDest: TXmlNode);
 var
   Node:  TXmlNode;
   Issue: TScriptValidatorIssue;
@@ -93,8 +88,7 @@ begin
 end;
 
 
-procedure TScriptValidatorResult.XMLToArray(aSrc: TXmlNode;
-                                            var aDest: TScriptValidatorIssueArray);
+procedure TScriptValidatorResult.XMLToArray(aSrc: TXmlNode; var aDest: TScriptValidatorIssueArray);
 var
   Node:  TXmlNode;
   Issue: TScriptValidatorIssue;
@@ -161,5 +155,6 @@ begin
       Free;
     end;
 end;
+
 
 end.

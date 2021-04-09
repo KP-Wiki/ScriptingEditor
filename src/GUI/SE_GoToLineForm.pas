@@ -1,7 +1,5 @@
 unit SE_GoToLineForm;
-
 interface
-
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Vcl.Samples.Spin;
@@ -31,15 +29,18 @@ begin
   Result := seLine.Value;
 end;
 
+
 function TSEGoToLineForm.GetLineMax: Integer;
 begin
   Result := seLine.MaxValue;
 end;
 
+
 procedure TSEGoToLineForm.SetLine(const Value: Integer);
 begin
   seLine.Value := Value;
 end;
+
 
 procedure TSEGoToLineForm.SetLineMax(const Value: Integer);
 begin

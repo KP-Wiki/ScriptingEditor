@@ -1,5 +1,4 @@
 unit SE_Globals;
-
 interface
 uses
   Messages, SysUtils, StdCtrls, Classes,
@@ -84,7 +83,6 @@ procedure SetListboxScrollWidth(aListbox: TListbox);
 procedure CloseTab(aIndex: Integer);
 
 implementation
-
 uses
   Math, ComCtrls, Forms,
   SE_WelcomeTab, SE_CommandsDataModule;

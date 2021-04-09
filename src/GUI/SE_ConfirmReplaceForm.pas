@@ -1,7 +1,5 @@
 unit SE_ConfirmReplaceForm;
-
 interface
-
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, Vcl.Imaging.pngimage;
@@ -15,19 +13,16 @@ type
     btnReplaceAll: TButton;
     btnReplace: TButton;
   public
-    procedure PrepareShow(aEditorRect: TRect; X, Y1, Y2: Integer;
-                          aReplaceText: string);
+    procedure PrepareShow(aEditorRect: TRect; X, Y1, Y2: Integer; aReplaceText: string);
   end;
 
 implementation
+
 {$R *.dfm}
 
-procedure TSEConfirmReplaceForm.PrepareShow(aEditorRect: TRect;
-                                            X, Y1, Y2: Integer;
-                                            aReplaceText: string);
+procedure TSEConfirmReplaceForm.PrepareShow(aEditorRect: TRect; X, Y1, Y2: Integer; aReplaceText: string);
 var
-  nW,
-  nH: Integer;
+  nW, nH: Integer;
 begin
   lblConfirm.Caption := Format('Replace this occurence of "%s"?', [aReplaceText]);
   nW                 := aEditorRect.Right - aEditorRect.Left;
@@ -45,5 +40,6 @@ begin
 
   SetBounds(X, Y2, Width, Height);
 end;
+
 
 end.

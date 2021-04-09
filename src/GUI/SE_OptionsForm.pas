@@ -1,7 +1,5 @@
 unit SE_OptionsForm;
-
 interface
-
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, ActnMan, ActnColorMaps, ExtCtrls, Vcl.Samples.Spin;
@@ -23,16 +21,15 @@ type
     procedure ApplySettings;
   end;
 
-function EnumFontsProc(var aLogFont: TLogFont; var aTextMetric: TTextMetric;
-                       aFontType: Integer; aData: Pointer): Integer; stdcall;
+function EnumFontsProc(var aLogFont: TLogFont; var aTextMetric: TTextMetric; aFontType: Integer; aData: Pointer): Integer; stdcall;
 
 implementation
-{$R *.dfm}
 uses
   SE_Globals;
 
-function EnumFontsProc(var aLogFont: TLogFont; var aTextMetric: TTextMetric;
-                       aFontType: Integer; aData: Pointer): Integer; stdcall;
+{$R *.dfm}
+
+function EnumFontsProc(var aLogFont: TLogFont; var aTextMetric: TTextMetric; aFontType: Integer; aData: Pointer): Integer; stdcall;
 var
   S:    TStrings;
   Temp: string;

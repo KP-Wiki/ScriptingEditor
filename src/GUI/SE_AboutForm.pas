@@ -1,7 +1,5 @@
 unit SE_AboutForm;
-
 interface
-
 uses
   Windows, ShellAPI, UITypes, Classes, Controls, Dialogs, Forms, StdCtrls,
   ExtCtrls;
@@ -19,15 +17,17 @@ type
   end;
 
 implementation
-{$R *.dfm}
 uses
   SE_Globals;
+
+{$R *.dfm}
 
 procedure TSEAboutForm.FormCreate(Sender: TObject);
 begin
   StaticText2.Caption := 'Dynamic Script editor for KaM Remake and Knights Province' +
                          sLineBreak + sLineBreak + 'Version: ' + FULL_VERSION;
 end;
+
 
 procedure TSEAboutForm.StaticTextClick(Sender: TObject);
 begin
@@ -41,5 +41,6 @@ begin
       MessageDlg('Unable to open the VSXML URL.', mtError, [mbOK], 0);
   end;
 end;
+
 
 end.

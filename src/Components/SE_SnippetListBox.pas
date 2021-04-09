@@ -1,5 +1,4 @@
 unit SE_SnippetListBox;
-
 interface
 uses
   Controls, StdCtrls, Classes, Types;
@@ -19,8 +18,7 @@ type
     fImgList:  PImageList;
     procedure SetSnippets(aSnippetArray: TSESnippetArray);
     function SanitizeDisplayText(aDisplayText: string): string;
-    procedure DoDrawItem(aControl: TWinControl; aIndex: Integer; aRect: TRect;
-                         aState: TOwnerDrawState);
+    procedure DoDrawItem(aControl: TWinControl; aIndex: Integer; aRect: TRect; aState: TOwnerDrawState);
   public
     constructor Create(aOwner: TComponent; aImgList: PImageList); overload;
     destructor Destroy; override;
@@ -30,8 +28,7 @@ type
     function GetSnippet(aDisplayText: string): string; overload;
     function GetSnippet(aIndex: Integer): string; overload;
     procedure AppendSnippets(aSnippetArray: TSESnippetArray); overload;
-    procedure AppendSnippets(const aDisplayTextDict: TStringList;
-                             const aSnippetTextDict: TStringList); overload;
+    procedure AppendSnippets(const aDisplayTextDict: TStringList; const aSnippetTextDict: TStringList); overload;
   published
     property Snippets: TSESnippetArray read fSnippets write SetSnippets;
   end;
@@ -122,8 +119,7 @@ begin
     AddSnippet(item);
 end;
 
-procedure TSESnippetListBox.AppendSnippets(const aDisplayTextDict: TStringList;
-                                           const aSnippetTextDict: TStringList);
+procedure TSESnippetListBox.AppendSnippets(const aDisplayTextDict: TStringList; const aSnippetTextDict: TStringList);
 var
   item: TSESnippet;
   I,
@@ -155,8 +151,7 @@ begin
   Result := StringReplace(Result,       'Actions.',   '', [rfReplaceAll, rfIgnoreCase]);
 end;
 
-procedure TSESnippetListBox.DoDrawItem(aControl: TWinControl; aIndex: Integer;
-                                       aRect: TRect; aState: TOwnerDrawState);
+procedure TSESnippetListBox.DoDrawItem(aControl: TWinControl; aIndex: Integer; aRect: TRect; aState: TOwnerDrawState);
 var
   s:          string;
   txtTopPos,

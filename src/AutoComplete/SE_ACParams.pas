@@ -1,5 +1,4 @@
 unit SE_ACParams;
-
 interface
 uses
   Generics.Collections;
@@ -37,12 +36,7 @@ uses
 { TSEParam }
 class function TSEParam.ParamFlagToStr(aFlags: TSEParamFlag): string;
 begin
-  case aFlags of
-    pfVar:      Result := 'var';
-    pfConst:    Result := 'const';
-    pfOptional: Result := 'optional';
-    else        Result := 'none';
-  end;
+  Result := ParamFlagName[aFlags];
 end;
 
 class function TSEParam.StrToParamFlag(aValue: string): TSEParamFlag;

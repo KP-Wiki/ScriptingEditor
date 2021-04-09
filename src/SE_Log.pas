@@ -1,11 +1,10 @@
 unit SE_Log;
-
 interface
 uses
   SysUtils, Classes;
 
 type
-  //Logging system
+  // Logging system
   TSELog = class
   private
     fl:            TextFile;
@@ -36,8 +35,8 @@ implementation
 uses
   MMSystem, SE_Globals;
 
-//New thread, in which old logs are deleted (used internally)
 type
+  // New thread, in which old logs are deleted (used internally)
   TSEOldLogDeleter = class(TThread)
   private
     fPathToLogs: string;

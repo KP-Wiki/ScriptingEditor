@@ -1,5 +1,4 @@
 unit SE_Exceptions;
-
 interface
 uses
   SysUtils, MadExcept, madNVAssistant;
@@ -56,5 +55,6 @@ begin
   MESettings.ScreenShotZip := CrashFile; //Screenshot also goes in the zip
   ExceptIntf.AdditionalAttachments.Add(gLog.LogPath, '', CrashFile);
 end;
+
 
 end.

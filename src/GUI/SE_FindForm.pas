@@ -1,7 +1,5 @@
 unit SE_FindForm;
-
 interface
-
 uses
   Windows, Messages, SysUtils, Variants, Classes,
   Graphics, Controls, Forms, Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;

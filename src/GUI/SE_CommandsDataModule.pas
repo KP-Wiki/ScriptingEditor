@@ -1,5 +1,4 @@
 unit SE_CommandsDataModule;
-
 interface
 uses
   SysUtils, Classes, ImageList, ImgList, Controls,
@@ -120,11 +119,11 @@ var
   gCommandsDataModule: TSECommandsDataModule;
 
 implementation
-{$R *.dfm}
-
 uses
   Windows, ShellAPI, Forms, UITypes, ClipBrd, ComCtrls,
   SE_Globals, SE_AboutForm, SE_WelcomeTab, SE_OptionsForm;
+
+{$R *.dfm}
 
 procedure TSECommandsDataModule.DataModuleCreate(Sender: TObject);
 begin

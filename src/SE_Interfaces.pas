@@ -1,5 +1,4 @@
 unit SE_Interfaces;
-
 interface
 uses
   Windows, Forms, ComCtrls, Graphics;

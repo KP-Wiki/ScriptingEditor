@@ -1,7 +1,5 @@
 unit SE_ReplaceForm;
-
 interface
-
 uses
   Windows, Messages, SysUtils, Variants, Classes,
   Graphics, Controls, Forms, Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, SE_FindForm;

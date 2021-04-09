@@ -1,7 +1,5 @@
 unit SE_EditorForm;
-
 interface
-
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Menus, ComCtrls,
@@ -147,12 +145,13 @@ type
   end;
 
 implementation
-{$R *.dfm}
 uses
   IOUtils, Types,
   SynEditRegexSearch, SynEditSearch,
   SE_Globals, SE_ValidationPlugin, SE_CommandsDataModule, SE_GoToLineForm,
   SE_FindForm, SE_ReplaceForm, SE_SaveModifiedForm, SE_EditorFactory;
+
+{$R *.dfm}
 
 type
   TUTF8NoBOMEncoding = class(TUTF8Encoding)
@@ -161,14 +160,12 @@ type
   end;
 
 { TUTF8NoBOMEncoding }
-
 function TUTF8NoBOMEncoding.GetPreamble: TBytes;
 begin
   SetLength(Result, 0);
 end;
 
 { TSEEditorForm }
-
 procedure TSEEditorForm.FormShow(aSender: TObject);
 begin
   DoUpdateCaption;

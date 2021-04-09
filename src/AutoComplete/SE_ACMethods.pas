@@ -1,5 +1,4 @@
 unit SE_ACMethods;
-
 interface
 uses
   Generics.Collections, Classes,
@@ -54,11 +53,7 @@ uses
 { TSEMethod }
 class function TSEMethod.MethodTypeToStr(aType: TSEMethodType): string;
 begin
-  case aType of
-    ftFunction:  Result := 'function';
-    ftProcedure: Result := 'procedure';
-    else         raise Exception.Create('Unknown value for TFuncType');
-  end;
+  Result := MethodTypeName[aType];
 end;
 
 class function TSEMethod.StrToMethodType(aValue: string): TSEMethodType;

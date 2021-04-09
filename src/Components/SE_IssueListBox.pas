@@ -1,5 +1,4 @@
 unit SE_IssueListBox;
-
 interface
 uses
   StdCtrls, ScriptValidatorResult;

@@ -1,7 +1,5 @@
 unit Unit1;
-
 interface
-
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DB, StdCtrls, Grids, DBGrids, ValEdit, ExtCtrls,
@@ -46,10 +44,11 @@ var
   Form1: TForm1;
 
 implementation
-{$R *.dfm}
 uses
   UITypes,
   SE_Globals;
+
+{$R *.dfm}
 
 procedure TForm1.FormShow(Sender: TObject);
 Var
@@ -117,8 +116,7 @@ begin
 
   if not FileExists(impFile) then
   begin
-    MessageDlg('Unable to import: File does not exist.' + sLineBreak + impFile,
-               mtError, [mbOK], 0);
+    MessageDlg('Unable to import: File does not exist.' + sLineBreak + impFile, mtError, [mbOK], 0);
     Exit;
   end;
 
@@ -151,8 +149,7 @@ begin
     FreeAndNil(methodList);
   end;
 
-  MessageDlg('Successfully imported A1 dict file.' + sLineBreak + impFile,
-             mtInformation, [mbOK], 0);
+  MessageDlg('Successfully imported A1 dict file.' + sLineBreak + impFile, mtInformation, [mbOK], 0);
 end;
 
 procedure TForm1.btnAddNewClick(Sender: TObject);

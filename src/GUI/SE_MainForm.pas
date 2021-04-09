@@ -1,7 +1,5 @@
 unit SE_MainForm;
-
 interface
-
 uses
   Windows, Messages, Classes, ToolWin, ExtCtrls, Controls, Forms, ComCtrls,
   Menus, StdCtrls, ImageList, ImgList,
@@ -109,8 +107,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure pcEditorsMouseUp(Sender: TObject; Button: TMouseButton;
-                               Shift: TShiftState; X, Y: Integer);
+    procedure pcEditorsMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure MenuReopenClick(Sender: TObject);
     procedure MriClick(Sender: TObject);
     procedure pcEditorsChange(Sender: TObject);
@@ -273,8 +270,7 @@ begin
   SetListboxesVisible(not (pcEditors.ActivePage is TSEWelcomeTabSheet));
 end;
 
-procedure TSEMainForm.pcEditorsMouseUp(Sender: TObject; Button: TMouseButton;
-                                       Shift: TShiftState; X, Y: Integer);
+procedure TSEMainForm.pcEditorsMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if Button = mbMiddle then
     CloseTab(pcEditors.IndexOfTabAt(X, Y));
@@ -502,7 +498,7 @@ begin
     end;
   end;
 
-  if not SVFound then                       
+  if not SVFound then
   begin
     gLog.AddTime(ERROR_MSG);
     Exit(ERROR_VALIDATION_RESULT);
@@ -609,11 +605,7 @@ var
   IniFile:      TIniFile;
   PcLeftWidth,
   PcBottomHeight,
-  I,
-  X,
-  Y,
-  W,
-  H:            Integer;
+  I, X, Y, W, H: Integer;
   S:            string;
 begin
   IniFile := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));

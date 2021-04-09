@@ -1,5 +1,4 @@
 unit SE_EditorFactory;
-
 interface
 uses
   Messages, Classes, ComCtrls,
@@ -36,14 +35,12 @@ uses
   SE_EditorForm, SE_CommandsDataModule, SE_WelcomeTab;
 
 { TSEEditorTabSheet }
-
 procedure TSEEditorTabSheet.WMDeleteThis(var aMsg: TMessage);
 begin
   Free;
 end;
 
 { TSEEditorFactory }
-
 constructor TSEEditorFactory.Create;
 begin
   inherited Create;
